@@ -36,7 +36,7 @@ option tcTSIZE '128'
 option tcMPU '84'
 option linklayer_adaptation_mechanism 'default'
 ```
-Perform a reboot afterwardspply the settings
+Perform a reboot afterwards to apply the settings
 
 ### AP
 TP-Link RE605x exposes the LAN in AP mode.
