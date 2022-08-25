@@ -30,8 +30,8 @@ git checkout 1d4dea6d4f4d34914e4622809b8b4a7c2c35ab47
 You also need to update the feeds in builddir, to do so run (`scripts/update_feeds.sh`):
 ```
 cd openwrt
-../run.sh ./scripts/feeds update -a
-../run.sh ./scripts/feeds install -a
+../scripts/run.sh ./scripts/feeds update -a
+../scripts/run.sh ./scripts/feeds install -a
 ```
 
 ## Build
@@ -43,12 +43,12 @@ cp .config openwrt/
 
 It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory:
 ```
-../run.sh make download
+../scripts/run.sh make download
 ```
 
 To run the actual build, cd to `openwrt` directory and issue:
 ```
-../run.sh make -j$(nproc)
+../scripts/run.sh make -j$(nproc)
 ```
 
 You can choose how many cores you want to run during the build

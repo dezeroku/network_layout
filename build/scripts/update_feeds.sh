@@ -2,6 +2,6 @@
 set -e
 
 cd openwrt
-../run.sh ./scripts/feeds update -a
-../run.sh ./scripts/feeds install -a
+../scripts/run.sh ./scripts/feeds update -a
+../scripts/run.sh ./scripts/feeds install -a
 
