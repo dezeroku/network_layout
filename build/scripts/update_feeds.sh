@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+ROOTDIR="$(pwd)"
+
 cd openwrt
-../scripts/run.sh ./scripts/feeds update -a
-../scripts/run.sh ./scripts/feeds install -a
+"${ROOTDIR}/scripts/run.sh" ./scripts/feeds update -a
+"${ROOTDIR}/scripts/run.sh" ./scripts/feeds install -a
 

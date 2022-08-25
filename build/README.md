@@ -15,8 +15,15 @@ To obtain the env, simply run (from the `docker-setup` dir):
 docker build -t openwrt-builder .
 ```
 
-Additionally there is provided a wrapper `run.sh`, which takes a command to run in the dockerized build env as an argument.
-In the later paragraphs, when you see a command prefixed with `run.sh` you can remove it, if you'd prefer to build using your own env.
+Additionally there is provided a wrapper `scripts/run.sh`, which takes a command to run in the dockerized build env as an argument.
+In the later paragraphs, when you see a command prefixed with `scripts/run.sh` you can remove it, if you'd prefer to build using your own env.
+
+For easier access it might be worth to add the `scripts` directory to your path like so:
+```
+export PATH="$PATH:$PWD/scripts"
+```
+
+This way you can just prefix calls with `run.sh`, instead of a full path.
 
 ## Sources
 The `openwrt` repo in proper revision is added as a submodule in this directory.
