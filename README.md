@@ -37,7 +37,8 @@ option linklayer_adaptation_mechanism 'default'
 ```
 Perform a reboot afterwards to apply the settings
 7. `wireguard-tools` for VPN
-8. `nmap-full` for general debugging
+8. `luci-app-wireguard` for better VPN integration
+9. `nmap-full` for general debugging
 
 ### AP
 TP-Link RE605x exposes the LAN in AP mode.
