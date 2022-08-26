@@ -6,6 +6,8 @@ General instructions from upstream can be viewed [here](https://openwrt.org/docs
 Base hash of the build: `1d4dea6d4f4d34914e4622809b8b4a7c2c35ab47`
 Base `.config` from upstream [.config.orig](https://downloads.openwrt.org/releases/21.02.3/targets/bcm27xx/bcm2711/config.buildinfo)
 
+It takes about 15G of space to build everything.
+
 ## Build Environment
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
 The image is as similar to the official build env as possible, as it's based on it.
