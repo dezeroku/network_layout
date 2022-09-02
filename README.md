@@ -40,6 +40,7 @@ Perform a reboot afterwards to apply the settings
 8. `luci-app-wireguard` for better VPN integration
 9. `nmap-full` for general debugging
 10. `luci-app-https-dns-proxy` for DNS encryption
+11. `qrencode` for easier sharing of VPN configs
 
 ### AP
 TP-Link RE605x exposes the LAN in AP mode.
