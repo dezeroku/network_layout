@@ -4,7 +4,17 @@ This directory defines step-by-step instructions that can be followed to obtain 
 General instructions from upstream can be viewed [here](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
 
 Base hash of the build: `1d4dea6d4f4d34914e4622809b8b4a7c2c35ab47`
-Base `.config` from upstream [.config.orig](https://downloads.openwrt.org/releases/21.02.3/targets/bcm27xx/bcm2711/config.buildinfo)
+For each device supported you can look in `<device>` directory to see the config and relevant README with changes.
+You can run `diff <device>/config <device>/config.orig` to compare the differences between upstream and current .config
+Custom .config available for:
+1. rpi4b
+
+The idea is to:
+1. first apply the upstream config.orig
+2. Put our custom changes on top (concatenate the files)
+3. Run `make defconfig` to expand the diffconfigs into proper full .config
+
+Some warnings will appear about overriding values, but that's expected because of our diffconfig.
 
 It takes about 15G of space to build everything.
 
@@ -12,7 +22,7 @@ It takes about 15G of space to build everything.
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
 The image is as similar to the official build env as possible, as it's based on it.
 
-To obtain the env, simply run (from the `docker-setup` dir):
+To obtain the env, simply run (from the `docker-setup` dir, can be obtained by running `scripts/setup-image.sh`):
 ```
 docker build -t openwrt-builder .
 ```
@@ -28,7 +38,8 @@ export PATH="$PATH:$PWD/scripts"
 This way you can just prefix calls with `run.sh`, instead of a full path.
 
 ## Sources
-The `openwrt` repo in proper revision is added as a submodule in this directory.
+For misc reasons, the `openwrt` repo can't be added as a submodule.
+
 To obtain it, simply run (`scripts/clone.sh`):
 ```
 git clone git://git.openwrt.org/openwrt/openwrt.git
@@ -36,7 +47,7 @@ cd openwrt
 git checkout 1d4dea6d4f4d34914e4622809b8b4a7c2c35ab47
 ```
 
-You also need to update the feeds in builddir, to do so run (`scripts/update_feeds.sh`):
+You also need to update the feeds in builddir, to do so run (`scripts/update-feeds.sh`):
 ```
 cd openwrt
 ../scripts/run.sh ./scripts/feeds update -a
@@ -45,22 +56,28 @@ cd openwrt
 
 ## Build
 `.config` that should be used during the build is kept in the same directory as this README.
-To include it in the build, simply copy it over to `openwrt` repo:
+To include it in the build, simply copy it over to `openwrt` repo (`scripts/copy-config.sh <device>`):
+Note that `<device>/config` path does not have a dot in filename, while the one in `openwrt` has.
+Make sure that you copy the file as `.config`.
 ```
 cp <device>/config openwrt/.config
 ```
 
-It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory:
+It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory (`scripts/build-download-sources.sh`):
 ```
-../scripts/run.sh make download
+../scripts/run.sh make download -j$(nproc)
 ```
 
-To run the actual build, cd to `openwrt` directory and issue:
+To run the actual build, cd to `openwrt` directory and issue (`scripts/build-compile.sh`):
 ```
 ../scripts/run.sh make -j$(nproc)
 ```
 
 You can choose how many cores you want to run during the build
+
+Optionally, you can run `scripts/end-to-end-build.sh <device>` to run all the steps (fetch the code, copy the config, download sources, build the image).
+This is not recommended for interactive development, as many steps are run necessarily.
+It's fine to just obtain the final image though, e.g. in CI context.
 
 ## Output
 The final image will land in `openwrt/bin/targets/...` directory.
