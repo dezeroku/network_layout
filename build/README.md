@@ -47,7 +47,7 @@ cd openwrt
 `.config` that should be used during the build is kept in the same directory as this README.
 To include it in the build, simply copy it over to `openwrt` repo:
 ```
-cp .config openwrt/
+cp <device>/config openwrt/.config
 ```
 
 It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory:
