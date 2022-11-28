@@ -7,7 +7,7 @@ if [[ ! -d "openwrt" ]]; then
     git clone git://git.openwrt.org/openwrt/openwrt.git
 else
     while true; do
-    read -p "There is already an openwrt dir, do you with to use it? [Y/N]" yn
+    read -p "There is already an openwrt dir, do you wish to use it? [Y/N]" yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) echo "Please remove it manually to avoid loss of work"; exit 1;;

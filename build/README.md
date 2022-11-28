@@ -14,7 +14,9 @@ The idea is to:
 2. Put our custom changes on top (concatenate the files)
 3. Run `make defconfig` to expand the diffconfigs into proper full .config
 
-Some warnings will appear about overriding values, but that's expected because of our diffconfig.
+Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
+
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh <DEVICE> > <DEVICE>/config` and inspecting the changes.
 
 It takes about 15G of space to build everything.
 
