@@ -34,3 +34,4 @@ Perform a reboot afterwards to apply the settings
 11. `qrencode` for easier sharing of VPN configs
 12. `python3` for mics
 13. `ncdu` for info about disk usage
+14. `iperf3` for local network speedtesting
