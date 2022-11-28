@@ -17,4 +17,4 @@ else
 fi
 
 cd openwrt
-git checkout v21.02.5
+git checkout v22.03.2

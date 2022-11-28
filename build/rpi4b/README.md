@@ -1,5 +1,5 @@
 ## Upstream .config
-Base `.config` from upstream (rpi4b): [config.orig](https://downloads.openwrt.org/releases/21.02.5/targets/bcm27xx/bcm2711/config.buildinfo)
+Base `.config` from upstream (rpi4b): [config.orig](https://downloads.openwrt.org/releases/22.03.2/targets/bcm27xx/bcm2711/config.buildinfo)
 
 ## Packages
 1. `kmod-usb-net-rtl8152` (for Ethernet-USB adapter support, built into kernel)

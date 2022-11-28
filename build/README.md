@@ -3,7 +3,7 @@ This directory defines step-by-step instructions that can be followed to obtain 
 
 General instructions from upstream can be viewed [here](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
 
-Base tag of the build: `v21.02.5`
+Base tag of the build: `v22.03.2`
 For each device supported you can look in `<device>` directory to see the config and relevant README with changes.
 You can run `diff <device>/config <device>/config.orig` to compare the differences between upstream and current .config
 Custom .config available for:
@@ -46,7 +46,7 @@ To obtain it, simply run (`scripts/clone.sh`):
 ```
 git clone git://git.openwrt.org/openwrt/openwrt.git
 cd openwrt
-git checkout v21.02.5
+git checkout v22.03.2
 ```
 
 You also need to update the feeds in builddir, to do so run (`scripts/update-feeds.sh`):
