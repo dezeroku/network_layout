@@ -1,53 +1,78 @@
 # This Dockerfile is really inspired (basically copy-pasted) by the `docker/buildworker/Dockerfile` available in [OpenWRT buildbot repo](https://git.openwrt.org/?p=buildbot.git;a=summary)
 # At the time of writing it was based on 85ffd9a27da104698b3ee433aaf0ffb0cb13504e hash
 
-# debian 10
-FROM        debian:10@sha256:fa8155031d12cd165c237e0b38688cade32912e990ffe21f9e31968d9a04da38
+FROM rust:1.65.0@sha256:6c20d87766142d058f3e21874fe1db426c49ce3e1575c8c300fdc27d06db92a9 as sccache-build
 
-ARG         DEBIAN_FRONTEND=noninteractive
-ARG         OPENWRT_VERSION=unknown
+RUN apt-get update && \
+        apt-get install -y musl-tools
+RUN rustup target add x86_64-unknown-linux-musl
+RUN cargo install sccache \
+        --version 0.3.1 \
+        --features openssl/vendored \
+        --root /sccache-output \
+        --target=x86_64-unknown-linux-musl
+
+
+FROM        ubuntu:22.04@sha256:817cfe4672284dcbfee885b1a66094fd907630d610cab329114d036716be49ba
 
 USER root
 
+COPY --from=sccache-build /sccache-output/bin/sccache /usr/bin/sccache
+
 RUN \
-	apt-get update && \
-	apt-get install -y \
-		build-essential \
-		ccache \
-		curl \
-		gawk \
-		gcc-multilib \
-		genisoimage \
-		git-core \
-		gosu \
-		libdw-dev \
-		libelf-dev \
-		libncurses5-dev \
-		locales \
-		pv \
-		pwgen \
-		python \
-		python3 \
-		python3-pip \
-		qemu-utils \
-		rsync \
-		signify-openbsd \
-		subversion \
-		swig \
-		unzip \
-		wget && \
-	apt-get clean && \
-	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+    apt-get update && \
+    apt-get install -y \
+        build-essential \
+        curl \
+        gawk \
+        gcc-multilib \
+        genisoimage \
+        git \
+        gosu \
+        libdw-dev \
+        libelf-dev \
+        libncurses5-dev \
+        locales \
+        pv \
+        pwgen \
+        qemu-utils \
+        rsync \
+        signify-openbsd \
+        subversion \
+        swig \
+        unzip \
+        wget \
+        clang-14 \
+        llvm-14 \
+        flex \
+        g++ \
+        gettext \
+        python3-distutils \
+        zlib1g-dev \
+        libssl-dev \
+        file \
+        && \
+    apt-get clean && \
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 ENV LANG=en_US.utf8
+
+# Get wrapper for sccache
+COPY ./sccache /sccache-wrapper/sccache
+RUN \
+        ln /sccache-wrapper/sccache /usr/local/bin/gcc && \
+        ln /sccache-wrapper/sccache /usr/local/bin/g++ && \
+        ln /sccache-wrapper/sccache /usr/local/bin/cc && \
+        ln /sccache-wrapper/sccache /usr/local/bin/c++
 
 RUN \
     groupadd buildbot && \
     useradd \
-	--create-home --home-dir /builder \
-	--comment "OpenWrt buildbot" \
-	--gid 1000 --uid 1000 --shell /bin/bash buildbot && \
-    chown buildbot:buildbot /builder
+    --create-home --home-dir /home/builder \
+    --comment "OpenWrt buildbot" \
+    --gid 1000 --uid 1000 --shell /bin/bash buildbot && \
+    chown buildbot:buildbot /home/builder
 
 USER buildbot
+
 WORKDIR /builder

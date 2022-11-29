@@ -3,5 +3,7 @@ set -e
 
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
-cd openwrt
+. "${RUNDIR}"/common
+
+cd "${BUILDDIR}"
 "${RUNDIR}/run.sh" make -j"$(nproc)"

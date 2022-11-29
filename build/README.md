@@ -5,38 +5,21 @@ This directory defines step-by-step instructions that can be followed to obtain 
 General instructions from upstream can be viewed [here](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
 
 Base tag of the build: `v22.03.2`
-For each device supported you can look in `<device>` directory to see the config and relevant README with changes.
-You can run `diff <device>/config <device>/config.orig` to compare the differences between upstream and current .config
-Custom .config available for:
+For each device supported you can look in `$DEVICE` directory to see the config and relevant README with changes.
+Custom configurations are available for:
 
 1. rpi4b
 
-The idea is to:
-
-1. first apply the upstream config.orig
-2. Put our custom changes on top (concatenate the files)
-3. Run `make defconfig` to expand the diffconfigs into proper full .config
-
-Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
-
-After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh <DEVICE> > <DEVICE>/config` and inspecting the changes.
-
-It takes about 15G of space to build everything.
+It takes about 15G of space to build everything in case of rpi4b.
 
 ## Build Environment
 
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
 The image is as similar to the official build env as possible, as it's based on it.
 
-To obtain the env, simply run (from the `docker-setup` dir, can be obtained by running `scripts/setup-image.sh`):
-
-```
-docker build -t openwrt-builder .
-```
+To obtain the env, simply run `scripts/setup-image.sh`
 
 Additionally there is provided a wrapper `scripts/run.sh`, which takes a command to run in the dockerized build env as an argument.
-In the later paragraphs, when you see a command prefixed with `scripts/run.sh` you can remove it, if you'd prefer to build using your own env.
-
 For easier access it might be worth to add the `scripts` directory to your path like so:
 
 ```
@@ -47,58 +30,54 @@ This way you can just prefix calls with `run.sh`, instead of a full path.
 
 ## Sources
 
+Every buildable target has `variables` fine defining entries used later on in this chapter.
+For the build to proceed you have to at least have `$DEVICE` exported in env or pass it as first argument to most of the scripts.
+Variables supported:
+
+1. `$DEVICE` - required, name of the supported device to build e.g. `rpi4b`
+2. `$BUILDDIR` - optional, if not provided defaults to `repo-root/build/openwrt-$DEVICE`
+
+There are few helper scripts that can be used to checkout the code and build final image.
+If you're interested in details please read them or refer the link mentioned at the top of this README.
+
 For misc reasons, the `openwrt` repo can't be added as a submodule.
+To obtain it, simply run `scripts/clone.sh`
 
-To obtain it, simply run (`scripts/clone.sh`):
-
-```
-git clone git://git.openwrt.org/openwrt/openwrt.git
-cd openwrt
-git checkout v22.03.2
-```
-
-You also need to update the feeds in builddir, to do so run (`scripts/update-feeds.sh`):
-
-```
-cd openwrt
-../scripts/run.sh ./scripts/feeds update -a
-../scripts/run.sh ./scripts/feeds install -a
-```
+You also need to update the feeds in builddir, to do so run `scripts/update-feeds.sh`
 
 ## Build
 
-`.config` that should be used during the build is kept in the same directory as this README.
-To include it in the build, simply copy it over to `openwrt` repo (`scripts/copy-config.sh <device>`):
-Note that `<device>/config` path does not have a dot in filename, while the one in `openwrt` has.
-Make sure that you copy the file as `.config`.
+`.config` that should be used during the build is kept in device specific directory, e.g. `rpi4b`.
 
-```
-cp <device>/config openwrt/.config
-```
+The idea is to:
 
-It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory (`scripts/build-download-sources.sh`):
+1. first apply the upstream `config.orig`
+2. Put our custom changes (`config`) on top (concatenate the files)
+3. Run `make defconfig` to expand the diffconfigs into proper full .config
 
-```
-../scripts/run.sh make download -j$(nproc)
-```
+Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
 
-To run the actual build, cd to `openwrt` directory and issue (`scripts/build-compile.sh`):
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh $DEVICE > $DEVICE/config` and inspecting the changes.
 
-```
-../scripts/run.sh make -j$(nproc)
-```
+To do all of that run `scripts/copy-config.sh`
 
-You can choose how many cores you want to run during the build
+It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory with `scripts/build-download-sources.sh`
 
-Optionally, you can run `scripts/end-to-end-build.sh <device>` to run all the steps (fetch the code, copy the config, download sources, build the image).
-This is not recommended for interactive development, as many steps are run necessarily.
+To run the actual build issue `scripts/build-compile.sh`
+
+Optionally, you can run `scripts/end-to-end-build.sh $DEVICE` to run all the steps (fetch the code, copy the config, download sources, build the image).
+This is not recommended for interactive development, as many steps are run when not necessarily needed.
 It's fine to just obtain the final image though, e.g. in CI context.
 
 ## Output
 
-The final image will land in `openwrt/bin/targets/...` directory.
+The final image will land in `openwrt-$DEVICE/bin/targets/...` directory.
 
 ## Tips
 
 If there's an error during the compilation, you can run make with additional `V=s` flag.
 It might also be a good idea to run with `-j1`, so it's easier to see the error.
+
+As `ccache` needs custom OpenWRT patches to work properly, setting it on system-level and then building `tools/ccache` can cause unexpected messups.
+To resolve this problem, use `sccache` on system-host-level (e.g. to compile tools) and `ccache` internally in OpenWRT.
+This is already handled in the Docker container.

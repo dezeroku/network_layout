@@ -6,5 +6,4 @@ RUNDIR="$(readlink -f "$(dirname "$0")")"
 . "${RUNDIR}"/common
 
 cd "${BUILDDIR}"
-
-"${RUNDIR}/run.sh" make download -j"$(nproc)"
+"${RUNDIR}/run.sh" ./staging_dir/host/bin/ccache -vs -d /ccache-storage --clear

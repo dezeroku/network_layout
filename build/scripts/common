@@ -1,0 +1,37 @@
+#!/usr/bin/env false
+
+# This file is not meant to be run
+# It contains a collection of utilities to be shared by every script
+
+set -euo pipefail
+
+#RUNDIR="$(readlink -f "$(dirname "$0")")"
+
+function echoerr() {
+    echo "$@" 1>&2;
+}
+
+if [ -z "${DEVICE:-}" ]; then
+    if [ -z "${1:-}" ]; then
+        echo "<script>.sh DEVICE" && exit 1
+    else
+        DEVICE="$1"
+    fi
+fi
+
+[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/variables")"
+
+echoerr "DEVICE=${DEVICE}"
+echoerr "DEVICE_CONFIG_FILE=${DEVICE_CONFIG_FILE}"
+
+. "${DEVICE_CONFIG_FILE}"
+
+[ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${RUNDIR}/../openwrt-${DEVICE}")"
+[ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
+
+echoerr "BUILDDIR=${BUILDDIR}"
+echoerr "OPENWRT_VERSION=${OPENWRT_VERSION}"
+
+export DEVICE
+export BUILDDIR
+export OPENWRT_VERSION

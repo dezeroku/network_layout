@@ -3,8 +3,12 @@ set -e
 
 # Clone with full history to have git log in place
 
-if [[ ! -d "openwrt" ]]; then
-    git clone git://git.openwrt.org/openwrt/openwrt.git
+RUNDIR="$(readlink -f "$(dirname "$0")")"
+
+. "${RUNDIR}"/common
+
+if [[ ! -d "${BUILDDIR}" ]]; then
+    git clone git://git.openwrt.org/openwrt/openwrt.git "${BUILDDIR}"
 else
     while true; do
     read -p "There is already an openwrt dir, do you wish to use it? [Y/N]" yn
@@ -16,5 +20,6 @@ else
     done
 fi
 
-cd openwrt
-git checkout v22.03.2
+cd "${BUILDDIR}"
+
+git checkout "${OPENWRT_VERSION}"

@@ -36,6 +36,4 @@ Perform a reboot afterwards to apply the settings
 9. `nmap-full` for general debugging
 10. `luci-app-https-dns-proxy` for DNS encryption
 11. `qrencode` for easier sharing of VPN configs
-12. `python3` for mics
-13. `ncdu` for info about disk usage
-14. `iperf3` for local network speedtesting
+12. `iperf3` for local network speedtesting

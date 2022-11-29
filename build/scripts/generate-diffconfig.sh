@@ -4,15 +4,17 @@
 # 1. generate "normal" diffconfig based on current .config
 # 2. Remove lines that are already present in device specific config.orig
 
+# Depends on:
+# 1. dos2unix
+# 2. combine
+
 set -e
-
-[ -z "$1" ] && echo "generate-diffconfig.sh DEVICE" && exit 1
-
-DEVICE="$1"
 
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
-cd openwrt
+. "${RUNDIR}/common"
+
+cd "${BUILDDIR}"
 
 TMPFILE="$(mktemp)"
 

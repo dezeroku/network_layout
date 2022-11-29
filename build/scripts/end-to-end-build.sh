@@ -4,11 +4,11 @@ set -e
 
 [ -z "${SLEEP_BETWEEN_STAGES}" ] && SLEEP_BETWEEN_STAGES=3
 
-[ -z "$1" ] && echo "end-to-end-build.sh DEVICE" && exit 1
-
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
-echo "Build initial image"
+. "${RUNDIR}"/common
+
+echo "Build docker build environment image"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${RUNDIR}/setup-image.sh"
 
@@ -22,7 +22,7 @@ sleep "${SLEEP_BETWEEN_STAGES}"
 
 echo "Copy config for $1"
 sleep "${SLEEP_BETWEEN_STAGES}"
-"${RUNDIR}/copy-config.sh" "$1"
+"${RUNDIR}/copy-config.sh"
 
 echo "Download source code"
 sleep "${SLEEP_BETWEEN_STAGES}"

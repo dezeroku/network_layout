@@ -1,3 +1,17 @@
 #!/usr/bin/env bash
+set -e
 
-exec docker run -it -v $PWD:/builder openwrt-builder $@
+RUNDIR="$(readlink -f "$(dirname "$0")")"
+
+[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${RUNDIR}/../ccache-storage")"
+[ -d "${CCACHE_STORAGE}" ] || mkdir "${CCACHE_STORAGE}"
+
+[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${RUNDIR}/../ccache-host-storage")"
+[ -d "${CCACHE_HOST_STORAGE}" ] || mkdir "${CCACHE_HOST_STORAGE}"
+
+exec docker run --rm -it \
+     -e SCCACHE_CACHE_SIZE="50G" \
+     -v $PWD:/builder \
+     -v "${CCACHE_STORAGE}":/ccache-storage \
+     -v "${CCACHE_HOST_STORAGE}":/home/builder/.cache/sccache \
+     openwrt-builder "$@"
