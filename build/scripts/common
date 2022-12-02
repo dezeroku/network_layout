@@ -5,22 +5,28 @@
 
 set -euo pipefail
 
-#RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 function echoerr() {
     echo "$@" 1>&2;
 }
 
 function parse_env_args() {
+    if [ -z "${SCRIPTS_DIR:-}" ]; then
+        echo "SCRIPTS_DIR is required to be in env"
+        echo "Did you start the script properly?"
+        exit 1
+    fi
+
+    SCRIPTS_DIR="$(readlink -f "${SCRIPTS_DIR}")"
 
     if [ -z "${DEVICE:-}" ]; then
         echo "DEVICE is required to be in env" && exit 1
     fi
 
-    [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/variables")"
+    [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/variables")"
     DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
-    [ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/config")"
+    [ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/config")"
     DEVICE_CONFIG_FILE="$(readlink -f "${DEVICE_CONFIG_FILE}")"
 
     echoerr "DEVICE=${DEVICE}"
@@ -29,7 +35,7 @@ function parse_env_args() {
 
     . "${DEVICE_ENV_FILE}"
 
-    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${RUNDIR}/../openwrt-${DEVICE}")"
+    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../openwrt-${DEVICE}")"
     [ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
     BUILDDIR="$(readlink -f "${BUILDDIR}")"

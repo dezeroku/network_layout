@@ -10,18 +10,18 @@
 
 set -e
 
-RUNDIR="$(readlink -f "$(dirname "$0")")"
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-. "${RUNDIR}/common"
+. "${SCRIPTS_DIR}/common"
 parse_env_args
 
 cd "${BUILDDIR}"
 
 TMPFILE="$(mktemp)"
 
-"${RUNDIR}/run.sh" ./scripts/diffconfig.sh > "${TMPFILE}"
+"${SCRIPTS_DIR}/core/run.sh" ./scripts/diffconfig.sh > "${TMPFILE}"
 
 # sanitize generated diffconfig
 dos2unix "${TMPFILE}" -q
 
-combine "${TMPFILE}" not "${RUNDIR}/../${DEVICE}/config.orig"
+combine "${TMPFILE}" not "${SCRIPTS_DIR}/../${DEVICE}/config.orig"

@@ -24,13 +24,13 @@ It takes about 15G of space to build everything in case of rpi4b.
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
 The image is as similar to the official build env as possible, as it's based on it.
 
-To obtain the env, simply run `scripts/setup-image.sh`
+To obtain the env, simply run `scripts/core/setup-image.sh`
 
-Additionally there is provided a wrapper `scripts/run.sh`, which takes a command to run in the dockerized build env as an argument.
-For easier access it might be worth to add the `scripts` directory to your path like so:
+Additionally there is provided a wrapper `scripts/core/run.sh`, which takes a command to run in the dockerized build env as an argument.
+For easier access it might be worth to add the `scripts/core/` directory to your path like so:
 
 ```
-export PATH="$PATH:$PWD/scripts"
+export PATH="$PATH:$PWD/scripts/core"
 ```
 
 This way you can just prefix calls with `run.sh`, instead of a full path.
@@ -66,15 +66,15 @@ The idea is to:
 
 Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
 
-After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh > $DEVICE/config` and inspecting the changes.
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/core/generate-diffconfig.sh > $DEVICE/config` and inspecting the changes.
 
-To do all of that run `scripts/copy-config.sh`
+To do all of that run `scripts/core/copy-config.sh`
 
-It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory with `scripts/build-download-sources.sh`
+It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory with `scripts/core/build-download-sources.sh`
 
-To run the actual build issue `scripts/build-compile.sh`
+To run the actual build issue `scripts/core/build-compile.sh`
 
-Optionally, you can run `scripts/end-to-end-build.sh` to run all the steps (fetch the code, copy the config, download sources, build the image).
+Optionally, you can run `scripts/core/end-to-end-build.sh` to run all the steps (fetch the code, copy the config, download sources, build the image).
 This is not recommended for interactive development, as many steps are run when not necessarily needed.
 It's fine to just obtain the final image though, e.g. in CI context.
 

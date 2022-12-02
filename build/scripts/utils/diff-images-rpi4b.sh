@@ -4,9 +4,9 @@ set -euo pipefail
 # Unpack two images and run diff on them
 # This is reaaaly hacky at the moment
 
-RUNDIR="$(readlink -f "$(dirname "$0")")"
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-. "${RUNDIR}"/common
+. "${SCRIPTS_DIR}"/common
 
 function usage() {
     echo "compare-images.sh image1.img.gz image2.img.gz"

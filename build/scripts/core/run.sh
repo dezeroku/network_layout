@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
-RUNDIR="$(readlink -f "$(dirname "$0")")"
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-. "${RUNDIR}/common"
+. "${SCRIPTS_DIR}/common"
 
-[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${RUNDIR}/../ccache-target-storage")"
+[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${SCRIPTS_DIR}/../ccache-target-storage")"
 [ -d "${CCACHE_STORAGE}" ] || mkdir "${CCACHE_STORAGE}"
 
-[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${RUNDIR}/../sccache-host-storage")"
+[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${SCRIPTS_DIR}/../sccache-host-storage")"
 [ -d "${CCACHE_HOST_STORAGE}" ] || mkdir "${CCACHE_HOST_STORAGE}"
 
 exec docker run --rm -it \

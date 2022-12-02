@@ -3,9 +3,9 @@ set -e
 
 # Clone with full history to have git log in place
 
-RUNDIR="$(readlink -f "$(dirname "$0")")"
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-. "${RUNDIR}"/common
+. "${SCRIPTS_DIR}"/common
 parse_env_args
 
 if [[ ! -d "${BUILDDIR}" ]]; then
