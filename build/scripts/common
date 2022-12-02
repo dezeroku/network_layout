@@ -10,6 +10,7 @@ function echoerr() {
 }
 
 . "${SCRIPTS_DIR}/libs/rpi4b"
+. "${SCRIPTS_DIR}/libs/uci"
 
 function parse_env_args() {
     if [ -z "${SCRIPTS_DIR:-}" ]; then

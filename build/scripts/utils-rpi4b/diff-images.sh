@@ -15,12 +15,7 @@ function usage() {
 
 
 function cleanup() {
-    # Clean the mounts
-    #sudo umount "${TMPDIR}/first/boot"
-    #sudo umount "${TMPDIR}/first/root"
-    #sudo umount "${TMPDIR}/second/boot"
-    #sudo umount "${TMPDIR}/second/root"
-    :
+    rm -rf "${TMPDIR}"
 }
 
 [ -z "${1:-}" ] && usage

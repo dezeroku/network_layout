@@ -98,3 +98,9 @@ The binary will be output as `uci-build/uci`.
 
 For the sake of reproducibility (avoiding issues with glibc matching), also `uci-runner` docker image gets created.
 The image has `uci` available as `/uci`.
+
+Using `scripts/utils-rpi4b/get-uci-config.sh` script it's possible to retrieve the UCI default values from built image.
+When such a default config is obtained, it's easy to calculate diff between the config currently in use on the router and the default.
+
+`scripts/utils/diff-uci-configs.sh` allows you to calculate a diff showing entries that are present in one file (the one that's meant to land on your device) and not present in the second one (the one that's default).
+Thanks to this mechanism you can keep only a list of entries that are custom to your config and not provided by default.
