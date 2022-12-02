@@ -71,7 +71,6 @@ trap cleanup EXIT
 mount_in_dir "${FIRST}" first
 mount_in_dir "${SECOND}" second
 
-echo "SIZE first: $(du -sh first)"
-echo "SIZE second: $(du -sh second)"
+du -s first second
 
 diff -r first second
