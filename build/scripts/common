@@ -11,14 +11,10 @@ function echoerr() {
     echo "$@" 1>&2;
 }
 
-function parse_args() {
+function parse_env_args() {
 
     if [ -z "${DEVICE:-}" ]; then
-        if [ -z "${1:-}" ]; then
-            echo "<script>.sh DEVICE" && exit 1
-        else
-            DEVICE="$1"
-        fi
+        echo "DEVICE is required to be in env" && exit 1
     fi
 
     [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/variables")"

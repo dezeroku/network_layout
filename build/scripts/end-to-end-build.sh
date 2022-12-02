@@ -8,7 +8,7 @@ set -e
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 . "${RUNDIR}"/common
-parse_args
+parse_env_args
 
 echoerr "Build docker build environment image"
 sleep "${SLEEP_BETWEEN_STAGES}"
@@ -30,7 +30,7 @@ else
     echoerr "Skipping feeds update because of SKIP_DOWNLOADS=true"
 fi
 
-echoerr "Copy config for $1"
+echoerr "Copy config for ${DEVICE}"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${RUNDIR}/copy-config.sh"
 

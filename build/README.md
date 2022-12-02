@@ -54,6 +54,8 @@ You also need to update the feeds in builddir, to do so run `scripts/update-feed
 
 ## Build
 
+Almost all of the scripts require `DEVICE` variable to be present in environment.
+
 `.config` that should be used during the build is kept in device specific directory, e.g. `rpi4b`.
 
 The idea is to:
@@ -64,7 +66,7 @@ The idea is to:
 
 Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
 
-After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh $DEVICE > $DEVICE/config` and inspecting the changes.
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/generate-diffconfig.sh > $DEVICE/config` and inspecting the changes.
 
 To do all of that run `scripts/copy-config.sh`
 
@@ -72,7 +74,7 @@ It's advised to first download required sources for the build (especially if you
 
 To run the actual build issue `scripts/build-compile.sh`
 
-Optionally, you can run `scripts/end-to-end-build.sh $DEVICE` to run all the steps (fetch the code, copy the config, download sources, build the image).
+Optionally, you can run `scripts/end-to-end-build.sh` to run all the steps (fetch the code, copy the config, download sources, build the image).
 This is not recommended for interactive development, as many steps are run when not necessarily needed.
 It's fine to just obtain the final image though, e.g. in CI context.
 

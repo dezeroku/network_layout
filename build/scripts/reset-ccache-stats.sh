@@ -4,7 +4,7 @@ set -e
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 . "${RUNDIR}"/common
-parse_args
+parse_env_args
 
 cd "${BUILDDIR}"
 "${RUNDIR}/run.sh" ./staging_dir/host/bin/ccache -vs -d /ccache-storage -z

@@ -13,7 +13,7 @@ set -e
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 . "${RUNDIR}/common"
-parse_args
+parse_env_args
 
 cd "${BUILDDIR}"
 
