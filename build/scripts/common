@@ -19,14 +19,17 @@ if [ -z "${DEVICE:-}" ]; then
     fi
 fi
 
-[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/variables")"
+[ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/variables")"
+DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
+[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${RUNDIR}/../${DEVICE}/config")"
 DEVICE_CONFIG_FILE="$(readlink -f "${DEVICE_CONFIG_FILE}")"
 
 echoerr "DEVICE=${DEVICE}"
 echoerr "DEVICE_CONFIG_FILE=${DEVICE_CONFIG_FILE}"
+echoerr "DEVICE_ENV_FILE=${DEVICE_ENV_FILE}"
 
-. "${DEVICE_CONFIG_FILE}"
+. "${DEVICE_ENV_FILE}"
 
 [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${RUNDIR}/../openwrt-${DEVICE}")"
 [ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
