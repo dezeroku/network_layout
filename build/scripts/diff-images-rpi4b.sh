@@ -73,4 +73,4 @@ mount_in_dir "${SECOND}" second
 
 du -s first second
 
-diff -r first second
+diff -r first second --no-dereference
