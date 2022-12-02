@@ -5,10 +5,11 @@
 
 set -euo pipefail
 
-
 function echoerr() {
     echo "$@" 1>&2;
 }
+
+. "${SCRIPTS_DIR}/libs/rpi4b"
 
 function parse_env_args() {
     if [ -z "${SCRIPTS_DIR:-}" ]; then
