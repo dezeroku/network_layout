@@ -8,6 +8,7 @@ set -e
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 . "${RUNDIR}"/common
+parse_args
 
 echo "Build docker build environment image"
 sleep "${SLEEP_BETWEEN_STAGES}"

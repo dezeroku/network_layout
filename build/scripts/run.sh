@@ -3,6 +3,8 @@ set -e
 
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
+. "${RUNDIR}/common"
+
 [ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${RUNDIR}/../ccache-target-storage")"
 [ -d "${CCACHE_STORAGE}" ] || mkdir "${CCACHE_STORAGE}"
 

@@ -6,6 +6,7 @@ set -e
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
 . "${RUNDIR}"/common
+parse_args
 
 if [[ ! -d "${BUILDDIR}" ]]; then
     git clone git://git.openwrt.org/openwrt/openwrt.git "${BUILDDIR}"
