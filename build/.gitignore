@@ -1,1 +1,3 @@
 openwrt-rpi4b
+openwrt-*
+sccache-host-storage

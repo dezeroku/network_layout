@@ -3,10 +3,10 @@ set -e
 
 RUNDIR="$(readlink -f "$(dirname "$0")")"
 
-[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${RUNDIR}/../ccache-storage")"
+[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${RUNDIR}/../ccache-target-storage")"
 [ -d "${CCACHE_STORAGE}" ] || mkdir "${CCACHE_STORAGE}"
 
-[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${RUNDIR}/../ccache-host-storage")"
+[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${RUNDIR}/../sccache-host-storage")"
 [ -d "${CCACHE_HOST_STORAGE}" ] || mkdir "${CCACHE_HOST_STORAGE}"
 
 exec docker run --rm -it \
