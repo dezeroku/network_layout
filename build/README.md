@@ -90,3 +90,11 @@ It might also be a good idea to run with `-j1`, so it's easier to see the error.
 As `ccache` needs custom OpenWRT patches to work properly, setting it on system-level and then building `tools/ccache` can cause unexpected messups.
 To resolve this problem, use `sccache` on system-host-level (e.g. to compile tools) and `ccache` internally in OpenWRT.
 This is already handled in the Docker container.
+
+## Comparing UCI configuration
+
+You can build `uci` binary runnable on host with `scripts/utils/build-uci-host.sh`
+The binary will be output as `uci-build/uci`.
+
+For the sake of reproducibility (avoiding issues with glibc matching), also `uci-runner` docker image gets created.
+The image has `uci` available as `/uci`.

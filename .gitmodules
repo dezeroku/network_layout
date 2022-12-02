@@ -1,0 +1,6 @@
+[submodule "build/config/uci-build/uci"]
+	path = build/uci-build/uci-source
+	url = git://git.openwrt.org/project/uci.git
+[submodule "build/config/uci-build/libubox"]
+	path = build/uci-build/libubox-source
+	url = git://git.openwrt.org/project/libubox.git
