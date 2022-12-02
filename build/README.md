@@ -12,6 +12,13 @@ Custom configurations are available for:
 
 It takes about 15G of space to build everything in case of rpi4b.
 
+## Per device config
+
+1. `config.orig` - upstream .config fil
+2. `config` (optional) - diffconfig with custom changes, applied on top of config.orig. Customisable with `DEVICE_CONFIG_FILE`
+3. `files/` - directory of files that should be copied to the image as is
+4. `variables` - file containing env variables that should be present during the build. Customisable with `DEVICE_ENV_FILE`
+
 ## Build Environment
 
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
