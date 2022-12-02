@@ -10,38 +10,38 @@ RUNDIR="$(readlink -f "$(dirname "$0")")"
 . "${RUNDIR}"/common
 parse_args
 
-echo "Build docker build environment image"
+echoerr "Build docker build environment image"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${RUNDIR}/setup-image.sh"
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echo "Clone the openwrt repo"
+    echoerr "Clone the openwrt repo"
     sleep "${SLEEP_BETWEEN_STAGES}"
     "${RUNDIR}/clone.sh"
 else
-    echo "Skipping cloning because of SKIP_DOWNLOADS=true"
+    echoerr "Skipping cloning because of SKIP_DOWNLOADS=true"
 fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echo "Update source feeds"
+    echoerr "Update source feeds"
     sleep "${SLEEP_BETWEEN_STAGES}"
     "${RUNDIR}/update-feeds.sh"
 else
-    echo "Skipping feeds update because of SKIP_DOWNLOADS=true"
+    echoerr "Skipping feeds update because of SKIP_DOWNLOADS=true"
 fi
 
-echo "Copy config for $1"
+echoerr "Copy config for $1"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${RUNDIR}/copy-config.sh"
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echo "Download source code"
+    echoerr "Download source code"
     sleep "${SLEEP_BETWEEN_STAGES}"
     "${RUNDIR}/build-download-sources.sh"
 else
-    echo "Skipping source code download because of SKIP_DOWNLOADS=true"
+    echoerr "Skipping source code download because of SKIP_DOWNLOADS=true"
 fi
 
-echo "Compile the final image"
+echoerr "Compile the final image"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${RUNDIR}/build-compile.sh"
