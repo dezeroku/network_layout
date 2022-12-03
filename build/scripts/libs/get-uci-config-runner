@@ -1,0 +1,35 @@
+#!/usr/bin/env false
+set -euo pipefail
+
+# This is meant to be sourced and not run
+
+# Run 'uci show' on the sysroot
+
+# This has to be sourced by upper level script with your script
+#. "${SCRIPTS_DIR}/libs/<DEVICE>"
+
+function usage() {
+    echo "get-uci-config.sh image1.img.gz"
+    exit 1
+}
+
+function cleanup() {
+    rm -rf "${TMPDIR}"
+}
+
+[ -z "${1:-}" ] && usage
+
+IMAGE="$(readlink -f "${1}")"
+
+echoerr "Image: ${IMAGE}"
+
+TMPDIR="$(mktemp -d)"
+pushd "${TMPDIR}" > /dev/null
+
+trap cleanup EXIT
+
+dirty_unpack_image "${IMAGE}" .
+
+ensure_uci_runner
+
+docker run -it --rm -v "$PWD/etc:/etc" uci-runner show

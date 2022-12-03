@@ -1,4 +1,4 @@
-function dirty_unpack_rpi4b_image() {
+function dirty_unpack_image() {
     # $1 -> .img.gz to unpack
     # $2 -> directory to output
 
