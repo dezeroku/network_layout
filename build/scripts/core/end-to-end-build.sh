@@ -4,6 +4,7 @@ set -e
 
 [ -z "${SLEEP_BETWEEN_STAGES}" ] && SLEEP_BETWEEN_STAGES=3
 [ -z "${SKIP_DOWNLOADS:-}" ] && SKIP_DOWNLOADS="false"
+[ -z "${SKIP_VERSION_FILE_GENERATION:-}" ] && SKIP_VERSION_FILE_GENERATION="false"
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
@@ -33,6 +34,15 @@ fi
 echoerr "Copy config for ${DEVICE}"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/copy-config.sh"
+
+if [[ ! "${SKIP_VERSION_FILE_GENERATION}" == "true" ]]; then
+    echoerr "Generating version file"
+    sleep "${SLEEP_BETWEEN_STAGES}"
+    mkdir -p "${BUILDDIR}/files/etc/"
+    "${SCRIPTS_DIR}/core/generate-version-file.sh" > "${BUILDDIR}/files/etc/custom-version-file"
+else
+    echoerr "Skipping version file generation because of SKIP_VERSION_FILE_GENERATION=true"
+fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
     echoerr "Download source code"
