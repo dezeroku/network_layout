@@ -5,17 +5,14 @@
 
 set -euo pipefail
 
-#SYSROOT="$(mktemp -d)"
-SYSROOT="/"
-
 # libubox
 function build_libubox() {
     local LIBUBOX_BUILD_DIR="$(mktemp -d)"
     pushd "${LIBUBOX_BUILD_DIR}"
-    #mkdir build-libubox && cd build-libubox
-    cmake /builder/libubox-source -DBUILD_LUA=OFF -DBUILD_EXAMPLES=OFF -DBUILD_STATIC=ON
-    make -j8
-    make DESTDIR="${SYSROOT}" install
+    mkdir build-libubox && cd build-libubox
+    cmake /builder/libubox-source -DBUILD_LUA=OFF -DBUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=/
+    make -j"$(nproc)"
+    make install
     popd
 }
 
@@ -24,9 +21,9 @@ function build_uci() {
     local UCI_BUILD_DIR="$(mktemp -d)"
     pushd "${UCI_BUILD_DIR}"
     #mkdir build-uci && cd build-uci
-    cmake /builder/uci-source -DCMAKE_PREFIX_PATH="${SYSROOT}/usr/local/" -DBUILD_LUA=OFF -DBUILD_STATIC=ON
-    make -j8
-    make DESTDIR="${SYSROOT}" install
+    cmake /builder/uci-source -DBUILD_LUA=OFF -DBUILD_STATIC=ON -DCMAKE_INSTALL_LIBDIR=lib
+    make -j"$(nproc)"
+    make install
 }
 
 build_libubox

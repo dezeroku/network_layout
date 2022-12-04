@@ -24,6 +24,12 @@ USER buildbot
 WORKDIR /builder
 
 USER root
+
+RUN apt-get install -y \
+        bsdmainutils
+
+RUN ln -sf bash /bin/sh
+
 COPY ./libubox-source ./libubox-source
 COPY ./uci-source ./uci-source
 
