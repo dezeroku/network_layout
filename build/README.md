@@ -93,11 +93,8 @@ This is already handled in the Docker container.
 
 ## Comparing UCI configuration
 
-You can build `uci` binary runnable on host with `scripts/utils/build-uci-host.sh`
-The binary will be output as `uci-build/uci`.
-
-For the sake of reproducibility (avoiding issues with glibc matching), also `uci-runner` docker image gets created.
-The image has `uci` available as `/uci`.
+For the sake of reproducibility (avoiding issues with glibc matching), you can build `uci-runner` docker image with `scripts/utils/build-uci-host.sh`.
+The image has `uci` available as `/usr/local/bin/uci`.
 
 Using `scripts/utils-rpi4b/get-uci-config.sh` script it's possible to retrieve the UCI default values from built image.
 When such a default config is obtained, it's easy to calculate diff between the config currently in use on the router and the default.

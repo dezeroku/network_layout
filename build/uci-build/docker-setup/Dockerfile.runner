@@ -1,4 +1,0 @@
-FROM gcr.io/distroless/base-debian11@sha256:a215fd3bc92252f4d0e889cff3f3a820549d3e307c4ce98590cda3556d95e6d6
-
-COPY ./uci /uci
-ENTRYPOINT ["/uci"]
