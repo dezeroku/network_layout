@@ -30,7 +30,7 @@ pushd "${TMPDIR}" > /dev/null
 
 trap cleanup EXIT
 
-dirty_unpack_image "${IMAGE}" .
+unpack_image "${IMAGE}" .
 
 ensure_uci_runner
 

@@ -23,3 +23,9 @@ function dirty_unpack_image() {
     rm "${dir}/0.fat"
     rm "${dir}/1.img"
 }
+
+
+function unpack_image() {
+    echoerr "No unpack_image defined, falling back to dirty_unpack_image"
+    dirty_unpack_image "$@"
+}

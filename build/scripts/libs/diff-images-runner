@@ -27,8 +27,8 @@ pushd "${TMPDIR}" > /dev/null
 
 trap cleanup EXIT
 
-dirty_unpack_image "${FIRST}" first
-dirty_unpack_image "${SECOND}" second
+unpack_image "${FIRST}" first
+unpack_image "${SECOND}" second
 
 du -s first second
 
