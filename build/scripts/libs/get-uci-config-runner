@@ -5,8 +5,8 @@ set -euo pipefail
 
 # Run 'uci show' on the sysroot
 
-# This has to be sourced by upper level script with your script
-#. "${SCRIPTS_DIR}/libs/<DEVICE>"
+# At this point, the top level script should already provide us with needed variables via something like
+# . "${SCRIPTS_DIR}/libs/${DEVICE}"
 
 function usage() {
     echo "get-uci-config.sh image1.img.gz"

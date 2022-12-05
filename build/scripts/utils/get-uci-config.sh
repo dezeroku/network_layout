@@ -2,10 +2,13 @@
 set -euo pipefail
 
 # Unpack two images and run diff on them
+# This is reaaaly hacky at the moment
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
 . "${SCRIPTS_DIR}"/common
-. "${SCRIPTS_DIR}/libs/rpi4b"
+parse_env_args
 
-. "${SCRIPTS_DIR}/libs/diff-images-runner"
+. "${SCRIPTS_DIR}/libs/${DEVICE}"
+
+. "${SCRIPTS_DIR}/libs/get-uci-config-runner"
