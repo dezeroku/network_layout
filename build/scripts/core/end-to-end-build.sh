@@ -5,6 +5,7 @@ set -e
 [ -z "${SLEEP_BETWEEN_STAGES}" ] && SLEEP_BETWEEN_STAGES=3
 [ -z "${SKIP_DOWNLOADS:-}" ] && SKIP_DOWNLOADS="false"
 [ -z "${SKIP_VERSION_FILE_GENERATION:-}" ] && SKIP_VERSION_FILE_GENERATION="false"
+[ -z "${ONLY_INITIALIZE_WORKSPACE:-}" ] && ONLY_INITIALIZE_WORKSPACE="false"
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
@@ -42,6 +43,11 @@ if [[ ! "${SKIP_VERSION_FILE_GENERATION}" == "true" ]]; then
     "${SCRIPTS_DIR}/core/generate-version-file.sh" > "${BUILDDIR}/files/etc/custom-version-file"
 else
     echoerr "Skipping version file generation because of SKIP_VERSION_FILE_GENERATION=true"
+fi
+
+if [[ "${ONLY_INITIALIZE_WORKSPACE}" == "true" ]]; then
+    echoerr "Stopping before build, because ONLY_INITIALIZE_WORKSPACE=true"
+    exit 0
 fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
