@@ -9,8 +9,6 @@ function echoerr() {
     echo "$@" 1>&2;
 }
 
-. "${SCRIPTS_DIR}/libs/uci"
-
 function parse_env_args() {
     if [ -z "${SCRIPTS_DIR:-}" ]; then
         echo "SCRIPTS_DIR is required to be in env"
