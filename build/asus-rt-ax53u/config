@@ -5,8 +5,36 @@ CONFIG_BPF_TOOLCHAIN_HOST_PATH="/usr/lib/llvm-14"
 CONFIG_BUILD_LOG=y
 CONFIG_CCACHE=y
 CONFIG_CCACHE_DIR="/ccache-storage"
+CONFIG_PACKAGE_collectd=y
+CONFIG_PACKAGE_collectd-mod-cpu=y
+CONFIG_PACKAGE_collectd-mod-dns=y
+CONFIG_PACKAGE_collectd-mod-ethstat=y
+CONFIG_PACKAGE_collectd-mod-exec=y
+CONFIG_PACKAGE_collectd-mod-interface=y
+CONFIG_PACKAGE_collectd-mod-ipstatistics=y
+CONFIG_PACKAGE_collectd-mod-irq=y
+CONFIG_PACKAGE_collectd-mod-iwinfo=y
+CONFIG_PACKAGE_collectd-mod-load=y
+CONFIG_PACKAGE_collectd-mod-memory=y
+CONFIG_PACKAGE_collectd-mod-network=y
+CONFIG_PACKAGE_collectd-mod-ping=y
+CONFIG_PACKAGE_collectd-mod-rrdtool=y
+CONFIG_PACKAGE_collectd-mod-sensors=y
+CONFIG_PACKAGE_collectd-mod-sqm=y
+CONFIG_PACKAGE_collectd-mod-wireless=y
 CONFIG_PACKAGE_iperf3=y
 # CONFIG_PACKAGE_kmod-usb3 is not set
+CONFIG_PACKAGE_libltdl=y
+CONFIG_PACKAGE_liboping=y
+CONFIG_PACKAGE_libpcap=y
+CONFIG_PACKAGE_librrd1=y
+CONFIG_PACKAGE_libsensors=y
+CONFIG_PACKAGE_libsysfs=y
+CONFIG_PACKAGE_lm-sensors=y
+CONFIG_PACKAGE_luci-app-statistics=y
+CONFIG_PACKAGE_rrdtool1=y
+CONFIG_PACKAGE_sysfsutils=y
+CONFIG_PACKAGE_zlib=y
 # CONFIG_TARGET_ROOTFS_INITRAMFS is not set
 CONFIG_USE_LLVM_HOST=y
 # CONFIG_IB is not set
