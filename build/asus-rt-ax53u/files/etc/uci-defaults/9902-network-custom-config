@@ -1,0 +1,18 @@
+uci -q batch << EOI
+set network.globals.ula_prefix='${GLOBAL_ULA_PREFIX_TEMPLATE}'
+set network.lan.ipaddr='${LAN_IPADDR_TEMPLATE}'
+set network.lan.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+del network.lan.dns
+add_list network.lan.dns='${LAN_IPADDR_DNS_TEMPLATE}'
+del network.lan.ip6assign
+commit network
+set dhcp.lan.ignore='1'
+del dhcp.lan.ra
+del dhcp.lan.ra_slaac
+del dhcp.lan.ra_flags
+del dhcp.lan.dhcpv6
+commit dhcp
+EOI
+
+/etc/init.d/network restart
+/etc/init.d/odhcpd reload

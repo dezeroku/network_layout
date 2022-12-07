@@ -1,0 +1,20 @@
+uci -q batch << EOI
+set wireless.radio0.country='${WIRELESS_COUNTRY_TEMPLATE}'
+set wireless.radio0.cell_density='0'
+set wireless.default_radio0.ssid='${WIRELESS_ONE_SSID_TEMPLATE}'
+set wireless.default_radio0.isolate='1'
+set wireless.default_radio0.encryption='${WIRELESS_ONE_ENCRYPTION_TEMPLATE}'
+set wireless.default_radio0.key='${WIRELESS_ONE_KEY_TEMPLATE}'
+set wireless.radio1.cell_density='0'
+set wireless.radio1.country='${WIRELESS_COUNTRY_TEMPLATE}'
+set wireless.default_radio1.ssid='${WIRELESS_TWO_SSID_TEMPLATE}'
+set wireless.default_radio1.isolate='1'
+set wireless.default_radio1.key='${WIRELESS_TWO_KEY_TEMPLATE}'
+set wireless.default_radio1.encryption='${WIRELESS_TWO_ENCRYPTION_TEMPLATE}'
+set wireless.radio0.disabled='0'
+set wireless.radio1.disabled='0'
+commit wireless
+EOI
+
+# To properly start up the networks
+/sbin/wifi reload

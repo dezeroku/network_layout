@@ -1,0 +1,16 @@
+passwd root << EOF
+${ROOT_PASSWORD_TEMPLATE}
+${ROOT_PASSWORD_TEMPLATE}
+EOF
+
+# TODO: Let's also provide dropbear_ed25519_host_key  dropbear_rsa_host_key
+# so they are kept between the builds?
+cat >> /etc/dropbear/authorized_keys << EOI
+${SSH_AUTHORIZED_KEYS_TEMPLATE}
+EOI
+
+uci -q batch << EOI
+set dropbear.@dropbear[0].PasswordAuth='off'
+set dropbear.@dropbear[0].RootPasswordAuth='off'
+commit dropbear
+EOI

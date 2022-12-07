@@ -1,0 +1,40 @@
+# The values provided in below file are exemplary
+# You will HAVE to change these to match your setup
+# At the very least modify passwords
+
+# 9900-base-custom-config
+export HOSTNAME_TEMPLATE='somerouter'
+export ZONENAME_TEMPLATE='Europe/Warsaw'
+export TIMEZONE_TEMPLATE='CET-1CEST,M3.5.0,M10.5.0/3'
+
+# 9901-security-custom-config
+export ROOT_PASSWORD_TEMPLATE='testtest'
+export SSH_AUTHORIZED_KEYS_TEMPLATE=''
+
+# 9902-network-custom-config
+export GLOBAL_ULA_PREFIX_TEMPLATE='fd6d:8246:307d::/48'
+export LAN_IPADDR_TEMPLATE='192.168.2.2'
+export LAN_IPADDR_GATEWAY_TEMPLATE='192.168.2.1'
+export LAN_IPADDR_DNS_TEMPLATE='192.168.2.1'
+
+# 9903-wireless-custom-config
+export WIRELESS_COUNTRY_TEMPLATE='PL'
+export WIRELESS_ONE_SSID_TEMPLATE='SomeNetwork'
+export WIRELESS_TWO_SSID_TEMPLATE='SomeNetworkBut5GHz'
+export WIRELESS_ONE_KEY_TEMPLATE='testtest'
+export WIRELESS_ONE_ENCRYPTION_TEMPLATE='sae-mixed'
+export WIRELESS_TWO_KEY_TEMPLATE='testtest'
+export WIRELESS_TWO_ENCRYPTION_TEMPLATE='sae-mixed'
+
+
+# secret-variables file can be used to override the defaults with your-configuration specific values
+# With this in place, the default template-variables can be commited to git and serve as reference
+if [ -n "${BASH_SOURCE:-}" ]; then
+    POTENTIAL_SECRET_ENV_FILE="$(readlink -f "$(dirname "${BASH_SOURCE}")")/secret-variables"
+    if [ -f "${POTENTIAL_SECRET_ENV_FILE}" ]; then
+        echo "${POTENTIAL_SECRET_ENV_FILE} does exist, loading" >&2
+        . "${POTENTIAL_SECRET_ENV_FILE}"
+    else
+        echo "${POTENTIAL_SECRET_ENV_FILE} does not exist" >&2
+    fi
+fi
