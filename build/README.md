@@ -15,9 +15,17 @@ It takes about 15G of space to build everything in case of rpi4b.
 ## Per device config
 
 1. `config.orig` - upstream .config fil
-2. `config` (optional) - diffconfig with custom changes, applied on top of config.orig. Customisable with `DEVICE_CONFIG_FILE`
-3. `files/` - directory of files that should be copied to the image as is
-4. `variables` - file containing env variables that should be present during the build. Customisable with `DEVICE_ENV_FILE`
+2. `config` (optional) - diffconfig with custom changes, applied on top of config.orig.
+   Customisable with `DEVICE_CONFIG_FILE`
+3. `files/` - (optional) directory of files that should be copied to the image as is
+4. `variables` - file containing env variables that should be present during the build.
+   Customisable with `DEVICE_ENV_FILE`
+   At the very least it should define OPENWRT_VERSION tag
+5. `template-variables` - (optional) file containing "template" variables that are templated into `files/`.
+   Customisable with `DEVICE_TEMPLATE_ENV_FILE`
+   Variables in the file have to be exported and have `_TEMPLATE` prefix to be taken into account
+6. `secret-variables` - (optional) file overriding "template-variables" values. Has to be sourced on `template-variables` level.
+   It's not meant to be checked into version control system
 
 ## Build Environment
 

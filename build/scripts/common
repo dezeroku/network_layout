@@ -25,6 +25,12 @@ function parse_env_args() {
     [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/variables")"
     DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
+    if [ -z "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
+        [ -f "${SCRIPTS_DIR}/../${DEVICE}/template-variables" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/template-variables")"
+    else
+        DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_ENV_FILE}")"
+    fi
+
     [ -z "${REPRODUCE_UPSTREAM_BUILD:-}" ] && REPRODUCE_UPSTREAM_BUILD="false"
 
     [ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/config")"
@@ -33,6 +39,9 @@ function parse_env_args() {
     echoerr "DEVICE=${DEVICE}"
     echoerr "DEVICE_CONFIG_FILE=${DEVICE_CONFIG_FILE}"
     echoerr "DEVICE_ENV_FILE=${DEVICE_ENV_FILE}"
+    if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
+        echoerr "DEVICE_TEMPLATE_ENV_FILE=${DEVICE_TEMPLATE_ENV_FILE}"
+    fi
     echoerr "REPRODUCE_UPSTREAM_BUILD=${REPRODUCE_UPSTREAM_BUILD}"
 
     . "${DEVICE_ENV_FILE}"

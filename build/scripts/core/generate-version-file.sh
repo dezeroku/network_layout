@@ -38,8 +38,12 @@ DEVICE_DIR="${SCRIPTS_DIR}/../${DEVICE}"
 echo SCRIPTS_VERSION="$(cd "${SCRIPTS_DIR}" && git describe HEAD)"
 echo SCRIPTS_COMMIT="$(cd "${SCRIPTS_DIR}" && git rev-parse HEAD)"
 
+DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "$(dirname "${DEVICE_TEMPLATE_ENV_FILE}")/secret-variables")"
+
 # This should be a list of everything that may affect the build
 [ -f "${DEVICE_ENV_FILE}" ] && dump_file "${DEVICE_ENV_FILE}" "variables"
+[ -f "${DEVICE_TEMPLATE_ENV_FILE}" ] && dump_file "${DEVICE_TEMPLATE_ENV_FILE}" "template_variables"
+[ -f "${DEVICE_SECRET_TEMPLATE_ENV_FILE}" ] && dump_file "${DEVICE_SECRET_TEMPLATE_ENV_FILE}" "secret_template_variables"
 [ -f "${DEVICE_CONFIG_FILE}" ] && dump_file "${DEVICE_CONFIG_FILE}" "config"
 dump_file "${DEVICE_DIR}/config.orig" "config.orig"
 
