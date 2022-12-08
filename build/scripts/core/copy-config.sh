@@ -39,9 +39,10 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 
             # Find variables defined in template file and add dollar signs at the beginning
             template_variables=""
-            for var in $(env -i bash -c ". ${DEVICE_TEMPLATE_ENV_FILE} && env | grep '_TEMPLATE='"); do
+            while read -r var; do
+                echo "${var}"
                 template_variables="${template_variables} \$$(echo "${var}" | cut -d '=' -f1)"
-            done
+            done <<< "$(env -i bash -c ". ${DEVICE_TEMPLATE_ENV_FILE} && env | grep '_TEMPLATE='")"
 
             echoerr "Templating with following variables: ${template_variables}"
 
@@ -54,7 +55,7 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 
             # Sanity check for potentially missed _TEMPLATE variables definitions
 
-            if grep -nr "_TEMPLATE" "${BUILDDIR}/files"; then
+            if grep -nr "_TEMPLATE" "${BUILDDIR}/files" >/dev/null; then
                 missed="$(grep -nr "_TEMPLATE" "${BUILDDIR}/files")"
 
                 while true; do
