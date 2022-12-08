@@ -1,4 +1,4 @@
-uci -q batch << EOI
+uci batch << EOI
 set sqm.eth1.debug_logging='0'
 set sqm.eth1.verbosity='5'
 set sqm.eth1.linklayer='ethernet'

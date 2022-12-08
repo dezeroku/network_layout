@@ -1,4 +1,4 @@
-uci -q batch << EOI
+uci batch << EOI
 # This is going to be changed by https-dns-proxy in the end
 # Cloudflare is just a backup
 set dhcp.@dnsmasq[0].server='1.1.1.1'

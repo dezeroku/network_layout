@@ -1,6 +1,6 @@
 WG_IF="${WIREGUARD_INTERFACE_TEMPLATE}"
 
-uci -q batch << EOI
+uci batch << EOI
 set network.${WG_IF}=interface
 set network.${WG_IF}.proto='wireguard'
 set network.${WG_IF}.force_link='1'
