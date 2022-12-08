@@ -1,0 +1,16 @@
+uci -q batch << EOI
+# Cloudflare
+set https-dns-proxy.@https-dns-proxy[0].bootstrap_dns='1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001'
+set https-dns-proxy.@https-dns-proxy[0].listen_port='5053'
+
+# Google
+set https-dns-proxy.@https-dns-proxy[1].bootstrap_dns='8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844'
+set https-dns-proxy.@https-dns-proxy[1].listen_port='5054'
+
+commit https-dns-proxy
+EOI
+
+# This is already done by https-dns-proxy I think
+# But just in case, reload the services
+/etc/init.d/https-dns-proxy reload
+/etc/init.d/dnsmasq reload

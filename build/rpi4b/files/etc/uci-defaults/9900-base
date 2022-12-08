@@ -1,0 +1,15 @@
+uci -q batch << EOI
+set system.@system[0].hostname='${HOSTNAME_TEMPLATE}'
+set system.@system[0].zonename='${ZONENAME_TEMPLATE}'
+set system.@system[0].timezone='${TIMEZONE_TEMPLATE}'
+set system.@system[0].log_proto='udp'
+set system.@system[0].conloglevel='8'
+set system.@system[0].cronloglevel='5'
+commit system
+
+set uhttpd.main.redirect_https='on'
+commit uhttpd
+
+set irqbalance.irqbalance.enabled='1'
+commit irqbalance
+EOI

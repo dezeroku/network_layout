@@ -1,0 +1,16 @@
+uci -q batch << EOI
+set wireless.radio0.country='${WIRELESS_COUNTRY_TEMPLATE}'
+set wireless.radio0.cell_density='0'
+set wireless.radio0.disabled='1'
+
+set wireless.default_radio0.network='${WIRELESS_ONE_NETWORK_TEMPLATE}'
+set wireless.default_radio0.ssid='${WIRELESS_ONE_SSID_TEMPLATE}'
+set wireless.default_radio0.isolate='1'
+set wireless.default_radio0.encryption='${WIRELESS_ONE_ENCRYPTION_TEMPLATE}'
+set wireless.default_radio0.key='${WIRELESS_ONE_KEY_TEMPLATE}'
+
+commit wireless
+EOI
+
+# To properly handle the changes
+/sbin/wifi reload

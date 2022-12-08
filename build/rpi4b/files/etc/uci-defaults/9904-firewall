@@ -1,0 +1,93 @@
+uci -q batch << EOI
+set firewall.@defaults[0].synflood_protect='1'
+
+# This is for WAN
+set firewall.@zone[1].input='DROP'
+set firewall.@rule[1].target='REJECT'
+
+set firewall.guest=zone
+set firewall.guest.name='guest'
+set firewall.guest.output='ACCEPT'
+set firewall.guest.forward='REJECT'
+set firewall.guest.input='ACCEPT'
+set firewall.guest.network='guest'
+
+set firewall.vpn=zone
+set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
+set firewall.vpn.input='ACCEPT'
+set firewall.vpn.output='ACCEPT'
+set firewall.vpn.forward='ACCEPT'
+set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
+
+commit firewall
+
+set firewall.guesttowanforwarding=forwarding
+set firewall.guesttowanforwarding.src='guest'
+set firewall.guesttowanforwarding.dest='wan'
+
+set firewall.vpntowanforwarding=forwarding
+set firewall.vpntowanforwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+set firewall.vpntowanforwarding.dest='wan'
+
+commit firewall
+
+# Does this actually do anything?
+# Or is it enough to rely on the https-dns-proxy to do this?
+set firewall.vpndnsredirect=redirect
+set firewall.vpndnsredirect.dest='lan'
+set firewall.vpndnsredirect.target='DNAT'
+set firewall.vpndnsredirect.name='Redirect VPN DNS'
+set firewall.vpndnsredirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+set firewall.vpndnsredirect.src_dport='53'
+set firewall.vpndnsredirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
+set firewall.vpndnsredirect.dest_port='53'
+
+commit firewall
+
+# Is this needed?
+# It's disabled anyway
+#set firewall.@rule[9]=rule
+#set firewall.@rule[9].name='Support-UDP-Traceroute'
+#set firewall.@rule[9].src='wan'
+#set firewall.@rule[9].dest_port='33434:33689'
+#set firewall.@rule[9].proto='udp'
+#set firewall.@rule[9].family='ipv4'
+#set firewall.@rule[9].target='REJECT'
+#set firewall.@rule[9].enabled='0'
+
+# Does this work?
+# WAN Router is a gateway in the end anyway
+set firewall.denyguestwanrouteraccess=rule
+set firewall.denyguestwanrouteraccess.src='guest'
+set firewall.denyguestwanrouteraccess.dest='wan'
+set firewall.denyguestwanrouteraccess.dest_ip='${WAN_IPADDR_GATEWAY_TEMPLATE}'
+set firewall.denyguestwanrouteraccess.target='REJECT'
+set firewall.denyguestwanrouteraccess.name='Deny-Guest-WAN-Router-Access'
+
+# Does this work?
+# Similar situation to the one above
+set firewall.denyguestlanrouteraccess=rule
+set firewall.denyguestlanrouteraccess.name='Deny-Guest-LAN-Router-Access'
+set firewall.denyguestlanrouteraccess.src='guest'
+set firewall.denyguestlanrouteraccess.dest='lan'
+set firewall.denyguestlanrouteraccess.dest_ip='${LAN_IPADDR_TEMPLATE}'
+set firewall.denyguestlanrouteraccess.target='REJECT'
+
+set firewall.allowwanvpn=rule
+set firewall.allowwanvpn.name='Allow-Wireguard-VPN-From-WAN'
+set firewall.allowwanvpn.proto='udp'
+set firewall.allowwanvpn.src='wan'
+set firewall.allowwanvpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
+set firewall.allowwanvpn.target='ACCEPT'
+
+set firewall.allowlanguestrouteraccess=rule
+set firewall.allowlanguestrouteraccess.name='Allow-Guest-Router-Access-From-LAN'
+set firewall.allowlanguestrouteraccess.src='lan'
+set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
+set firewall.allowlanguestrouteraccess.target='ACCEPT'
+set firewall.allowlanguestrouteraccess.dest='guest'
+
+commit firewall
+EOI
+
+/etc/init.d/firewall reload

@@ -37,3 +37,8 @@ Perform a reboot afterwards to apply the settings
 10. `luci-app-https-dns-proxy` for DNS encryption
 11. `qrencode` for easier sharing of VPN configs
 12. `iperf3` for local network speedtesting
+
+## Tips
+
+1. It seems that manual "reset" is required after the new sysupgrade is uploaded.
+   Without it, there are some leftovers?

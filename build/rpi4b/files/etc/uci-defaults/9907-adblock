@@ -1,0 +1,12 @@
+uci -q batch << EOI
+set adblock.global.adb_maxqueue='4'
+set adblock.global.adb_report='1'
+set adblock.global.adb_repiface='br-lan'
+
+${ADBLOCK_SOURCES_TEMPLATE}
+
+commit adblock
+EOI
+
+# Full restart needed because of reporting interface
+/etc/init.d/adblock restart

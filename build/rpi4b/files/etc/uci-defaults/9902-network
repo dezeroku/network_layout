@@ -1,0 +1,34 @@
+uci -q batch << EOI
+set network.globals.ula_prefix='${GLOBAL_ULA_PREFIX_TEMPLATE}'
+
+set network.lan.ipaddr='${LAN_IPADDR_TEMPLATE}'
+set network.lan.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+
+set network.globals.packet_steering='1'
+set network.@device[0].bridge_empty='1'
+
+set network.wan=interface
+set network.wan.proto='static'
+set network.wan.netmask='255.255.255.0'
+set network.wan.device='eth1'
+set network.wan.ipaddr='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+set network.wan.gateway='${WAN_IPADDR_GATEWAY_TEMPLATE}'
+
+set network.guest=interface
+set network.guest.proto='static'
+set network.guest.ipaddr='${GUEST_IPADDR_TEMPLATE}'
+set network.guest.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+set network.guest.netmask='255.255.255.0'
+set network.guest.type='bridge'
+set network.guest.device='eth2'
+
+set network.toguestrouterroute=route
+set network.toguestrouterroute.interface='guest'
+set network.toguestrouterroute.target='${GUEST_ROUTER_IP_TEMPLATE}/32'
+set network.toguestrouterroute.gateway='${GUEST_IPADDR_TEMPLATE}'
+
+commit network
+EOI
+
+/etc/init.d/network restart
+/etc/init.d/odhcpd reload
