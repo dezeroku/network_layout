@@ -4,13 +4,13 @@ This directory defines step-by-step instructions that can be followed to obtain 
 
 General instructions from upstream can be viewed [here](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
 
-Base tag of the build: `v22.03.2`
 For each device supported you can look in `$DEVICE` directory to see the config and relevant README with changes.
 Custom configurations are available for:
 
-1. rpi4b
+1. `rpi4b`
+2. `asus-rt-ax53u`
 
-It takes about 15G of space to build everything in case of rpi4b.
+The whole workspace is around 15G when the build is done.
 
 ## Per device config
 
