@@ -37,8 +37,15 @@ Perform a reboot afterwards to apply the settings
 10. `luci-app-https-dns-proxy` for DNS encryption
 11. `qrencode` for easier sharing of VPN configs
 12. `iperf3` for local network speedtesting
+13. `acme` for cert requesting
+14. `luci-app-acme` for cert requesting
+15. `acme-dnsapi` for cert requesting
 
 ## Tips
 
 1. It seems that manual "reset" is required after the new sysupgrade is uploaded.
    Without it, there are some leftovers?
+
+## aws-cert-user
+
+This directory defines terraform files that create user (and an access key) that can modify DNS, so cert for a domain can be obtained with a provider like Let's Encrypt.
