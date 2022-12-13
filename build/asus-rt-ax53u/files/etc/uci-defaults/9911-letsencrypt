@@ -1,0 +1,30 @@
+set -e
+
+if [ "${ENABLE_LETSENCRYPT_CERTS_TEMPLATE}" = "true" ]; then
+
+uci set acme.@acme[0].account_email='${LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE}'
+
+uci -q get acme.routerhostname && uci del acme.routerhostname
+
+uci set acme.routerhostname=cert
+uci set acme.routerhostname.enabled='1'
+uci set acme.routerhostname.keylength='2048'
+uci set acme.routerhostname.update_uhttpd='1'
+uci set acme.routerhostname.validation_method='dns'
+uci set acme.routerhostname.dns='${LETSENCRYPT_DNS_VERIFICATION_TEMPLATE}'
+
+uci add_list acme.routerhostname.credentials='AWS_ACCESS_KEY_ID=${LETSENCRYPT_AWS_ACCESS_KEY_ID_TEMPLATE}'
+uci add_list acme.routerhostname.credentials='AWS_SECRET_ACCESS_KEY=${LETSENCRYPT_AWS_ACCESS_KEY_SECRET_TEMPLATE}'
+
+uci add_list acme.routerhostname.domains='${HOSTNAME_TEMPLATE}.${LETSENCRYPT_HOSTNAME_TEMPLATE}'
+uci set acme.routerhostname.days='90'
+uci set acme.routerhostname.use_staging='0'
+
+uci commit acme
+
+# Make sure that it's set
+uci set uhttpd.main.redirect_https='on'
+uci commit uhttpd
+
+/etc/init.d/acme start
+fi

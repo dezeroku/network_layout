@@ -3,6 +3,12 @@
 # At the very least modify passwords
 
 # 9900-base-custom-config
+# If set to true, then hostname of the router will be set to "${HOSTNAME_TEMPLATE}.${LETSENCRYPT_HOSTNAME_TEMPLATE}"
+# and cert from let's encrypt will be obtained
+# Also look at configuration variables for 9911-letsencrypt
+export ENABLE_LETSENCRYPT_CERTS_TEMPLATE=false
+export LETSENCRYPT_HOSTNAME_TEMPLATE="example.com"
+
 export HOSTNAME_TEMPLATE='somerouter'
 export ZONENAME_TEMPLATE='Europe/Warsaw'
 export TIMEZONE_TEMPLATE='CET-1CEST,M3.5.0,M10.5.0/3'
@@ -26,6 +32,12 @@ export WIRELESS_ONE_ENCRYPTION_TEMPLATE='sae-mixed'
 export WIRELESS_TWO_KEY_TEMPLATE='testtest'
 export WIRELESS_TWO_ENCRYPTION_TEMPLATE='sae-mixed'
 
+# 9911-letsencrypt
+# This is tailored specifically for Route53 at the moment
+export LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE="user@example.com"
+export LETSENCRYPT_DNS_VERIFICATION_TEMPLATE="dns_aws"
+export LETSENCRYPT_AWS_ACCESS_KEY_ID_TEMPLATE="your-key-id"
+export LETSENCRYPT_AWS_ACCESS_KEY_SECRET_TEMPLATE="your-key-secret"
 
 # secret-variables file can be used to override the defaults with your-configuration specific values
 # With this in place, the default template-variables can be commited to git and serve as reference
