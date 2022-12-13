@@ -3,6 +3,12 @@
 # At the very least modify passwords
 
 # 9900-base
+# If set to true, then hostname of the router will be set to "${HOSTNAME_TEMPLATE}.${LETSENCRYPT_HOSTNAME_TEMPLATE}"
+# and cert from let's encrypt will be obtained
+# Also look at configuration variables for 9911-letsencrypt
+export ENABLE_LETSENCRYPT_CERTS_TEMPLATE=false
+export LETSENCRYPT_HOSTNAME_TEMPLATE="example.com"
+
 export HOSTNAME_TEMPLATE='somerouter'
 export ZONENAME_TEMPLATE='Europe/Warsaw'
 export TIMEZONE_TEMPLATE='CET-1CEST,M3.5.0,M10.5.0/3'
@@ -58,6 +64,13 @@ uci add_list network.wgclient.allowed_ips="some-ip/32"
 uci set network.wgclient.description="Some client"
 END_HEREDOC
 )
+
+# 9911-letsencrypt
+# This is tailored specifically for Route53 at the moment
+export LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE="user@example.com"
+export LETSENCRYPT_DNS_VERIFICATION_TEMPLATE="dns_aws"
+export LETSENCRYPT_AWS_ACCESS_KEY_ID_TEMPLATE="your-key-id"
+export LETSENCRYPT_AWS_ACCESS_KEY_SECRET_TEMPLATE="your-key-secret"
 
 # Snippet for HEREDOC like the one below, can be helpful for "list" variables
 #VAR_TEMPLATE=$(cat <<'END_HEREDOC'
