@@ -45,7 +45,3 @@ Perform a reboot afterwards to apply the settings
 
 1. It seems that manual "reset" is required after the new sysupgrade is uploaded.
    Without it, there are some leftovers?
-
-## aws-cert-user
-
-This directory defines terraform files that create user (and an access key) that can modify DNS, so cert for a domain can be obtained with a provider like Let's Encrypt.
