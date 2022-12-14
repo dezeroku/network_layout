@@ -7,7 +7,7 @@ This is repo is meant to keep details about home network configuration and commo
 ### ISP router
 
 Nothing special, 300Mb fiber connection, no bridge-mode, so bridge-over-dmz is used.
-DDNS is set up on this level to point to `***REMOVED***` domain.
+DDNS is set up on this level to point to owned domain domain.
 
 ### Main router
 
@@ -26,7 +26,7 @@ TP-Link RE605x exposes the LAN in AP mode.
 There are three interfaces at the moment:
 
 1. WAN to connect ISP router (192.168.240.1, no AP) with a Main router (192.168.240.99), that's put in a DMZ
-2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly as `***REMOVED***` network on both 2.4 and 5 GHz on the AP
+2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz on the AP
 3. Guest network (192.168.2.1/24) exposed using main router's built-in AP (low range), completely isolated from LAN both directions
 
 TODO: put an image here
