@@ -9,7 +9,7 @@ parse_env_args
 cd "${BUILDDIR}"
 
 # Copy the base upstream config, modifications and then expand
-cat "${SCRIPTS_DIR}/../${DEVICE}/config.orig" > .config
+cat "${SCRIPTS_DIR}/../config/${DEVICE}/config.orig" > .config
 if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
     if [ -f "${DEVICE_CONFIG_FILE}" ]; then
         echoerr "Applying ${DEVICE_CONFIG_FILE}" on top of original .config
@@ -24,9 +24,9 @@ fi
 rm -rf "${BUILDDIR}/files"
 if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
     # Remove the custom files present and copy from config dir
-    if [ -d "${SCRIPTS_DIR}/../${DEVICE}/files" ]; then
-        echoerr "Copying custom files from ${SCRIPTS_DIR}/../${DEVICE}/files"
-        cp -r "${SCRIPTS_DIR}/../${DEVICE}/files" "${BUILDDIR}/files"
+    if [ -d "${SCRIPTS_DIR}/../config/${DEVICE}/files" ]; then
+        echoerr "Copying custom files from ${SCRIPTS_DIR}/../config/${DEVICE}/files"
+        cp -r "${SCRIPTS_DIR}/../config/${DEVICE}/files" "${BUILDDIR}/files"
 
         # Replace all the _TEMPLATE variables in files with values from env
         # All such values should come from ${DEVICE_TEMPLATE_ENV_FILE} file

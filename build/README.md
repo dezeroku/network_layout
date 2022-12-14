@@ -4,7 +4,7 @@ This directory defines step-by-step instructions that can be followed to obtain 
 
 General instructions from upstream can be viewed [here](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem)
 
-For each device supported you can look in `$DEVICE` directory to see the config and relevant README with changes.
+For each device supported you can look in `config/$DEVICE` directory to see the config and relevant README with changes.
 Custom configurations are available for:
 
 1. `rpi4b`
@@ -50,7 +50,7 @@ For the build to proceed you have to at least have `$DEVICE` exported in env or 
 Variables supported:
 
 1. `$DEVICE` - required, name of the supported device to build e.g. `rpi4b`
-2. `$BUILDDIR` - optional, if not provided defaults to `repo-root/build/openwrt-$DEVICE`
+2. `$BUILDDIR` - optional, if not provided defaults to `repo-root/build/builds/openwrt-$DEVICE`
 
 There are few helper scripts that can be used to checkout the code and build final image.
 If you're interested in details please read them or refer the link mentioned at the top of this README.
@@ -74,7 +74,7 @@ The idea is to:
 
 Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
 
-After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/core/generate-diffconfig.sh > $DEVICE/config` and inspecting the changes.
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/core/generate-diffconfig.sh > config/$DEVICE/config` and inspecting the changes.
 
 To do all of that run `scripts/core/copy-config.sh`
 
@@ -88,7 +88,7 @@ It's fine to just obtain the final image though, e.g. in CI context.
 
 ## Output
 
-The final image will land in `openwrt-$DEVICE/bin/targets/...` directory.
+The final image will land in `builds/openwrt-$DEVICE/bin/targets/...` directory.
 
 ## Tips
 

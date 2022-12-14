@@ -24,4 +24,4 @@ TMPFILE="$(mktemp)"
 # sanitize generated diffconfig
 dos2unix "${TMPFILE}" -q
 
-combine "${TMPFILE}" not "${SCRIPTS_DIR}/../${DEVICE}/config.orig"
+combine "${TMPFILE}" not "${SCRIPTS_DIR}/../config/${DEVICE}/config.orig"

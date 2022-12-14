@@ -33,7 +33,7 @@ function dump_file() {
     echo ""
 }
 
-DEVICE_DIR="${SCRIPTS_DIR}/../${DEVICE}"
+DEVICE_DIR="${SCRIPTS_DIR}/../config/${DEVICE}"
 
 echo SCRIPTS_VERSION="$(cd "${SCRIPTS_DIR}" && git describe HEAD)"
 echo SCRIPTS_COMMIT="$(cd "${SCRIPTS_DIR}" && git rev-parse HEAD)"

@@ -22,24 +22,24 @@ function parse_env_args() {
         echo "DEVICE is required to be in env" && exit 1
     fi
 
-    [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/variables")"
+    [ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/variables")"
     DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
     if [ -z "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
-        [ -f "${SCRIPTS_DIR}/../${DEVICE}/template-variables" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/template-variables")"
+        [ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables")"
     else
         DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_ENV_FILE}")"
     fi
 
     if [ -z "${DEVICE_SECRET_TEMPLATE_ENV_FILE:-}" ]; then
-        [ -f "${SCRIPTS_DIR}/../${DEVICE}/template-variables" ] && DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/secret-variables")"
+        [ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables" ] && DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables")"
     else
         DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_SECRET_TEMPLATE_ENV_FILE}")"
     fi
 
     [ -z "${REPRODUCE_UPSTREAM_BUILD:-}" ] && REPRODUCE_UPSTREAM_BUILD="false"
 
-    [ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../${DEVICE}/config")"
+    [ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/config")"
     DEVICE_CONFIG_FILE="$(readlink -f "${DEVICE_CONFIG_FILE}")"
 
     echoerr "DEVICE=${DEVICE}"
@@ -55,7 +55,7 @@ function parse_env_args() {
 
     . "${DEVICE_ENV_FILE}"
 
-    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../openwrt-${DEVICE}")"
+    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}")" && mkdir -p "${BUILDDIR}"
     [ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
     BUILDDIR="$(readlink -f "${BUILDDIR}")"
