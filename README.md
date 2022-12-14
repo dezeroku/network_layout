@@ -7,7 +7,7 @@ This is repo is meant to keep details about home network configuration and commo
 ### ISP router
 
 Nothing special, 300Mb fiber connection, no bridge-mode, so bridge-over-dmz is used.
-DDNS is set up on this level to point to owned domain domain.
+DDNS is set up on this level to point to owned domain.
 
 ### Main router
 
