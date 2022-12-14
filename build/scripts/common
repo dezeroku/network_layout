@@ -55,7 +55,7 @@ function parse_env_args() {
 
     . "${DEVICE_ENV_FILE}"
 
-    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}")" && mkdir -p "${BUILDDIR}"
+    [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}")"
     [ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
     BUILDDIR="$(readlink -f "${BUILDDIR}")"
