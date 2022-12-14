@@ -1,13 +1,24 @@
 # Network Layout
 
-This is repo is meant to keep details about home network configuration and common issues that may happen to it
+This is repo is meant to keep configuration for my home network.
+Eventually I'd like to have it fully reproducible, versioned and managed only by code.
+
+For now, for main router and AP router there are:
+
+- [x] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in `build`
+- [x] reproducible OpenWRT configuration, via `uci-defaults`
+- [x] basic monitoring enabled
+- [x] zero-touch bootstrap after the OpenWRT is flashed on a device
+- [x] automated obtaining of certificates for routers' UI via Let's Encrypt
+- [ ] bit-to-bit reproducible builds (there seem to be some issues with `libgcc` or `libgcc1` being required, only the name differs though)
+- [ ] Internet connectivity monitoring (ping some service and check if it responds)
 
 ## Setup
 
 ### ISP router
 
-Nothing special, 300Mb fiber connection, no bridge-mode, so bridge-over-dmz is used.
-DDNS is set up on this level to point to owned domain.
+Nothing special, 300M fiber connection, no bridge-mode, so bridge-over-dmz is used.
+DDNS is set up on this level to point to an owned domain.
 
 ### Main router
 
@@ -15,19 +26,27 @@ Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
 It's paired with a TP-Link UE300 USB-Ethernet adapter (RTL8153), that's used for WAN connection.
 An unmanaged switch is put in front of the Ethernet port, just to expand the ports count.
 
-In use, there is a custom build (take a look in `build` directory with `rpi4b` config to compile it from source), with few additional packages installed.
+Running slightly customized OpenWRT (mostly packages preinstalled in the image + built-in config), look in `build` directory for details.
 
-### AP
+### Main AP
 
 TP-Link RE605x exposes the LAN in AP mode.
+
+### AP Router
+
+ASUS RT-AX53U running openwrt, used only for the purpose of broadcasting main router's guest network over WI-FI.
+Most likely some new tasks will be found for it in the future.
+
+Running slightly customized OpenWRT (mostly packages preinstalled in the image + built-in config), look in `build` directory for details.
 
 ## Architecture
 
 There are three interfaces at the moment:
 
-1. WAN to connect ISP router (192.168.240.1, no AP) with a Main router (192.168.240.99), that's put in a DMZ
-2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz on the AP
-3. Guest network (192.168.2.1/24) exposed using main router's built-in AP (low range), completely isolated from LAN both directions
+1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
+2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
+3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions
+4. VPN (10.200.200.1/24) managed by main router
 
 TODO: put an image here
 
