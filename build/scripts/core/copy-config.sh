@@ -47,7 +47,7 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 
 			echoerr "Templating with following variables: ${template_variables}"
 
-			find "${BUILDDIR}/files" -type f | sort | while read file; do
+			find "${BUILDDIR}/files" -type f | sort | while read -r file; do
 				echoerr "Templating ${file}"
 				TMPFILE="$(mktemp)"
 				env -i bash -c ". ${DEVICE_TEMPLATE_ENV_FILE} && cat ${file} | envsubst '${template_variables}'" >"${TMPFILE}"
@@ -63,7 +63,7 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 					echo
 					echo "${missed}"
 					echo "It seems there are variables ending with _TEMPLATE that weren't properly templated"
-					read -p "Do you wish to continue the build? [Y/N]" yn
+					read -rp "Do you wish to continue the build? [Y/N]" yn
 					case $yn in
 					[Yy]*) break ;;
 					[Nn]*)

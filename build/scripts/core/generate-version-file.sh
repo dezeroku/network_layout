@@ -16,8 +16,6 @@ if [[ ! -d "${BUILDDIR}/files" ]]; then
 	mkdir "${BUILDDIR}/files"
 fi
 
-CUSTOM_VERSION_FILE="${BUILDDIR}/files/custom-version-file"
-
 function dump_file() {
 	# $1 - file
 	# $2 - optional filename override
@@ -48,7 +46,7 @@ dump_file "${DEVICE_DIR}/config.orig" "config.orig"
 
 # Dump the "files/" dir if present
 if [ -d "${DEVICE_DIR}/files" ]; then
-	find "${DEVICE_DIR}/files" -type f | sort | while read f; do
-		dump_file "${f}" ${f#"${DEVICE_DIR}/files"}
+	find "${DEVICE_DIR}/files" -type f | sort | while read -r f; do
+		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"
 	done
 fi

@@ -13,7 +13,7 @@ if [[ ! -d "${BUILDDIR}" ]]; then
 	git clone git://git.openwrt.org/openwrt/openwrt.git "${BUILDDIR}"
 else
 	while true; do
-		read -p "There is already an openwrt dir, do you wish to use it? [Y/N]" yn
+		read -rp "There is already an openwrt dir, do you wish to use it? [Y/N]" yn
 		case $yn in
 		[Yy]*) break ;;
 		[Nn]*)
