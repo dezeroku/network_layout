@@ -9,18 +9,18 @@ set -e
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-# shellcheck source=build/scripts/common
-. "${SCRIPTS_DIR}"/common
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}"/common.sh
 parse_env_args
 
 echoerr "Build docker build environment image"
 sleep "${SLEEP_BETWEEN_STAGES}"
-"${SCRIPTS_DIR}/core/setup-image.sh"
+"${SCRIPTS_DIR}/core/setup-image"
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
 	echoerr "Clone the openwrt repo"
 	sleep "${SLEEP_BETWEEN_STAGES}"
-	"${SCRIPTS_DIR}/core/clone.sh"
+	"${SCRIPTS_DIR}/core/clone"
 else
 	echoerr "Skipping cloning because of SKIP_DOWNLOADS=true"
 fi
@@ -28,20 +28,20 @@ fi
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
 	echoerr "Update source feeds"
 	sleep "${SLEEP_BETWEEN_STAGES}"
-	"${SCRIPTS_DIR}/core/update-feeds.sh"
+	"${SCRIPTS_DIR}/core/update-feeds"
 else
 	echoerr "Skipping feeds update because of SKIP_DOWNLOADS=true"
 fi
 
 echoerr "Copy config for ${DEVICE}"
 sleep "${SLEEP_BETWEEN_STAGES}"
-"${SCRIPTS_DIR}/core/copy-config.sh"
+"${SCRIPTS_DIR}/core/copy-config"
 
 if [[ ! "${SKIP_VERSION_FILE_GENERATION}" == "true" ]]; then
 	echoerr "Generating version file"
 	sleep "${SLEEP_BETWEEN_STAGES}"
 	mkdir -p "${BUILDDIR}/files/etc/"
-	"${SCRIPTS_DIR}/core/generate-version-file.sh" >"${BUILDDIR}/files/etc/custom-version-file"
+	"${SCRIPTS_DIR}/core/generate-version-file" >"${BUILDDIR}/files/etc/custom-version-file"
 else
 	echoerr "Skipping version file generation because of SKIP_VERSION_FILE_GENERATION=true"
 fi
@@ -54,11 +54,11 @@ fi
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
 	echoerr "Download source code"
 	sleep "${SLEEP_BETWEEN_STAGES}"
-	"${SCRIPTS_DIR}/core/build-download-sources.sh"
+	"${SCRIPTS_DIR}/core/build-download-sources"
 else
 	echoerr "Skipping source code download because of SKIP_DOWNLOADS=true"
 fi
 
 echoerr "Compile the final image"
 sleep "${SLEEP_BETWEEN_STAGES}"
-"${SCRIPTS_DIR}/core/build-compile.sh"
+"${SCRIPTS_DIR}/core/build-compile"

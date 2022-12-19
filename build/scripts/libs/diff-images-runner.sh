@@ -4,12 +4,12 @@ set -euo pipefail
 # Unpack two images and run diff on them
 
 function usage() {
-    echo "compare-images.sh image1.img.gz image2.img.gz"
-    exit 1
+	echo "compare-images image1.img.gz image2.img.gz"
+	exit 1
 }
 
 function cleanup() {
-    rm -rf "${TMPDIR}"
+	rm -rf "${TMPDIR}"
 }
 
 [ -z "${1:-}" ] && usage
@@ -23,7 +23,7 @@ echoerr "${SECOND}"
 
 TMPDIR="$(mktemp -d)"
 
-pushd "${TMPDIR}" > /dev/null
+pushd "${TMPDIR}" >/dev/null
 
 trap cleanup EXIT
 

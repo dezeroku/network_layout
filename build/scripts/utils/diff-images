@@ -5,13 +5,13 @@ set -euo pipefail
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
-# shellcheck source=build/scripts/common
-. "${SCRIPTS_DIR}"/common
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}"/common.sh
 parse_env_args
 
 # Reference import
 # shellcheck source=build/scripts/libs/rpi4b
-. "${SCRIPTS_DIR}/libs/${DEVICE}"
+. "${SCRIPTS_DIR}/libs/${DEVICE}.sh"
 
 # shellcheck source=build/scripts/libs/diff-images-runner
-. "${SCRIPTS_DIR}/libs/diff-images-runner"
+. "${SCRIPTS_DIR}/libs/diff-images-runner.sh"

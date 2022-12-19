@@ -32,16 +32,16 @@ The whole workspace is around 15G when the build is done.
 To get best results, build a debian based environment, Dockerfile for which is kept in `docker-setup` directory.
 The image is as similar to the official build env as possible, as it's based on it.
 
-To obtain the env, simply run `scripts/core/setup-image.sh`
+To obtain the env, simply run `scripts/core/setup-image`
 
-Additionally there is provided a wrapper `scripts/core/run.sh`, which takes a command to run in the dockerized build env as an argument.
+Additionally there is provided a wrapper `scripts/core/run`, which takes a command to run in the dockerized build env as an argument.
 For easier access it might be worth to add the `scripts/core/` directory to your path like so:
 
 ```
 export PATH="$PATH:$PWD/scripts/core"
 ```
 
-This way you can just prefix calls with `run.sh`, instead of a full path.
+This way you can just prefix calls with `run`, instead of a full path.
 
 ## Sources
 
@@ -56,9 +56,9 @@ There are few helper scripts that can be used to checkout the code and build fin
 If you're interested in details please read them or refer the link mentioned at the top of this README.
 
 For misc reasons, the `openwrt` repo can't be added as a submodule.
-To obtain it, simply run `scripts/clone.sh`
+To obtain it, simply run `scripts/clone`
 
-You also need to update the feeds in builddir, to do so run `scripts/update-feeds.sh`
+You also need to update the feeds in builddir, to do so run `scripts/update-feeds`
 
 ## Build
 
@@ -74,15 +74,15 @@ The idea is to:
 
 Some warnings about overriding values is expected, as that's what we're doing with custom `.config`.
 
-After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/core/generate-diffconfig.sh > config/$DEVICE/config` and inspecting the changes.
+After the base config is applied and you do some changes with `make menuconfig` or similar, it's possible to easily obtain the custom diffconfig by running `./scripts/core/generate-diffconfig > config/$DEVICE/config` and inspecting the changes.
 
-To do all of that run `scripts/core/copy-config.sh`
+To do all of that run `scripts/core/copy-config`
 
-It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory with `scripts/core/build-download-sources.sh`
+It's advised to first download required sources for the build (especially if you're considering multi-core build), from the `openwrt` directory with `scripts/core/build-download-sources`
 
-To run the actual build issue `scripts/core/build-compile.sh`
+To run the actual build issue `scripts/core/build-compile`
 
-Optionally, you can run `scripts/core/end-to-end-build.sh` to run all the steps (fetch the code, copy the config, download sources, build the image).
+Optionally, you can run `scripts/core/end-to-end-build` to run all the steps (fetch the code, copy the config, download sources, build the image).
 This is not recommended for interactive development, as many steps are run when not necessarily needed.
 It's fine to just obtain the final image though, e.g. in CI context.
 
@@ -101,13 +101,13 @@ This is already handled in the Docker container.
 
 ## Comparing UCI configuration
 
-For the sake of reproducibility (avoiding issues with glibc matching), you can build `uci-runner` docker image with `scripts/utils/build-uci-host.sh`.
+For the sake of reproducibility (avoiding issues with glibc matching), you can build `uci-runner` docker image with `scripts/utils/build-uci-host`.
 The image has `uci` available as `/usr/local/bin/uci`.
 
-Using `scripts/utils-rpi4b/get-uci-config.sh` script it's possible to retrieve the UCI default values from built image.
+Using `scripts/utils-rpi4b/get-uci-config` script it's possible to retrieve the UCI default values from built image.
 When such a default config is obtained, it's easy to calculate diff between the config currently in use on the router and the default.
 
-`scripts/utils/diff-uci-configs.sh` allows you to calculate a diff showing entries that are present in one file (the one that's meant to land on your device) and not present in the second one (the one that's default).
+`scripts/utils/diff-uci-configs` allows you to calculate a diff showing entries that are present in one file (the one that's meant to land on your device) and not present in the second one (the one that's default).
 Thanks to this mechanism you can keep only a list of entries that are custom to your config and not provided by default.
 
 ## aws-cert-user
