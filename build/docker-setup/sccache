@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # This is copy pasted from https://github.com/mozilla/sccache/issues/1000#issuecomment-1237487713, thanks a lot @cipriancracium !
+# Minor changes introduced
 
-set -e -E -u -o pipefail -o noclobber -o noglob +o braceexpand || exit -- 1
-trap -- 'printf -- "[ee]  failed:  %s\\n" "${BASH_COMMAND}" >&2 ; exit -- 1' ERR || exit -- 1
+set -e -E -u -o pipefail -o noclobber -o noglob +o braceexpand || exit 1
+trap -- 'printf -- "[ee]  failed:  %s\\n" "${BASH_COMMAND}" >&2 ; exit 1' ERR || exit 1
 
 if test "${#}" -eq 0; then
 	printf -- '[ee]  expected arguments;  aborting!\n' >&2
-	exit -- 99
+	exit 99
 fi
 
 _sccache_bin=/usr/bin/sccache
@@ -36,8 +37,8 @@ cc | c++ | gcc | g++ | clang | clang++ | rustc)
 	;;
 
 *)
-	printf -- '[%08d] [ee]  invalid tool `%s`;  aborting!\n' "${$}" "${0}" >&2
-	exit -- 99
+	printf -- '[%08d] [ee]  invalid tool "%s";  aborting!\n' "${$}" "${0}" >&2
+	exit 99
 	;;
 esac
 
@@ -62,8 +63,8 @@ if test "/proc/${PPID}/exe" -ef "${_sccache_bin}"; then
 	done
 
 	if test -z "${_delegate_bin}"; then
-		printf -- '[%08d] [ee]  failed to resolve tool `%s`;  aborting!\n' "${$}" "${_delegate}" >&2
-		exit -- 99
+		printf -- '[%08d] [ee]  failed to resolve tool "%s";  aborting!\n' "${$}" "${_delegate}" >&2
+		exit 99
 	fi
 
 	exec -- "${_delegate_bin}" "${@}"
