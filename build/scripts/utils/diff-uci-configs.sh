@@ -6,14 +6,14 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 . "${SCRIPTS_DIR}"/common
 
 function usage() {
-    echo "diff-uci-configs.sh DEFAULT CUSTOM"
-    echo "    The script will show entries that are present in custom"
-    echo "    but aren't in default"
-    exit 1
+	echo "diff-uci-configs.sh DEFAULT CUSTOM"
+	echo "    The script will show entries that are present in custom"
+	echo "    but aren't in default"
+	exit 1
 }
 
 function cleanup() {
-    rm -rf "${TMPDIR}"
+	rm -rf "${TMPDIR}"
 }
 
 [ -z "${1:-}" ] && usage

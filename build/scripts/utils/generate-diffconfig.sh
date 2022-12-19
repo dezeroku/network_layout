@@ -19,7 +19,7 @@ cd "${BUILDDIR}"
 
 TMPFILE="$(mktemp)"
 
-"${SCRIPTS_DIR}/core/run.sh" ./scripts/diffconfig.sh > "${TMPFILE}"
+"${SCRIPTS_DIR}/core/run.sh" ./scripts/diffconfig.sh >"${TMPFILE}"
 
 # sanitize generated diffconfig
 dos2unix "${TMPFILE}" -q

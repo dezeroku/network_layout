@@ -17,19 +17,19 @@ sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/setup-image.sh"
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echoerr "Clone the openwrt repo"
-    sleep "${SLEEP_BETWEEN_STAGES}"
-    "${SCRIPTS_DIR}/core/clone.sh"
+	echoerr "Clone the openwrt repo"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	"${SCRIPTS_DIR}/core/clone.sh"
 else
-    echoerr "Skipping cloning because of SKIP_DOWNLOADS=true"
+	echoerr "Skipping cloning because of SKIP_DOWNLOADS=true"
 fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echoerr "Update source feeds"
-    sleep "${SLEEP_BETWEEN_STAGES}"
-    "${SCRIPTS_DIR}/core/update-feeds.sh"
+	echoerr "Update source feeds"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	"${SCRIPTS_DIR}/core/update-feeds.sh"
 else
-    echoerr "Skipping feeds update because of SKIP_DOWNLOADS=true"
+	echoerr "Skipping feeds update because of SKIP_DOWNLOADS=true"
 fi
 
 echoerr "Copy config for ${DEVICE}"
@@ -37,25 +37,25 @@ sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/copy-config.sh"
 
 if [[ ! "${SKIP_VERSION_FILE_GENERATION}" == "true" ]]; then
-    echoerr "Generating version file"
-    sleep "${SLEEP_BETWEEN_STAGES}"
-    mkdir -p "${BUILDDIR}/files/etc/"
-    "${SCRIPTS_DIR}/core/generate-version-file.sh" > "${BUILDDIR}/files/etc/custom-version-file"
+	echoerr "Generating version file"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	mkdir -p "${BUILDDIR}/files/etc/"
+	"${SCRIPTS_DIR}/core/generate-version-file.sh" >"${BUILDDIR}/files/etc/custom-version-file"
 else
-    echoerr "Skipping version file generation because of SKIP_VERSION_FILE_GENERATION=true"
+	echoerr "Skipping version file generation because of SKIP_VERSION_FILE_GENERATION=true"
 fi
 
 if [[ "${ONLY_INITIALIZE_WORKSPACE}" == "true" ]]; then
-    echoerr "Stopping before build, because ONLY_INITIALIZE_WORKSPACE=true"
-    exit 0
+	echoerr "Stopping before build, because ONLY_INITIALIZE_WORKSPACE=true"
+	exit 0
 fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
-    echoerr "Download source code"
-    sleep "${SLEEP_BETWEEN_STAGES}"
-    "${SCRIPTS_DIR}/core/build-download-sources.sh"
+	echoerr "Download source code"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	"${SCRIPTS_DIR}/core/build-download-sources.sh"
 else
-    echoerr "Skipping source code download because of SKIP_DOWNLOADS=true"
+	echoerr "Skipping source code download because of SKIP_DOWNLOADS=true"
 fi
 
 echoerr "Compile the final image"

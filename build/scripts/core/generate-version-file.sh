@@ -12,32 +12,31 @@ cd "${BUILDDIR}"
 # containing device specific info that was used during the build
 
 if [[ ! -d "${BUILDDIR}/files" ]]; then
-    mkdir "${BUILDDIR}/files"
+	mkdir "${BUILDDIR}/files"
 fi
 
 CUSTOM_VERSION_FILE="${BUILDDIR}/files/custom-version-file"
 
 function dump_file() {
-    # $1 - file
-    # $2 - optional filename override
-    local file="${1}"
+	# $1 - file
+	# $2 - optional filename override
+	local file="${1}"
 
-    if [ -z "${2:-}" ]; then
-        filename="${file}"
-    else
-        filename="${2}"
-    fi
-    echo "========= <${filename}> ========="
-    cat "${file}"
-    echo "========= >${filename}< ========="
-    echo ""
+	if [ -z "${2:-}" ]; then
+		filename="${file}"
+	else
+		filename="${2}"
+	fi
+	echo "========= <${filename}> ========="
+	cat "${file}"
+	echo "========= >${filename}< ========="
+	echo ""
 }
 
 DEVICE_DIR="${SCRIPTS_DIR}/../config/${DEVICE}"
 
 echo SCRIPTS_VERSION="$(cd "${SCRIPTS_DIR}" && git describe HEAD)"
 echo SCRIPTS_COMMIT="$(cd "${SCRIPTS_DIR}" && git rev-parse HEAD)"
-
 
 # This should be a list of everything that may affect the build
 [ -f "${DEVICE_ENV_FILE}" ] && dump_file "${DEVICE_ENV_FILE}" "variables"
@@ -48,7 +47,7 @@ dump_file "${DEVICE_DIR}/config.orig" "config.orig"
 
 # Dump the "files/" dir if present
 if [ -d "${DEVICE_DIR}/files" ]; then
-    find "${DEVICE_DIR}/files" -type f | sort | while read f; do
-        dump_file "${f}" ${f#"${DEVICE_DIR}/files"}
-    done
+	find "${DEVICE_DIR}/files" -type f | sort | while read f; do
+		dump_file "${f}" ${f#"${DEVICE_DIR}/files"}
+	done
 fi
