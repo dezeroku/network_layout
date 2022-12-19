@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function ensure_uci_runner() {
     # Make sure that uci-runner container exists and build it
     # if it doesn't

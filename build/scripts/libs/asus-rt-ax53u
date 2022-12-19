@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function unpack_image() {
     # $1 -> .img.gz to unpack
     # $2 -> directory to output
@@ -5,7 +7,8 @@ function unpack_image() {
     local file="$1"
     local dir="$2"
 
-    mkdir -p "${dir}" && pushd "${dir}" >&2
+    mkdir -p "${dir}"
+    pushd "${dir}" >&2 || exit 1
 
     7z x "${file}" -O. >&2
 
@@ -15,5 +18,5 @@ function unpack_image() {
         rm "${f}"
     done;
 
-    popd > /dev/null
+    popd > /dev/null || exit 1
 }

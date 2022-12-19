@@ -1,4 +1,4 @@
-#!/usr/bin/env false
+#!/usr/bin/env bash
 
 # This file is not meant to be run
 # It contains a collection of utilities to be shared by every script
@@ -53,6 +53,8 @@ function parse_env_args() {
     fi
     echoerr "REPRODUCE_UPSTREAM_BUILD=${REPRODUCE_UPSTREAM_BUILD}"
 
+    # Example file for reference
+    # shellcheck source=build/config/rpi4b/variables
     . "${DEVICE_ENV_FILE}"
 
     [ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}")"

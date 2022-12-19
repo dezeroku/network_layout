@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function dirty_unpack_image() {
     # $1 -> .img.gz to unpack
     # $2 -> directory to output

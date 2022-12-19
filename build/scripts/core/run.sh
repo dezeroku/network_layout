@@ -3,6 +3,7 @@ set -e
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
+# shellcheck source=build/scripts/common
 . "${SCRIPTS_DIR}/common"
 
 [ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${SCRIPTS_DIR}/../builds/ccache-target-storage")"
@@ -12,8 +13,8 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 [ -d "${CCACHE_HOST_STORAGE}" ] || mkdir "${CCACHE_HOST_STORAGE}"
 
 exec docker run --rm -it \
-	-e SCCACHE_CACHE_SIZE="50G" \
-	-v $PWD:/builder \
-	-v "${CCACHE_STORAGE}":/ccache-storage \
-	-v "${CCACHE_HOST_STORAGE}":/home/builder/.cache/sccache \
+	-e "SCCACHE_CACHE_SIZE=50G" \
+	-v "${PWD}:/builder" \
+	-v "${CCACHE_STORAGE}:/ccache-storage" \
+	-v "${CCACHE_HOST_STORAGE}:/home/builder/.cache/sccache" \
 	openwrt-builder "$@"
