@@ -65,6 +65,9 @@ uci set network.wgclient.description="Some client"
 END_HEREDOC
 )
 
+# 9909-firewall
+export FIREWALL_CUSTOM_RULES_TEMPLATE=""
+
 # 9911-letsencrypt
 # This is tailored specifically for Route53 at the moment
 export LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE="user@example.com"

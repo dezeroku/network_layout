@@ -87,6 +87,8 @@ set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
 set firewall.allowlanguestrouteraccess.target='ACCEPT'
 set firewall.allowlanguestrouteraccess.dest='guest'
 
+${FIREWALL_CUSTOM_RULES_TEMPLATE}
+
 commit firewall
 EOI
 
