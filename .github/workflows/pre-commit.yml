@@ -16,5 +16,5 @@ jobs:
           version: 1.0
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.11'
+          python-version: "3.11"
       - uses: pre-commit/action@v3.0.0
