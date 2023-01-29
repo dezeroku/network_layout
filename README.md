@@ -11,7 +11,7 @@ For now, for main router and AP router there are:
 - [x] zero-touch bootstrap after the OpenWRT is flashed on a device
 - [x] automated obtaining of certificates for routers' UI via Let's Encrypt
 - [ ] bit-to-bit reproducible builds (there seem to be some issues with `libgcc` or `libgcc1` being required, only the name differs though)
-- [ ] Internet connectivity monitoring (ping some service and check if it responds)
+- [x] Internet connectivity monitoring (ping Google and Cloudflare DNS and check if they respond)
 
 ## Setup
 
