@@ -15,4 +15,6 @@ jobs:
           packages: shfmt shellcheck
           version: 1.0
       - uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
       - uses: pre-commit/action@v3.0.0
