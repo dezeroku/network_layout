@@ -1,0 +1,96 @@
+# The values provided in below file are exemplary
+# You will HAVE to change these to match your setup
+# At the very least modify passwords
+
+# 9900-base
+# If set to true, then hostname of the router will be set to "${HOSTNAME_TEMPLATE}.${LETSENCRYPT_HOSTNAME_TEMPLATE}"
+# and cert from let's encrypt will be obtained
+# Also look at configuration variables for 9911-letsencrypt
+export ENABLE_LETSENCRYPT_CERTS_TEMPLATE=false
+export LETSENCRYPT_HOSTNAME_TEMPLATE="example.com"
+
+export HOSTNAME_TEMPLATE='somerouter'
+export ZONENAME_TEMPLATE='Europe/Warsaw'
+export TIMEZONE_TEMPLATE='CET-1CEST,M3.5.0,M10.5.0/3'
+
+# 9901-security
+export ROOT_PASSWORD_TEMPLATE='testtest'
+export SSH_AUTHORIZED_KEYS_TEMPLATE=''
+
+# 9902-network
+export GLOBAL_ULA_PREFIX_TEMPLATE='fd6d:8246:307d::/48'
+export LAN_IPADDR_TEMPLATE='192.168.1.1'
+export LAN_IPADDR_GATEWAY_TEMPLATE='192.168.240.99'
+export WAN_IPADDR_GATEWAY_TEMPLATE='192.168.240.1'
+export GUEST_IPADDR_TEMPLATE='192.168.2.1'
+export GUEST_ROUTER_IP_TEMPLATE='192.168.2.2'
+
+# 9903-wireless
+export WIRELESS_COUNTRY_TEMPLATE='PL'
+export WIRELESS_ONE_NETWORK_TEMPLATE='guest'
+export WIRELESS_ONE_SSID_TEMPLATE='SomeNetwork'
+export WIRELESS_ONE_KEY_TEMPLATE='testtest'
+export WIRELESS_ONE_ENCRYPTION_TEMPLATE='sae-mixed'
+
+# 9905-dhcp
+# None added here, you can use UCI entries to do it
+export DHCP_CUSTOM_HOSTS_CONFIG_TEMPLATE=""
+
+# 9907-adblock
+export ADBLOCK_SOURCES_TEMPLATE=$(cat <<'END_HEREDOC'
+del  adblock.global.adb_sources
+add_list  adblock.global.adb_sources="disconnect"
+add_list  adblock.global.adb_sources="reg_pl1"
+add_list  adblock.global.adb_sources="reg_pl2"
+add_list  adblock.global.adb_sources="smarttv_tracking"
+add_list  adblock.global.adb_sources="spam404"
+END_HEREDOC
+)
+
+# 9908-wireguard
+# All of this is exemplary, don't get your hopes up :D
+export WIREGUARD_INTERFACE_TEMPLATE="VPN"
+export VPN_PRIVATE_KEY_TEMPLATE="iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA="
+export VPN_LISTEN_PORT_TEMPLATE="12345"
+export VPN_ADDRESSES_TEMPLATE="192.168.20.1/24"
+# None added here, you can use UCI entries to do it
+export VPN_CUSTOM_CLIENTS_CONFIG_TEMPLATE=$(cat <<'END_HEREDOC'
+uci -q delete network.wgclient
+uci set network.wgclient="wireguard_${WG_IF}"
+uci set network.wgclient.public_key="some-public-key"
+uci set network.wgclient.preshared_key="some-preshared-key"
+uci set network.wgclient.persistent_keepalive="25"
+uci add_list network.wgclient.allowed_ips="some-ip/32"
+uci set network.wgclient.description="Some client"
+END_HEREDOC
+)
+
+# 9909-firewall
+export FIREWALL_CUSTOM_RULES_TEMPLATE=""
+
+# 9911-letsencrypt
+# This is tailored specifically for Route53 at the moment
+export LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE="user@example.com"
+export LETSENCRYPT_DNS_VERIFICATION_TEMPLATE="dns_aws"
+export LETSENCRYPT_AWS_ACCESS_KEY_ID_TEMPLATE="your-key-id"
+export LETSENCRYPT_AWS_ACCESS_KEY_SECRET_TEMPLATE="your-key-secret"
+
+# Snippet for HEREDOC like the one below, can be helpful for "list" variables
+#VAR_TEMPLATE=$(cat <<'END_HEREDOC'
+#your value 1=something
+#your value 2=something else
+#END_HEREDOC
+#)
+
+
+# secret-variables file can be used to override the defaults with your-configuration specific values
+# With this in place, the default template-variables can be commited to git and serve as reference
+if [ -n "${BASH_SOURCE:-}" ]; then
+    POTENTIAL_SECRET_ENV_FILE="$(readlink -f "$(dirname "${BASH_SOURCE}")")/secret-variables"
+    if [ -f "${POTENTIAL_SECRET_ENV_FILE}" ]; then
+        echo "${POTENTIAL_SECRET_ENV_FILE} does exist, loading" >&2
+        . "${POTENTIAL_SECRET_ENV_FILE}"
+    else
+        echo "${POTENTIAL_SECRET_ENV_FILE} does not exist" >&2
+    fi
+fi

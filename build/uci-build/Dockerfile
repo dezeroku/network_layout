@@ -33,7 +33,7 @@ RUN ln -sf bash /bin/sh
 COPY ./libubox-source ./libubox-source
 COPY ./uci-source ./uci-source
 
-COPY ./build-uci-host-helper.sh /build-script.sh
-RUN /build-script.sh
+COPY ./build-uci-host-helper /build-script
+RUN /build-script
 
 ENTRYPOINT ["/usr/local/bin/uci"]

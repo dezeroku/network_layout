@@ -1,0 +1,23 @@
+uci batch << EOI
+set luci_statistics.collectd.Include='/etc/collectd/conf.d/*.conf'
+set luci_statistics.collectd_ipstatistics.enable='1'
+set luci_statistics.collectd_thermal.enable='1'
+set luci_statistics.collectd_df.enable='1'
+set luci_statistics.collectd_dns.enable='1'
+
+del luci_statistics.collectd_dns.Interfaces
+add_list luci_statistics.collectd_dns.Interfaces='${WIREGUARD_INTERFACE_TEMPLATE}'
+add_list luci_statistics.collectd_dns.Interfaces='br-lan'
+add_list luci_statistics.collectd_dns.Interfaces='eth2'
+
+set luci_statistics.collectd_ping.enable='1'
+del luci_statistics.collectd_ping.Hosts
+add_list luci_statistics.collectd_ping.Hosts='127.0.0.1'
+add_list luci_statistics.collectd_ping.Hosts='192.168.2.2'
+add_list luci_statistics.collectd_ping.Hosts='1.1.1.1'
+add_list luci_statistics.collectd_ping.Hosts='8.8.8.8'
+set luci_statistics.collectd_ping.AddressFamily='any'
+set luci_statistics.collectd_ping.Interval='60'
+
+commit luci_statistics
+EOI
