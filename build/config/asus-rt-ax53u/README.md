@@ -1,6 +1,6 @@
 ## Upstream .config
 
-Base `.config` from upstream (generic ramips/mt7621): [config.orig](https://downloads.openwrt.org/releases/22.03.2/targets/ramips/mt7621/config.buildinfo)
+Base `.config` from upstream (generic ramips/mt7621): [config.orig](https://downloads.openwrt.org/releases/22.03.3/targets/ramips/mt7621/config.buildinfo)
 
 ## Changes compared to upstream
 
