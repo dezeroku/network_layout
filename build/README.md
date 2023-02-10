@@ -110,6 +110,15 @@ When such a default config is obtained, it's easy to calculate diff between the 
 `scripts/utils/diff-uci-configs` allows you to calculate a diff showing entries that are present in one file (the one that's meant to land on your device) and not present in the second one (the one that's default).
 Thanks to this mechanism you can keep only a list of entries that are custom to your config and not provided by default.
 
+## OpenWRT updates
+
+1. Modify the `config/<DEVICE>/variables` to point to a new commit
+2. Get new `config.buildinfo` for the release and put it in `config/<DEVICE>/config.org` (take a look at README in config dir and also modify it to point to new `config.buildinfo`)
+3. (Recommended) Remove old workspace in `builds`
+4. Run `end-to-end-build` script with `ONLY_INITIALIZE_WORKSPACE=true` in your env
+5. Use `scripts/utils/generate-diffconfig.sh` to override `config/<DEVICE>/config` and check the changes
+6. Run the build as usual with `end-to-end-build` script
+
 ## aws-cert-user
 
 This directory defines terraform files that create user (and an access key) that can modify DNS, so cert for a domain can be obtained with a provider like Let's Encrypt.
