@@ -1,9 +1,0 @@
-# This is done to fix the upstream issue
-# Get rid of it when it's included in next stable release
-# https://forum.openwrt.org/t/https-dns-proxy-not-working-on-latest-snapshots-22-03-1/139125/17
-
-uci batch << EOI
-set https-dns-proxy.@https-dns-proxy[0].ca_certs_file='/etc/ssl/certs/ca-certificates.crt'
-set https-dns-proxy.@https-dns-proxy[1].ca_certs_file='/etc/ssl/certs/ca-certificates.crt'
-commit https-dns-proxy
-EOI
