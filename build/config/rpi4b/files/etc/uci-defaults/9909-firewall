@@ -117,9 +117,9 @@ commit firewall
 EOI
 
 # TODO: rework this into IOT_BRIDGE_IP
-if [ -n '${GUEST_BRIDGE_IP}' ]; then
+if [ -n '${GUEST_BRIDGE_IP_TEMPLATE}' ]; then
   uci del firewal.allowmdnsguestbroadcast.src_ip
-  uci add_list firewall.allowmdnsguestbroadcast.src_ip='${GUEST_BRIDGE_IP}'
+  uci add_list firewall.allowmdnsguestbroadcast.src_ip='${GUEST_BRIDGE_IP_TEMPLATE}'
   uci commit firewall
 fi
 
