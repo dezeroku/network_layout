@@ -1,120 +1,124 @@
-uci batch << EOI
-set firewall.@defaults[0].synflood_protect='1'
+set -ex
+
+uci set firewall.@defaults[0].synflood_protect='1'
+uci commit firewall
 
 # This is for WAN
-set firewall.@zone[1].input='DROP'
-set firewall.@rule[1].target='REJECT'
+# Make it a bit more hidden
+uci set firewall.@zone[1].input='DROP'
+uci set firewall.@rule[1].target='REJECT'
+uci commit firewall
 
-set firewall.guest=zone
-set firewall.guest.name='guest'
-set firewall.guest.output='ACCEPT'
-set firewall.guest.forward='REJECT'
-set firewall.guest.input='ACCEPT'
-set firewall.guest.network='guest'
+uci set firewall.guest=zone
+uci set firewall.guest.name='guest'
+uci set firewall.guest.output='ACCEPT'
+uci set firewall.guest.forward='REJECT'
+uci set firewall.guest.input='ACCEPT'
+uci set firewall.guest.network='guest'
+uci commit firewall
 
-set firewall.vpn=zone
-set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
-set firewall.vpn.input='ACCEPT'
-set firewall.vpn.output='ACCEPT'
-set firewall.vpn.forward='ACCEPT'
-set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn=zone
+uci set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn.input='ACCEPT'
+uci set firewall.vpn.output='ACCEPT'
+uci set firewall.vpn.forward='ACCEPT'
+uci set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci commit firewall
 
-commit firewall
+uci set firewall.guesttowanforwarding=forwarding
+uci set firewall.guesttowanforwarding.src='guest'
+uci set firewall.guesttowanforwarding.dest='wan'
+uci commit firewall
 
-set firewall.guesttowanforwarding=forwarding
-set firewall.guesttowanforwarding.src='guest'
-set firewall.guesttowanforwarding.dest='wan'
-
-set firewall.vpntowanforwarding=forwarding
-set firewall.vpntowanforwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
-set firewall.vpntowanforwarding.dest='wan'
-
-commit firewall
+uci set firewall.vpntowanforwarding=forwarding
+uci set firewall.vpntowanforwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpntowanforwarding.dest='wan'
+uci commit firewall
 
 # Does this actually do anything?
 # Or is it enough to rely on the https-dns-proxy to do this?
-set firewall.vpndnsredirect=redirect
-set firewall.vpndnsredirect.dest='lan'
-set firewall.vpndnsredirect.target='DNAT'
-set firewall.vpndnsredirect.name='Redirect VPN DNS'
-set firewall.vpndnsredirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
-set firewall.vpndnsredirect.src_dport='53'
-set firewall.vpndnsredirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
-set firewall.vpndnsredirect.dest_port='53'
-
-commit firewall
+uci set firewall.vpndnsredirect=redirect
+uci set firewall.vpndnsredirect.dest='lan'
+uci set firewall.vpndnsredirect.target='DNAT'
+uci set firewall.vpndnsredirect.name='Redirect VPN DNS'
+uci set firewall.vpndnsredirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpndnsredirect.src_dport='53'
+uci set firewall.vpndnsredirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
+uci set firewall.vpndnsredirect.dest_port='53'
+uci commit firewall
 
 # Is this needed?
 # It's disabled anyway
-#set firewall.@rule[9]=rule
-#set firewall.@rule[9].name='Support-UDP-Traceroute'
-#set firewall.@rule[9].src='wan'
-#set firewall.@rule[9].dest_port='33434:33689'
-#set firewall.@rule[9].proto='udp'
-#set firewall.@rule[9].family='ipv4'
-#set firewall.@rule[9].target='REJECT'
-#set firewall.@rule[9].enabled='0'
+#uci set firewall.@rule[9]=rule
+#uci set firewall.@rule[9].name='Support-UDP-Traceroute'
+#uci set firewall.@rule[9].src='wan'
+#uci set firewall.@rule[9].dest_port='33434:33689'
+#uci set firewall.@rule[9].proto='udp'
+#uci set firewall.@rule[9].family='ipv4'
+#uci set firewall.@rule[9].target='REJECT'
+#uci set firewall.@rule[9].enabled='0'
+#uci commit firewall
 
 # Does this work?
 # WAN Router is a gateway in the end anyway
-set firewall.denyguestwanrouteraccess=rule
-set firewall.denyguestwanrouteraccess.src='guest'
-set firewall.denyguestwanrouteraccess.dest='wan'
-set firewall.denyguestwanrouteraccess.dest_ip='${WAN_IPADDR_GATEWAY_TEMPLATE}'
-set firewall.denyguestwanrouteraccess.target='REJECT'
-set firewall.denyguestwanrouteraccess.name='Deny-Guest-WAN-Router-Access'
+uci set firewall.denyguestwanrouteraccess=rule
+uci set firewall.denyguestwanrouteraccess.src='guest'
+uci set firewall.denyguestwanrouteraccess.dest='wan'
+uci set firewall.denyguestwanrouteraccess.dest_ip='${WAN_IPADDR_GATEWAY_TEMPLATE}'
+uci set firewall.denyguestwanrouteraccess.target='REJECT'
+uci set firewall.denyguestwanrouteraccess.name='Deny-Guest-WAN-Router-Access'
+uci commit firewall
 
 # Does this work?
 # Similar situation to the one above
-set firewall.denyguestlanrouteraccess=rule
-set firewall.denyguestlanrouteraccess.name='Deny-Guest-LAN-Router-Access'
-set firewall.denyguestlanrouteraccess.src='guest'
-set firewall.denyguestlanrouteraccess.dest='lan'
-set firewall.denyguestlanrouteraccess.dest_ip='${LAN_IPADDR_TEMPLATE}'
-set firewall.denyguestlanrouteraccess.target='REJECT'
+uci set firewall.denyguestlanrouteraccess=rule
+uci set firewall.denyguestlanrouteraccess.name='Deny-Guest-LAN-Router-Access'
+uci set firewall.denyguestlanrouteraccess.src='guest'
+uci set firewall.denyguestlanrouteraccess.dest='lan'
+uci set firewall.denyguestlanrouteraccess.dest_ip='${LAN_IPADDR_TEMPLATE}'
+uci set firewall.denyguestlanrouteraccess.target='REJECT'
+uci commit firewall
 
-set firewall.allowwanvpn=rule
-set firewall.allowwanvpn.name='Allow-Wireguard-VPN-From-WAN'
-set firewall.allowwanvpn.proto='udp'
-set firewall.allowwanvpn.src='wan'
-set firewall.allowwanvpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
-set firewall.allowwanvpn.target='ACCEPT'
+uci set firewall.allowwanvpn=rule
+uci set firewall.allowwanvpn.name='Allow-Wireguard-VPN-From-WAN'
+uci set firewall.allowwanvpn.proto='udp'
+uci set firewall.allowwanvpn.src='wan'
+uci set firewall.allowwanvpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
+uci set firewall.allowwanvpn.target='ACCEPT'
+uci commit firewall
 
-set firewall.allowlanguestrouteraccess=rule
-set firewall.allowlanguestrouteraccess.name='Allow-Guest-Router-Access-From-LAN'
-set firewall.allowlanguestrouteraccess.src='lan'
-set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
-set firewall.allowlanguestrouteraccess.target='ACCEPT'
-set firewall.allowlanguestrouteraccess.dest='guest'
+uci set firewall.allowlanguestrouteraccess=rule
+uci set firewall.allowlanguestrouteraccess.name='Allow-Guest-Router-Access-From-LAN'
+uci set firewall.allowlanguestrouteraccess.src='lan'
+uci set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
+uci set firewall.allowlanguestrouteraccess.target='ACCEPT'
+uci set firewall.allowlanguestrouteraccess.dest='guest'
+uci commit firewall
 
-set firewall.allowmdnslanbroadcast=rule
-set firewall.allowmdnslanbroadcast.name='Allow-mDNS-lan-broadcast'
-set firewall.allowmdnslanbroadcast.proto='udp'
-set firewall.allowmdnslanbroadcast.src='lan'
-set firewall.allowmdnslanbroadcast.target='ACCEPT'
-set firewall.allowmdnslanbroadcast.src_port='5353'
-set firewall.allowmdnslanbroadcast.dest_port='5353'
-del firewal.allowmdnslanbroadcast.dest_ip
-add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
-#add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
+uci set firewall.allowmdnslanbroadcast=rule
+uci set firewall.allowmdnslanbroadcast.name='Allow-mDNS-lan-broadcast'
+uci set firewall.allowmdnslanbroadcast.proto='udp'
+uci set firewall.allowmdnslanbroadcast.src='lan'
+uci set firewall.allowmdnslanbroadcast.target='ACCEPT'
+uci set firewall.allowmdnslanbroadcast.src_port='5353'
+uci set firewall.allowmdnslanbroadcast.dest_port='5353'
+uci del firewal.allowmdnslanbroadcast.dest_ip
+uci add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
+#uci add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
+uci commit firewall
 
 # This should be changed to IoT network when defined
-set firewall.allowmdnsguestbroadcast=rule
-set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-bridge-broadcast'
-set firewall.allowmdnsguestbroadcast.proto='udp'
-set firewall.allowmdnsguestbroadcast.src='guest'
-set firewall.allowmdnsguestbroadcast.target='ACCEPT'
-set firewall.allowmdnsguestbroadcast.src_port='5353'
-set firewall.allowmdnsguestbroadcast.dest_port='5353'
-del firewal.allowmdnsguestbroadcast.dest_ip
-add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
-#add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
-
-
-${FIREWALL_CUSTOM_RULES_TEMPLATE}
-
-commit firewall
-EOI
+uci set firewall.allowmdnsguestbroadcast=rule
+uci set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-bridge-broadcast'
+uci set firewall.allowmdnsguestbroadcast.proto='udp'
+uci set firewall.allowmdnsguestbroadcast.src='guest'
+uci set firewall.allowmdnsguestbroadcast.target='ACCEPT'
+uci set firewall.allowmdnsguestbroadcast.src_port='5353'
+uci set firewall.allowmdnsguestbroadcast.dest_port='5353'
+uci del firewal.allowmdnsguestbroadcast.dest_ip
+uci add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
+#uci add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
+uci commit firewall
 
 # TODO: rework this into IOT_BRIDGE_IP
 if [ -n '${GUEST_BRIDGE_IP_TEMPLATE}' ]; then
@@ -122,5 +126,9 @@ if [ -n '${GUEST_BRIDGE_IP_TEMPLATE}' ]; then
   uci add_list firewall.allowmdnsguestbroadcast.src_ip='${GUEST_BRIDGE_IP_TEMPLATE}'
   uci commit firewall
 fi
+
+
+${FIREWALL_CUSTOM_RULES_TEMPLATE}
+
 
 /etc/init.d/firewall reload
