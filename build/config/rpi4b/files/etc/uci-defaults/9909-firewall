@@ -87,6 +87,30 @@ set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
 set firewall.allowlanguestrouteraccess.target='ACCEPT'
 set firewall.allowlanguestrouteraccess.dest='guest'
 
+set firewall.allowmdnslanbroadcast=rule
+set firewall.allowmdnslanbroadcast.name='Allow-mDNS-lan-broadcast'
+set firewall.allowmdnslanbroadcast.proto='udp'
+set firewall.allowmdnslanbroadcast.src='lan'
+set firewall.allowmdnslanbroadcast.target='ACCEPT'
+set firewall.allowmdnslanbroadcast.src_port='5353'
+set firewall.allowmdnslanbroadcast.dest_port='5353'
+del firewal.allowmdnslanbroadcast.dest_ip
+add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
+add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
+
+# This should be changed to IoT network when defined
+set firewall.allowmdnsguestbroadcast=rule
+set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-broadcast'
+set firewall.allowmdnsguestbroadcast.proto='udp'
+set firewall.allowmdnsguestbroadcast.src='guest'
+set firewall.allowmdnsguestbroadcast.target='ACCEPT'
+set firewall.allowmdnsguestbroadcast.src_port='5353'
+set firewall.allowmdnsguestbroadcast.dest_port='5353'
+del firewal.allowmdnsguestbroadcast.dest_ip
+add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
+add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
+
+
 ${FIREWALL_CUSTOM_RULES_TEMPLATE}
 
 commit firewall
