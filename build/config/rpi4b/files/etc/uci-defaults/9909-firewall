@@ -121,9 +121,14 @@ uci add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
 uci commit firewall
 
 # TODO: rework this into IOT_BRIDGE_IP
-if [ -n '${GUEST_BRIDGE_IP_TEMPLATE}' ]; then
+if [ -n '${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
+  # Use TEMP_VARIABLE to work properly with first-pass templating
+  TEMP_VARIABLE='${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}'
+  # No double quotes to allow iteration over whitespace
   uci del firewal.allowmdnsguestbroadcast.src_ip
-  uci add_list firewall.allowmdnsguestbroadcast.src_ip='${GUEST_BRIDGE_IP_TEMPLATE}'
+  for ip in ${TEMP_VARIABLE} ; do
+    uci add_list "firewall.allowmdnsguestbroadcast.src_ip=${ip}"
+  done
   uci commit firewall
 fi
 
