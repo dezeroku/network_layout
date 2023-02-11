@@ -102,7 +102,8 @@ uci set firewall.allowmdnslanbroadcast.src='lan'
 uci set firewall.allowmdnslanbroadcast.target='ACCEPT'
 uci set firewall.allowmdnslanbroadcast.src_port='5353'
 uci set firewall.allowmdnslanbroadcast.dest_port='5353'
-uci del firewal.allowmdnslanbroadcast.dest_ip
+# Key may not exist
+uci del firewall.allowmdnslanbroadcast.dest_ip || true
 uci add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
 #uci add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
 uci commit firewall
@@ -115,7 +116,8 @@ uci set firewall.allowmdnsguestbroadcast.src='guest'
 uci set firewall.allowmdnsguestbroadcast.target='ACCEPT'
 uci set firewall.allowmdnsguestbroadcast.src_port='5353'
 uci set firewall.allowmdnsguestbroadcast.dest_port='5353'
-uci del firewal.allowmdnsguestbroadcast.dest_ip
+# Key may not exist
+uci del firewall.allowmdnsguestbroadcast.dest_ip || true
 uci add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
 #uci add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
 uci commit firewall
@@ -124,8 +126,10 @@ uci commit firewall
 if [ -n '${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
   TEMP_VARIABLE='${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}'
+  # Key may not exist
+  uci del firewall.allowmdnsguestbroadcast.src_ip || true
+
   # No double quotes to allow iteration over whitespace
-  uci del firewal.allowmdnsguestbroadcast.src_ip
   for ip in ${TEMP_VARIABLE} ; do
     uci add_list "firewall.allowmdnsguestbroadcast.src_ip=${ip}"
   done
@@ -136,4 +140,6 @@ fi
 ${FIREWALL_CUSTOM_RULES_TEMPLATE}
 
 
-/etc/init.d/firewall reload
+# Use restart instead of reload as fw4 may not yet be started?
+# This causes the init script to fail when run initially on boot
+/etc/init.d/firewall restart
