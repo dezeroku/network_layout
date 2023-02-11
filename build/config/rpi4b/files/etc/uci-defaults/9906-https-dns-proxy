@@ -10,7 +10,5 @@ set https-dns-proxy.@https-dns-proxy[1].listen_port='5054'
 commit https-dns-proxy
 EOI
 
-# This is already done by https-dns-proxy I think
-# But just in case, reload the services
-/etc/init.d/https-dns-proxy reload
-/etc/init.d/dnsmasq reload
+/etc/init.d/dnsmasq restart
+/etc/init.d/https-dns-proxy restart
