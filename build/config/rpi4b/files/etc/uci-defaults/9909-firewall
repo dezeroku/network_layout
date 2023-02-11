@@ -96,7 +96,7 @@ set firewall.allowmdnslanbroadcast.src_port='5353'
 set firewall.allowmdnslanbroadcast.dest_port='5353'
 del firewal.allowmdnslanbroadcast.dest_ip
 add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
-add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
+#add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
 
 # This should be changed to IoT network when defined
 set firewall.allowmdnsguestbroadcast=rule
@@ -108,7 +108,7 @@ set firewall.allowmdnsguestbroadcast.src_port='5353'
 set firewall.allowmdnsguestbroadcast.dest_port='5353'
 del firewal.allowmdnsguestbroadcast.dest_ip
 add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
-add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
+#add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
 
 
 ${FIREWALL_CUSTOM_RULES_TEMPLATE}
