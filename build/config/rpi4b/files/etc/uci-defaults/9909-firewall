@@ -100,7 +100,7 @@ add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
 
 # This should be changed to IoT network when defined
 set firewall.allowmdnsguestbroadcast=rule
-set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-broadcast'
+set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-bridge-broadcast'
 set firewall.allowmdnsguestbroadcast.proto='udp'
 set firewall.allowmdnsguestbroadcast.src='guest'
 set firewall.allowmdnsguestbroadcast.target='ACCEPT'
@@ -115,5 +115,12 @@ ${FIREWALL_CUSTOM_RULES_TEMPLATE}
 
 commit firewall
 EOI
+
+# TODO: rework this into IOT_BRIDGE_IP
+if [ -n '${GUEST_BRIDGE_IP}' ]; then
+  uci del firewal.allowmdnsguestbroadcast.src_ip
+  uci add_list firewall.allowmdnsguestbroadcast.src_ip='${GUEST_BRIDGE_IP}'
+  uci commit firewall
+fi
 
 /etc/init.d/firewall reload

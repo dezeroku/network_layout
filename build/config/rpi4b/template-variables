@@ -67,6 +67,9 @@ END_HEREDOC
 
 # 9909-firewall
 export FIREWALL_CUSTOM_RULES_TEMPLATE=""
+# Set to some value if you want to limit the mDNS capabilities of guest network
+# TODO: rework into IOT_BRIDGE_IP
+export GUEST_BRIDGE_IP=""
 
 # 9911-letsencrypt
 # This is tailored specifically for Route53 at the moment
