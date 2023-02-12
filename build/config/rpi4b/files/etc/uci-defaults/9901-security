@@ -9,9 +9,11 @@ cat >> /etc/dropbear/authorized_keys << EOI
 ${SSH_AUTHORIZED_KEYS_TEMPLATE}
 EOI
 
-uci set dropbear.@dropbear[0].Interface='lan'
-uci set dropbear.@dropbear[0].PasswordAuth='off'
-uci set dropbear.@dropbear[0].RootPasswordAuth='off'
-uci commit dropbear
+uci batch << EOI
+set dropbear.@dropbear[0].Interface='lan'
+set dropbear.@dropbear[0].PasswordAuth='off'
+set dropbear.@dropbear[0].RootPasswordAuth='off'
+commit dropbear
+EOI
 
 /etc/init.d/dropbear restart

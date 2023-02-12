@@ -1,6 +1,0 @@
-# For whatever reason dropbear connections fail on freshly flashed software with "Connection refused"
-# It starts working fine when the dropbear service is restarted from UI
-# Working theory: network changes cause the dropbear instance to become "obsoleted"
-# Let's fix it with restarting the dropbear as the last step for now and investigate later on
-# This didn't happen on v22.03.2, but appeared on v22.03.3
-/etc/init.d/dropbear restart
