@@ -45,3 +45,4 @@ Perform a reboot afterwards to apply the settings
 
 1. It seems that manual "reset" is required after the new sysupgrade is uploaded.
    Without it, there are some leftovers?
+2. 512MiB SD card is required to flash the generated image (because of the partition sizes)
