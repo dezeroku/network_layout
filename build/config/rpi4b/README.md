@@ -1,6 +1,6 @@
 ## Upstream .config
 
-Base `.config` from upstream (rpi4b): [config.orig](https://downloads.openwrt.org/releases/22.03.3/targets/bcm27xx/bcm2711/config.buildinfo)
+Base `.config` from upstream (rpi4b): [config.orig](https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/bcm27xx/bcm2711/config.buildinfo)
 
 ## Packages
 
