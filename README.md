@@ -49,6 +49,11 @@ There are three "LAN" interfaces at the moment and a single "WAN":
 3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions
 4. VPN (10.200.200.1/24) managed by main router
 
+All of the real logic is done on the main router's level, including DNS and DHCP.
+AP Router and Main AP serve as dummy APs.
+
+External DNS queries are encrypted with HTTPS (DoH) and resolved by Cloudflare and Google servers.
+
 A picture is worth more than a thousand words:
 ![Network Overview](docs/diagrams/created/network_overview.png?raw=true "Network Overview")
 
