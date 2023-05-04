@@ -15,6 +15,23 @@ For now, for main router and AP router there are:
 - [x] Secure connectivity from outside the network via Wireguard
 - [x] Encrypted DNS queries sent out to Cloudflare
 
+## Architecture
+
+There are three "LAN" interfaces at the moment and a single "WAN":
+
+1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
+2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
+3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions
+4. VPN (10.200.200.1/24) managed by main router
+
+All of the real logic is done on the main router's level, including DNS and DHCP.
+AP Router and Main AP serve as dummy APs.
+
+External DNS queries are encrypted with HTTPS (DoH) and resolved by Cloudflare and Google servers.
+
+A picture is worth more than a thousand words:
+![Network Overview](docs/diagrams/created/network_overview.png?raw=true "Network Overview")
+
 ## Setup
 
 ### ISP router
@@ -40,23 +57,6 @@ ASUS RT-AX53U running openwrt, used only for the purpose of broadcasting main ro
 Most likely some new tasks will be found for it in the future.
 
 Running slightly customized OpenWRT (mostly packages preinstalled in the image + built-in config), look in `build` directory for details.
-
-## Architecture
-
-There are three "LAN" interfaces at the moment and a single "WAN":
-
-1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
-2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
-3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions
-4. VPN (10.200.200.1/24) managed by main router
-
-All of the real logic is done on the main router's level, including DNS and DHCP.
-AP Router and Main AP serve as dummy APs.
-
-External DNS queries are encrypted with HTTPS (DoH) and resolved by Cloudflare and Google servers.
-
-A picture is worth more than a thousand words:
-![Network Overview](docs/diagrams/created/network_overview.png?raw=true "Network Overview")
 
 ## Tips
 
