@@ -13,6 +13,7 @@ For now, for main router and AP router there are:
 - [ ] bit-to-bit reproducible builds (there seem to be some issues with `libgcc` or `libgcc1` being required, only the name differs though)
 - [x] Internet connectivity monitoring (ping Google and Cloudflare DNS and check if they respond)
 - [x] Secure connectivity from outside the network via Wireguard
+- [x] Encrypted DNS queries sent out to Cloudflare
 
 ## Setup
 
