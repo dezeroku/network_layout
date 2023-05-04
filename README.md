@@ -1,9 +1,9 @@
 # Network Layout
 
-This is repo is meant to keep configuration for my home network.
+This repo is meant to keep configuration for my home network.
 Eventually I'd like to have it fully reproducible, versioned and managed only by code.
 
-For now, for main router and AP router there are:
+What's covered already:
 
 - [x] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in `build`
 - [x] reproducible OpenWRT configuration, via `uci-defaults`
@@ -21,8 +21,8 @@ There are three "LAN" interfaces at the moment and a single "WAN":
 
 1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
 2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
-3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions
-4. VPN (10.200.200.1/24) managed by main router
+3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions (except for devserver)
+4. VPN (10.200.200.1/24, wireguard) managed by main router
 
 All of the real logic is done on the main router's level, including DNS and DHCP.
 AP Router and Main AP serve as dummy APs.
@@ -42,7 +42,7 @@ DDNS is set up on this level to point to an owned domain.
 ### Main router
 
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
-It's paired with a TP-Link UE300 USB-Ethernet adapter (RTL8153), that's used for WAN connection.
+It's paired with two TP-Link UE300 USB-Ethernet adapters (RTL8153), one is used for WAN connection, the other for AP Router.
 An unmanaged switch is put in front of the Ethernet port, just to expand the ports count.
 
 Running slightly customized OpenWRT (mostly packages preinstalled in the image + built-in config), look in `build` directory for details.
@@ -62,5 +62,6 @@ Running slightly customized OpenWRT (mostly packages preinstalled in the image +
 
 ### RE605x
 
-If you use a password's manager to input the password on login page, you have to manually remove and reinput one of the characters.
+If you use a password manager to input the password on login page, you have to manually remove and reinput one of the characters.
 Otherwise the login page doesn't detect that password has been filled and fails with a "Can't log in" message.
+It's stupid, but it works.
