@@ -1,8 +1,32 @@
 uci batch << EOI
+
+# Extend default br-lan ports
+del network.@device[0].ports
+add_list network.@device[0].ports='eth0'
+add_list network.@device[0].ports='eth2'
+
+# Set up VLANs
+set network.bridge_vlan_guest='bridge-vlan'
+set network.bridge_vlan_guest.device='br-lan'
+set network.bridge_vlan_guest.vlan='20'
+add_list network.bridge_vlan_guest.ports='eth2:t'
+
+set network.bridge_vlan_iot='bridge-vlan'
+set network.bridge_vlan_iot.device='br-lan'
+set network.bridge_vlan_iot.vlan='30'
+add_list network.bridge_vlan_iot.ports='eth2:t'
+
+set network.bridge_vlan_lan='bridge-vlan'
+set network.bridge_vlan_lan.device='br-lan'
+set network.bridge_vlan_lan.vlan='99'
+add_list network.bridge_vlan_lan.ports='eth0:u*'
+add_list network.bridge_vlan_lan.ports='eth2:t'
+
 set network.globals.ula_prefix='${GLOBAL_ULA_PREFIX_TEMPLATE}'
 
 set network.lan.ipaddr='${LAN_IPADDR_TEMPLATE}'
 set network.lan.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+set network.lan.device='br-lan.99'
 
 set network.globals.packet_steering='1'
 set network.@device[0].bridge_empty='1'
@@ -20,12 +44,27 @@ set network.guest.ipaddr='${GUEST_IPADDR_TEMPLATE}'
 set network.guest.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
 set network.guest.netmask='255.255.255.0'
 set network.guest.type='bridge'
-set network.guest.device='eth2'
+set network.guest.device='br-lan.20'
 
-set network.toguestrouterroute=route
-set network.toguestrouterroute.interface='guest'
-set network.toguestrouterroute.target='${GUEST_ROUTER_IP_TEMPLATE}/32'
-set network.toguestrouterroute.gateway='${GUEST_IPADDR_TEMPLATE}'
+set network.iot=interface
+set network.iot.proto='static'
+set network.iot.ipaddr='${IOT_IPADDR_TEMPLATE}'
+set network.iot.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+set network.iot.netmask='255.255.255.0'
+set network.iot.type='bridge'
+set network.iot.device='br-lan.30'
+
+# TODO: Do we even need it?
+set network.to_guest_router_route=route
+set network.to_guest_router_route.interface='guest'
+set network.to_guest_router_route.target='${GUEST_ROUTER_IP_TEMPLATE}/32'
+set network.to_guest_router_route.gateway='${GUEST_IPADDR_TEMPLATE}'
+
+# TODO: Do we even need it?
+set network.to_iot_router_route=route
+set network.to_iot_router_route.interface='iot'
+set network.to_iot_router_route.target='${IOT_ROUTER_IP_TEMPLATE}/32'
+set network.to_iot_router_route.gateway='${IOT_IPADDR_TEMPLATE}'
 
 commit network
 EOI

@@ -125,3 +125,11 @@ helper and providing DEVICE and NEW_OPENWRT_VERSION (which must be a git release
 ## aws-cert-user
 
 This directory defines terraform files that create user (and an access key) that can modify DNS, so cert for a domain can be obtained with a provider like Let's Encrypt.
+
+## Checking the scripts used to build a used image
+
+Sometimes you may not be sure what commit of this repo (and what variables) were used to build the image that you're currently using.
+This may happen if you lose the checkout or the file due to e.g. a disk outage
+
+In this case it's possible to check all the information required to reproduce the build by looking at `/etc/custom-version-file` file in the built image.
+This file also persists when flashed on the device.

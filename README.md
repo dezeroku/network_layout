@@ -22,7 +22,8 @@ There are three "LAN" interfaces at the moment and a single "WAN":
 1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
 2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
 3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions (except for devserver)
-4. VPN (10.200.200.1/24, wireguard) managed by main router
+4. IOT network (192.168.3.1/24) exposed using AP router, completely isolated from LAN both directions (except for iotserver bridge)
+5. VPN (10.200.200.1/24, wireguard) managed by main router
 
 All of the real logic is done on the main router's level, including DNS and DHCP.
 AP Router and Main AP serve as dummy APs.
@@ -41,6 +42,13 @@ DDNS is set up on this level to point to an owned domain.
 
 ### Main router
 
+| VLAN       | ETH0             | ETH1       | ETH2         |
+| ---------- | ---------------- | ---------- | ------------ |
+| 20 (guest) | -                |            | aprouter (t) |
+| 30 (iot)   | -                |            | aprouter (t) |
+| 99 (lan)   | LAN switch (u\*) |            | aprouter(t)  |
+|            |                  | WAN router |              |
+
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
 It's paired with two TP-Link UE300 USB-Ethernet adapters (RTL8153), one is used for WAN connection, the other for AP Router.
 An unmanaged switch is put in front of the Ethernet port, just to expand the ports count.
@@ -52,6 +60,12 @@ Running slightly customized OpenWRT (mostly packages preinstalled in the image +
 TP-Link RE605x exposes the LAN in AP mode.
 
 ### AP Router
+
+| VLAN       | WAN | LAN1           | LAN2          | LAN3           |
+| ---------- | --- | -------------- | ------------- | -------------- |
+| 20 (guest) |     | mainrouter (t) | devserver (u) |                |
+| 30 (iot)   |     | mainrouter (t) |               | IOT switch (u) |
+| 99 (lan)   |     | mainrouter (t) |               |                |
 
 ASUS RT-AX53U running openwrt, used only for the purpose of broadcasting main router's guest network over WI-FI.
 Most likely some new tasks will be found for it in the future.

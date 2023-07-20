@@ -4,19 +4,35 @@ uci set firewall.@defaults[0].synflood_protect='1'
 uci commit firewall
 
 # This is for WAN
-# Make it a bit more hidden
+# Make it a bit more hidden for the outside world
 uci set firewall.@zone[1].input='DROP'
 uci set firewall.@rule[1].target='REJECT'
 uci commit firewall
 
-uci set firewall.guest=zone
-uci set firewall.guest.name='guest'
-uci set firewall.guest.output='ACCEPT'
-uci set firewall.guest.forward='REJECT'
-uci set firewall.guest.input='ACCEPT'
-uci set firewall.guest.network='guest'
+uci set firewall.guest_zone=zone
+uci set firewall.guest_zone.name='guest'
+uci set firewall.guest_zone.output='ACCEPT'
+uci set firewall.guest_zone.forward='REJECT'
+uci set firewall.guest_zone.input='REJECT'
+uci set firewall.guest_zone.network='guest'
 uci commit firewall
 
+uci set firewall.guest_to_wan_forwarding=forwarding
+uci set firewall.guest_to_wan_forwarding.src='guest'
+uci set firewall.guest_to_wan_forwarding.dest='wan'
+uci commit firewall
+
+uci set firewall.iot=zone
+uci set firewall.iot.name='iot'
+uci set firewall.iot.output='ACCEPT'
+uci set firewall.iot.forward='REJECT'
+uci set firewall.iot.input='REJECT'
+uci set firewall.iot.network='iot'
+uci commit firewall
+
+# TODO: make this proper
+# Probably we only want the WAN here?
+# In-network communication should be handled out-of-the-box
 uci set firewall.vpn=zone
 uci set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
 uci set firewall.vpn.input='ACCEPT'
@@ -25,26 +41,21 @@ uci set firewall.vpn.forward='ACCEPT'
 uci set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
 uci commit firewall
 
-uci set firewall.guesttowanforwarding=forwarding
-uci set firewall.guesttowanforwarding.src='guest'
-uci set firewall.guesttowanforwarding.dest='wan'
-uci commit firewall
-
-uci set firewall.vpntowanforwarding=forwarding
-uci set firewall.vpntowanforwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
-uci set firewall.vpntowanforwarding.dest='wan'
+uci set firewall.vpn_to_wan_forwarding=forwarding
+uci set firewall.vpn_to_wan_forwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_to_wan_forwarding.dest='wan'
 uci commit firewall
 
 # Does this actually do anything?
 # Or is it enough to rely on the https-dns-proxy to do this?
-uci set firewall.vpndnsredirect=redirect
-uci set firewall.vpndnsredirect.dest='lan'
-uci set firewall.vpndnsredirect.target='DNAT'
-uci set firewall.vpndnsredirect.name='Redirect VPN DNS'
-uci set firewall.vpndnsredirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
-uci set firewall.vpndnsredirect.src_dport='53'
-uci set firewall.vpndnsredirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
-uci set firewall.vpndnsredirect.dest_port='53'
+uci set firewall.vpn_dns_redirect=redirect
+uci set firewall.vpn_dns_redirect.dest='lan'
+uci set firewall.vpn_dns_redirect.target='DNAT'
+uci set firewall.vpn_dns_redirect.name='Redirect VPN DNS'
+uci set firewall.vpn_dns_redirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_dns_redirect.src_dport='53'
+uci set firewall.vpn_dns_redirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
+uci set firewall.vpn_dns_redirect.dest_port='53'
 uci commit firewall
 
 # Is this needed?
@@ -59,79 +70,150 @@ uci commit firewall
 #uci set firewall.@rule[9].enabled='0'
 #uci commit firewall
 
-# Does this work?
-# WAN Router is a gateway in the end anyway
-uci set firewall.denyguestwanrouteraccess=rule
-uci set firewall.denyguestwanrouteraccess.src='guest'
-uci set firewall.denyguestwanrouteraccess.dest='wan'
-uci set firewall.denyguestwanrouteraccess.dest_ip='${WAN_IPADDR_GATEWAY_TEMPLATE}'
-uci set firewall.denyguestwanrouteraccess.target='REJECT'
-uci set firewall.denyguestwanrouteraccess.name='Deny-Guest-WAN-Router-Access'
+uci set firewall.allow_wan_vpn=rule
+uci set firewall.allow_wan_vpn.name='Allow-Wireguard-VPN-From-WAN'
+uci set firewall.allow_wan_vpn.proto='udp'
+uci set firewall.allow_wan_vpn.src='wan'
+uci set firewall.allow_wan_vpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
+uci set firewall.allow_wan_vpn.target='ACCEPT'
 uci commit firewall
 
-# Does this work?
-# Similar situation to the one above
-uci set firewall.denyguestlanrouteraccess=rule
-uci set firewall.denyguestlanrouteraccess.name='Deny-Guest-LAN-Router-Access'
-uci set firewall.denyguestlanrouteraccess.src='guest'
-uci set firewall.denyguestlanrouteraccess.dest='lan'
-uci set firewall.denyguestlanrouteraccess.dest_ip='${LAN_IPADDR_TEMPLATE}'
-uci set firewall.denyguestlanrouteraccess.target='REJECT'
+uci set firewall.allow_lan_guest_router_access=rule
+uci set firewall.allow_lan_guest_router_access.name='Allow-Guest-Router-Access-From-LAN'
+uci set firewall.allow_lan_guest_router_access.src='lan'
+uci set firewall.allow_lan_guest_router_access.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
+uci set firewall.allow_lan_guest_router_access.target='ACCEPT'
+uci set firewall.allow_lan_guest_router_access.dest='guest'
 uci commit firewall
 
-uci set firewall.allowwanvpn=rule
-uci set firewall.allowwanvpn.name='Allow-Wireguard-VPN-From-WAN'
-uci set firewall.allowwanvpn.proto='udp'
-uci set firewall.allowwanvpn.src='wan'
-uci set firewall.allowwanvpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
-uci set firewall.allowwanvpn.target='ACCEPT'
-uci commit firewall
-
-uci set firewall.allowlanguestrouteraccess=rule
-uci set firewall.allowlanguestrouteraccess.name='Allow-Guest-Router-Access-From-LAN'
-uci set firewall.allowlanguestrouteraccess.src='lan'
-uci set firewall.allowlanguestrouteraccess.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
-uci set firewall.allowlanguestrouteraccess.target='ACCEPT'
-uci set firewall.allowlanguestrouteraccess.dest='guest'
-uci commit firewall
-
-uci set firewall.allowmdnslanbroadcast=rule
-uci set firewall.allowmdnslanbroadcast.name='Allow-mDNS-lan-broadcast'
-uci set firewall.allowmdnslanbroadcast.proto='udp'
-uci set firewall.allowmdnslanbroadcast.src='lan'
-uci set firewall.allowmdnslanbroadcast.target='ACCEPT'
-uci set firewall.allowmdnslanbroadcast.src_port='5353'
-uci set firewall.allowmdnslanbroadcast.dest_port='5353'
+# MDNS broadcast for lan
+uci set firewall.allow_mdns_lan_broadcast=rule
+uci set firewall.allow_mdns_lan_broadcast.name='Allow-mDNS-lan-broadcast'
+uci set firewall.allow_mdns_lan_broadcast.proto='udp'
+uci set firewall.allow_mdns_lan_broadcast.src='lan'
+uci set firewall.allow_mdns_lan_broadcast.target='ACCEPT'
+uci set firewall.allow_mdns_lan_broadcast.src_port='5353'
+uci set firewall.allow_mdns_lan_broadcast.dest_port='5353'
 # Key may not exist
-uci del firewall.allowmdnslanbroadcast.dest_ip || true
-uci add_list firewall.allowmdnslanbroadcast.dest_ip='224.0.0.251'
-#uci add_list firewall.allowmdnslanbroadcast.dest_ip='ff02::fb'
+uci del firewall.allow_mdns_lan_broadcast.dest_ip || true
+uci add_list firewall.allow_mdns_lan_broadcast.dest_ip='224.0.0.251'
+#uci add_list firewall.allow_mdns_lan_broadcast.dest_ip='ff02::fb'
 uci commit firewall
 
-# This should be changed to IoT network when defined
-uci set firewall.allowmdnsguestbroadcast=rule
-uci set firewall.allowmdnsguestbroadcast.name='Allow-mDNS-guest-bridge-broadcast'
-uci set firewall.allowmdnsguestbroadcast.proto='udp'
-uci set firewall.allowmdnsguestbroadcast.src='guest'
-uci set firewall.allowmdnsguestbroadcast.target='ACCEPT'
-uci set firewall.allowmdnsguestbroadcast.src_port='5353'
-uci set firewall.allowmdnsguestbroadcast.dest_port='5353'
+# MDNS broadcast for iot
+uci set firewall.allow_mdns_iot_broadcast=rule
+uci set firewall.allow_mdns_iot_broadcast.name='Allow-mDNS-iot-bridge-broadcast'
+uci set firewall.allow_mdns_iot_broadcast.proto='udp'
+uci set firewall.allow_mdns_iot_broadcast.src='iot'
+uci set firewall.allow_mdns_iot_broadcast.target='ACCEPT'
+uci set firewall.allow_mdns_iot_broadcast.src_port='5353'
+uci set firewall.allow_mdns_iot_broadcast.dest_port='5353'
+uci set firewall.allow_mdns_iot_broadcast.enabled='0'
 # Key may not exist
-uci del firewall.allowmdnsguestbroadcast.dest_ip || true
-uci add_list firewall.allowmdnsguestbroadcast.dest_ip='224.0.0.251'
-#uci add_list firewall.allowmdnsguestbroadcast.dest_ip='ff02::fb'
+uci del firewall.allow_mdns_iot_broadcast.dest_ip || true
+uci add_list firewall.allow_mdns_iot_broadcast.dest_ip='224.0.0.251'
+#uci add_list firewall.allow_mdns_iot_broadcast.dest_ip='ff02::fb'
 uci commit firewall
 
-# TODO: rework this into IOT_BRIDGE_IP
-if [ -n '${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
+# Allow DHCP and DNS from guest network
+uci set firewall.allow_dhcp_guest=rule
+uci set firewall.allow_dhcp_guest.name='Allow-GUEST-DHCP-DNS-ICMP'
+uci del firewall.allow_dhcp_guest.proto || true
+uci add_list firewall.allow_dhcp_guest.proto='tcp'
+uci add_list firewall.allow_dhcp_guest.proto='udp'
+uci add_list firewall.allow_dhcp_guest.proto='icmp'
+uci set firewall.allow_dhcp_guest.target='ACCEPT'
+uci set firewall.allow_dhcp_guest.src='guest'
+uci set firewall.allow_dhcp_guest.dest_port='53 67 68'
+
+# Allow DHCP and DNS from IOT network
+uci set firewall.allow_dhcp_iot=rule
+uci set firewall.allow_dhcp_iot.name='Allow-IOT-DHCP-DNS-ICMP'
+uci del firewall.allow_dhcp_iot.proto || true
+uci add_list firewall.allow_dhcp_iot.proto='tcp'
+uci add_list firewall.allow_dhcp_iot.proto='udp'
+uci add_list firewall.allow_dhcp_iot.proto='icmp'
+uci set firewall.allow_dhcp_iot.target='ACCEPT'
+uci set firewall.allow_dhcp_iot.src='iot'
+uci set firewall.allow_dhcp_iot.dest_port='53 67 68'
+
+# Allow WAN access to some IOT IPs
+uci set firewall.iot_internet_access=rule
+uci set firewall.iot_internet_access.src='iot'
+uci set firewall.iot_internet_access.dest='wan'
+uci set firewall.iot_internet_access.target='ACCEPT'
+uci set firewall.iot_internet_access.name='Allow-IoT-Internet-Access'
+uci set firewall.iot_internet_access.proto='all'
+uci set firewall.iot_internet_access.enabled='0'
+
+# Allow IOT access to some LAN IPs
+uci set firewall.lan_iot_allowed_access=rule
+uci set firewall.lan_iot_allowed_access.src='lan'
+uci set firewall.lan_iot_allowed_access.dest='iot'
+uci set firewall.lan_iot_allowed_access.target='ACCEPT'
+uci set firewall.lan_iot_allowed_access.name='Allow-LAN-To-IoT-Access'
+uci add_list firewall.lan_iot_allowed_access.proto='tcp'
+uci add_list firewall.lan_iot_allowed_access.proto='udp'
+uci add_list firewall.lan_iot_allowed_access.proto='icmp'
+uci set firewall.lan_iot_allowed_access.enabled='0'
+
+# Allow some LAN access to IoT IPs (this is inversion of the above)
+# Example use-case would be a camera needing to write to Apple TV in LAN
+uci set firewall.iot_lan_allowed_access=rule
+uci set firewall.iot_lan_allowed_access.src='iot'
+uci set firewall.iot_lan_allowed_access.dest='lan'
+uci set firewall.iot_lan_allowed_access.target='ACCEPT'
+uci set firewall.iot_lan_allowed_access.name='Allow-IoT-To-LAN-Access'
+uci add_list firewall.iot_lan_allowed_access.proto='tcp'
+uci add_list firewall.iot_lan_allowed_access.proto='udp'
+uci add_list firewall.iot_lan_allowed_access.proto='icmp'
+uci set firewall.iot_lan_allowed_access.enabled='0'
+
+
+if [ -n '${IOT_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
-  TEMP_VARIABLE='${GUEST_MDNS_ALLOWED_IPS_TEMPLATE}'
+  TEMP_VARIABLE='${IOT_MDNS_ALLOWED_IPS_TEMPLATE}'
   # Key may not exist
-  uci del firewall.allowmdnsguestbroadcast.src_ip || true
+  uci del firewall.allow_mdns_iot_broadcast.src_ip || true
+  # Enable the rule
+  uci del firewall.allow_mdns_iot_broadcast.enabled || true
 
   # No double quotes to allow iteration over whitespace
   for ip in ${TEMP_VARIABLE} ; do
-    uci add_list "firewall.allowmdnsguestbroadcast.src_ip=${ip}"
+    uci add_list "firewall.allow_mdns_iot_broadcast.src_ip=${ip}"
+  done
+  uci commit firewall
+fi
+
+if [ -n '${IOT_INTERNET_ALLOWED_IPS_TEMPLATE}' ]; then
+  # Use TEMP_VARIABLE to work properly with first-pass templating
+  TEMP_VARIABLE='${IOT_INTERNET_ALLOWED_IPS_TEMPLATE}'
+  # Key may not exist
+  uci del firewall.iot_internet_access.src_ip || true
+  # Enable the rule
+  uci del firewall.iot_internet_access.enabled || true
+
+  # No double quotes to allow iteration over whitespace
+  for ip in ${TEMP_VARIABLE} ; do
+    uci add_list "firewall.iot_internet_access.src_ip=${ip}"
+  done
+  uci commit firewall
+fi
+
+if [ -n '${LAN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
+  # Use TEMP_VARIABLE to work properly with first-pass templating
+  TEMP_VARIABLE='${LAN_IOT_ALLOWED_IPS_TEMPLATE}'
+  # Key may not exist
+  uci del firewall.lan_iot_allowed_access.src_ip || true
+  uci del firewall.iot_lan_allowed_access.dest_ip || true
+  # Enable the rule
+  uci del firewall.lan_iot_allowed_access.enabled || true
+  uci del firewall.iot_lan_allowed_access.enabled || true
+
+  # No double quotes to allow iteration over whitespace
+  for ip in ${TEMP_VARIABLE} ; do
+    uci add_list "firewall.lan_iot_allowed_access.src_ip=${ip}"
+    uci add_list "firewall.iot_lan_allowed_access.dest_ip=${ip}"
   done
   uci commit firewall
 fi

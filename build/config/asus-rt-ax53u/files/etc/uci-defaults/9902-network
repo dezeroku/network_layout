@@ -1,0 +1,61 @@
+uci -q batch << EOI
+set network.globals.ula_prefix='${GLOBAL_ULA_PREFIX_TEMPLATE}'
+
+# Set up interfaces
+set network.lan.ipaddr='${LAN_IPADDR_TEMPLATE}'
+set network.lan.gateway='${LAN_IPADDR_GATEWAY_TEMPLATE}'
+del network.lan.dns
+add_list network.lan.dns='${LAN_IPADDR_DNS_TEMPLATE}'
+del network.lan.ip6assign
+set network.lan.device='br-lan.99'
+
+set network.iot=interface
+set network.iot.proto='none'
+set network.iot.device='br-lan.30'
+
+set network.guest=interface
+set network.guest.proto='none'
+set network.guest.device='br-lan.20'
+
+# Set up VLANs
+set network.bridge_vlan_guest='bridge-vlan'
+set network.bridge_vlan_guest.device='br-lan'
+set network.bridge_vlan_guest.vlan='20'
+add_list network.bridge_vlan_guest.ports='lan1:t'
+add_list network.bridge_vlan_guest.ports='lan2'
+
+set network.bridge_vlan_iot='bridge-vlan'
+set network.bridge_vlan_iot.device='br-lan'
+set network.bridge_vlan_iot.vlan='30'
+add_list network.bridge_vlan_iot.ports='lan1:t'
+add_list network.bridge_vlan_iot.ports='lan3'
+
+set network.bridge_vlan_lan='bridge-vlan'
+set network.bridge_vlan_lan.device='br-lan'
+set network.bridge_vlan_lan.vlan='99'
+add_list network.bridge_vlan_lan.ports='lan1:t'
+
+commit network
+
+# Get rid of DHCP for guest
+#set dhcp.lan.ignore='1'
+#del dhcp.lan.ra
+#del dhcp.lan.ra_slaac
+#del dhcp.lan.ra_flags
+#del dhcp.lan.dhcpv6
+#commit dhcp
+
+EOI
+
+# Apply changes
+/etc/init.d/network restart
+
+# Get rid of DHCP, DHCPv6 and firewall that are not needed on a dumb AP
+/etc/init.d/dnsmasq disable
+/etc/init.d/dnsmasq stop || true
+
+/etc/init.d/odhcpd disable
+/etc/init.d/odhcpd stop || true
+
+/etc/init.d/firewall disable
+/etc/init.d/firewall stop || true

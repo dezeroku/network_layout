@@ -24,11 +24,13 @@ export LAN_IPADDR_GATEWAY_TEMPLATE='192.168.240.99'
 export WAN_IPADDR_GATEWAY_TEMPLATE='192.168.240.1'
 export GUEST_IPADDR_TEMPLATE='192.168.2.1'
 export GUEST_ROUTER_IP_TEMPLATE='192.168.2.2'
+export IOT_IPADDR_TEMPLATE='192.168.3.1'
+export IOT_ROUTER_IP_TEMPLATE='192.168.3.2'
 
 # 9903-wireless
 export WIRELESS_COUNTRY_TEMPLATE='PL'
-export WIRELESS_ONE_NETWORK_TEMPLATE='guest'
-export WIRELESS_ONE_SSID_TEMPLATE='SomeNetwork'
+export WIRELESS_ONE_NETWORK_TEMPLATE='lan'
+export WIRELESS_ONE_SSID_TEMPLATE='SomeNetworkRecovery'
 export WIRELESS_ONE_KEY_TEMPLATE='testtest'
 export WIRELESS_ONE_ENCRYPTION_TEMPLATE='sae-mixed'
 
@@ -68,9 +70,17 @@ END_HEREDOC
 # 9909-firewall
 # Remember to run uci commit at the end if you decide to use it
 export FIREWALL_CUSTOM_RULES_TEMPLATE=""
-# Set to space-separated IPs, if you want to limit the mDNS capabilities of guest (TODO: IOT) network
-# TODO: rework into IOT_MDNS_ALLOWED_IPS_TEMPLATE
-export GUEST_MDNS_ALLOWED_IPS_TEMPLATE=""
+# Tip: for all the ips that you are going to list below,
+# set up static DHCP leases in secret-variables file that you maintain
+# Set to space-separated IPs, if you want to allow some devices to propagate mDNS throughout the networks
+# This is created with IoT hubs/connectors in mind mostly
+export IOT_MDNS_ALLOWED_IPS_TEMPLATE=""
+export IOT_INTERNET_ALLOWED_IPS_TEMPLATE=""
+# This variable lists "bridges" that can both communicate to IOT network and receive packages from it
+# The IPs must be in LAN network
+# This is created with IoT hubs/connectors in mind mostly
+# Devices listed here can both communicate to IoT and receive communication from it
+export LAN_IOT_ALLOWED_IPS_TEMPLATE=""
 
 # 9911-letsencrypt
 # This is tailored specifically for Route53 at the moment

@@ -14,6 +14,12 @@ set dhcp.guest.start='100'
 set dhcp.guest.limit='150'
 set dhcp.guest.leasetime='12h'
 
+set dhcp.iot=dhcp
+set dhcp.iot.interface='iot'
+set dhcp.iot.start='100'
+set dhcp.iot.limit='150'
+set dhcp.iot.leasetime='12h'
+
 ${DHCP_CUSTOM_HOSTS_CONFIG_TEMPLATE}
 
 commit dhcp

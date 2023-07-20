@@ -22,3 +22,5 @@ commit uhttpd
 set irqbalance.irqbalance.enabled='1'
 commit irqbalance
 EOI
+
+/etc/init.d/irqbalance start

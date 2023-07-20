@@ -55,6 +55,8 @@ fi
 if [ -d "${BUILDDIR}/files" ]; then
 	echo "========= TEMPLATED_PART ========="
 	find "${BUILDDIR}/files" -type f | sort | while read -r f; do
-		dump_file "${f}" "${f#"${BUILDDIR}/files"}"
+		if [[ ! "${f}" =~ ^.*\/etc\/custom-version-file$ ]]; then
+			dump_file "${f}" "${f#"${BUILDDIR}/files"}"
+		fi
 	done
 fi

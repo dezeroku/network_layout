@@ -1,11 +1,10 @@
 set -e
 
-# TODO: we need repeating from IoT network when it's added
-# probably the eth2 for guest network can be removed then?
-
-uci del mdns_repeater.main.interface
-uci add_list mdns_repeater.main.interface='eth2'
-uci add_list mdns_repeater.main.interface='br-lan'
+# We only want the IoT and LAN to be able to see each other
+# So not listing the guest VLAN here
+uci del mdns_repeater.main.interface || true
+uci add_list mdns_repeater.main.interface='br-lan.30'
+uci add_list mdns_repeater.main.interface='br-lan.99'
 uci commit
 
 /etc/init.d/mdns-repeater restart
