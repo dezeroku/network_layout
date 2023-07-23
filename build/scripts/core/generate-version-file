@@ -50,3 +50,11 @@ if [ -d "${DEVICE_DIR}/files" ]; then
 		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"
 	done
 fi
+
+# Dump the templated "files/" dir if present
+if [ -d "${BUILDDIR}/files" ]; then
+	echo "========= TEMPLATED_PART ========="
+	find "${BUILDDIR}/files" -type f | sort | while read -r f; do
+		dump_file "${f}" "${f#"${BUILDDIR}/files"}"
+	done
+fi
