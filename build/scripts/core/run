@@ -6,15 +6,26 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 # shellcheck source=build/scripts/common.sh
 . "${SCRIPTS_DIR}/common.sh"
 
-[ -z "${CCACHE_STORAGE:-}" ] && CCACHE_STORAGE="$(readlink -f "${SCRIPTS_DIR}/../builds/ccache-target-storage")"
-[ -d "${CCACHE_STORAGE}" ] || mkdir "${CCACHE_STORAGE}"
+# Prepare separate cache directories for each environment
+BUILDDIR_SUFFIX="$(basename "${BUILDDIR}")"
 
-[ -z "${CCACHE_HOST_STORAGE:-}" ] && CCACHE_HOST_STORAGE="$(readlink -f "${SCRIPTS_DIR}/../builds/sccache-host-storage")"
-[ -d "${CCACHE_HOST_STORAGE}" ] || mkdir "${CCACHE_HOST_STORAGE}"
+if [ -z "${CCACHE_TARGET_STORAGE:-}" ]; then
+	CCACHE_TARGET_STORAGE="${SCRIPTS_DIR}/../builds/ccache-target-storage/${BUILDDIR_SUFFIX}"
+	[ -d "${CCACHE_TARGET_STORAGE}" ] || mkdir -p "${CCACHE_TARGET_STORAGE}"
+	CCACHE_TARGET_STORAGE="$(readlink -f "${CCACHE_TARGET_STORAGE}")"
+
+	echo "max_size = 0" >"${CCACHE_TARGET_STORAGE}/ccache.conf"
+fi
+
+if [ -z "${CCACHE_HOST_STORAGE:-}" ]; then
+	CCACHE_HOST_STORAGE="${SCRIPTS_DIR}/../builds/sccache-host-storage/${BUILDDIR_SUFFIX}"
+	[ -d "${CCACHE_HOST_STORAGE}" ] || mkdir -p "${CCACHE_HOST_STORAGE}"
+	CCACHE_HOST_STORAGE="$(readlink -f "${CCACHE_HOST_STORAGE}")"
+fi
 
 exec docker run --rm -it \
 	-e "SCCACHE_CACHE_SIZE=50G" \
 	-v "${PWD}:/builder" \
-	-v "${CCACHE_STORAGE}:/ccache-storage" \
+	-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
 	-v "${CCACHE_HOST_STORAGE}:/home/builder/.cache/sccache" \
 	openwrt-builder "$@"

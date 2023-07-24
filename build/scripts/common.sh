@@ -57,7 +57,11 @@ function parse_env_args() {
 	# shellcheck source=build/config/rpi4b/variables
 	. "${DEVICE_ENV_FILE}"
 
-	[ -z "${BUILDDIR:-}" ] && BUILDDIR="$(readlink -f "${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}")"
+	if [ -z "${BUILDDIR:-}" ]; then
+		mkdir -p "${SCRIPTS_DIR}/../builds"
+		BUILDDIR="${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}"
+	fi
+
 	[ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
 	BUILDDIR="$(readlink -f "${BUILDDIR}")"
