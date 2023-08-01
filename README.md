@@ -21,8 +21,8 @@ There are three "LAN" interfaces at the moment and a single "WAN":
 
 1. WAN to connect ISP router (192.168.240.1, no AP) with a main router (192.168.240.99), that's put in a DMZ
 2. LAN (192.168.1.1/24) exposed over Ethernet switch + wirelessly on both 2.4 and 5 GHz using the main AP
-3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions (except for devserver)
-4. IOT network (192.168.3.1/24) exposed using AP router, completely isolated from LAN both directions (except for iotserver bridge)
+3. Guest network (192.168.2.1/24) exposed using AP router, completely isolated from LAN both directions (except for `devserver`)
+4. IOT network (192.168.3.1/24) exposed using AP router, completely isolated from LAN both directions (except for iotserver bridge, also called `homeserver`, whose configuration is defined [here](https://github.com/dezeroku/home_server))
 5. VPN (10.200.200.1/24, wireguard) managed by main router
 
 All of the real logic is done on the main router's level, including DNS and DHCP.
