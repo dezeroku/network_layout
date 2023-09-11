@@ -133,3 +133,7 @@ This may happen if you lose the checkout or the file due to e.g. a disk outage
 
 In this case it's possible to check all the information required to reproduce the build by looking at `/etc/custom-version-file` file in the built image.
 This file also persists when flashed on the device.
+
+## Further wrappers
+
+Sometimes issues can occur with builds running in Docker (didn't really dig into the details), it usually helps to wrap these further and run in VM `vagrant-setup` or remotely with `ec2-build` (this can also significantly speed up the build, but for a price).
