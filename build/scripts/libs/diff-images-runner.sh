@@ -32,4 +32,4 @@ unpack_image "${SECOND}" second
 
 du -s first second
 
-diff -r first second --no-dereference
+diff -r first second --no-dereference --exclude custom-version-file
