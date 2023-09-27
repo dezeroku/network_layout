@@ -17,7 +17,10 @@ Few pointers:
 ./vagrant_build time DEVICE=<DEVICE> SKIP_DOWNLOADS=true ./scripts/core/end-to-end-build
 ```
 
-Remember to `scp` or `rsync` the built files back to your local machine!
+For convenience the `bin` directory of build directories will be synced back to your local machine to `outputs` directory.
+Don't make any manual changes in `outputs` as they will get overridden by the `rsync` during copying.
+
+You can also use `scp` or `rsync` to get the files back to your local machine.
 For example:
 
 ```

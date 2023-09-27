@@ -23,7 +23,7 @@ if [ -z "${CCACHE_HOST_STORAGE:-}" ]; then
 	CCACHE_HOST_STORAGE="$(readlink -f "${CCACHE_HOST_STORAGE}")"
 fi
 
-exec docker run --rm -it \
+exec docker run --rm -i \
 	-e "SCCACHE_CACHE_SIZE=50G" \
 	-v "${PWD}:/builder" \
 	-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
