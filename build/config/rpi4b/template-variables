@@ -76,11 +76,15 @@ export FIREWALL_CUSTOM_RULES_TEMPLATE=""
 # This is created with IoT hubs/connectors in mind mostly
 export IOT_MDNS_ALLOWED_IPS_TEMPLATE=""
 export IOT_INTERNET_ALLOWED_IPS_TEMPLATE=""
+
 # This variable lists "bridges" that can both communicate to IOT network and receive packages from it
 # The IPs must be in LAN network
 # This is created with IoT hubs/connectors in mind mostly
 # Devices listed here can both communicate to IoT and receive communication from it
 export LAN_IOT_ALLOWED_IPS_TEMPLATE=""
+
+# This variable lists IOT IPs that can be accessed from within the VPN
+export VPN_IOT_ALLOWED_IPS_TEMPLATE=""
 
 # 9911-letsencrypt
 # This is tailored specifically for Route53 at the moment

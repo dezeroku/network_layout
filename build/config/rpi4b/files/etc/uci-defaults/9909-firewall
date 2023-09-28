@@ -11,9 +11,9 @@ uci commit firewall
 
 uci set firewall.guest_zone=zone
 uci set firewall.guest_zone.name='guest'
+uci set firewall.guest_zone.input='REJECT'
 uci set firewall.guest_zone.output='ACCEPT'
 uci set firewall.guest_zone.forward='REJECT'
-uci set firewall.guest_zone.input='REJECT'
 uci set firewall.guest_zone.network='guest'
 uci commit firewall
 
@@ -24,20 +24,17 @@ uci commit firewall
 
 uci set firewall.iot=zone
 uci set firewall.iot.name='iot'
+uci set firewall.iot.input='REJECT'
 uci set firewall.iot.output='ACCEPT'
 uci set firewall.iot.forward='REJECT'
-uci set firewall.iot.input='REJECT'
 uci set firewall.iot.network='iot'
 uci commit firewall
 
-# TODO: make this proper
-# Probably we only want the WAN here?
-# In-network communication should be handled out-of-the-box
 uci set firewall.vpn=zone
 uci set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
 uci set firewall.vpn.input='ACCEPT'
 uci set firewall.vpn.output='ACCEPT'
-uci set firewall.vpn.forward='ACCEPT'
+uci set firewall.vpn.forward='REJECT'
 uci set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
 uci commit firewall
 
@@ -45,6 +42,16 @@ uci set firewall.vpn_to_wan_forwarding=forwarding
 uci set firewall.vpn_to_wan_forwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
 uci set firewall.vpn_to_wan_forwarding.dest='wan'
 uci commit firewall
+
+# Allow the VPN in-zone traffic
+# so hosts can talk to each other
+# TODO: does it differ from the "forward" option of the zone itself?
+uci set firewall.vpn_in_zone_traffic=rule
+uci set firewall.vpn_in_zone_traffic.name='Allow VPN in-zone traffic'
+uci set firewall.vpn_in_zone_traffic.proto='all'
+uci set firewall.vpn_in_zone_traffic.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_in_zone_traffic.dest='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_in_zone_traffic.target='ACCEPT'
 
 # Does this actually do anything?
 # Or is it enough to rely on the https-dns-proxy to do this?
@@ -137,6 +144,17 @@ uci set firewall.allow_dhcp_iot.target='ACCEPT'
 uci set firewall.allow_dhcp_iot.src='iot'
 uci set firewall.allow_dhcp_iot.dest_port='53 67 68'
 
+# Allow DNS from VPN network
+uci set firewall.allow_dhcp_vpn=rule
+uci set firewall.allow_dhcp_vpn.name='Allow-VPN-DNS-ICMP'
+uci del firewall.allow_dhcp_vpn.proto || true
+uci add_list firewall.allow_dhcp_vpn.proto='tcp'
+uci add_list firewall.allow_dhcp_vpn.proto='udp'
+uci add_list firewall.allow_dhcp_vpn.proto='icmp'
+uci set firewall.allow_dhcp_vpn.target='ACCEPT'
+uci set firewall.allow_dhcp_vpn.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.allow_dhcp_vpn.dest_port='53 67 68'
+
 # Allow WAN access to some IOT IPs
 uci set firewall.iot_internet_access=rule
 uci set firewall.iot_internet_access.src='iot'
@@ -156,6 +174,17 @@ uci add_list firewall.lan_iot_allowed_access.proto='tcp'
 uci add_list firewall.lan_iot_allowed_access.proto='udp'
 uci add_list firewall.lan_iot_allowed_access.proto='icmp'
 uci set firewall.lan_iot_allowed_access.enabled='0'
+
+# Allow some IOT access from VPN
+uci set firewall.vpn_iot_allowed_access=rule
+uci set firewall.vpn_iot_allowed_access.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_iot_allowed_access.dest='iot'
+uci set firewall.vpn_iot_allowed_access.target='ACCEPT'
+uci set firewall.vpn_iot_allowed_access.name='Allow-VPN-To-IoT-Access'
+uci add_list firewall.vpn_iot_allowed_access.proto='tcp'
+uci add_list firewall.vpn_iot_allowed_access.proto='udp'
+uci add_list firewall.vpn_iot_allowed_access.proto='icmp'
+uci set firewall.vpn_iot_allowed_access.enabled='0'
 
 # Allow some LAN access to IoT IPs (this is inversion of the above)
 # Example use-case would be a camera needing to write to Apple TV in LAN
@@ -218,6 +247,20 @@ if [ -n '${LAN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
   uci commit firewall
 fi
 
+if [ -n '${VPN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
+  # Use TEMP_VARIABLE to work properly with first-pass templating
+  TEMP_VARIABLE='${VPN_IOT_ALLOWED_IPS_TEMPLATE}'
+  # Key may not exist
+  uci del firewall.vpn_iot_allowed_access.src_ip || true
+  # Enable the rule
+  uci del firewall.vpn_iot_allowed_access.enabled || true
+
+  # No double quotes to allow iteration over whitespace
+  for ip in ${TEMP_VARIABLE} ; do
+    uci add_list "firewall.vpn_iot_allowed_access.dest_ip=${ip}"
+  done
+  uci commit firewall
+fi
 
 ${FIREWALL_CUSTOM_RULES_TEMPLATE}
 
