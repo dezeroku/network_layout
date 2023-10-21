@@ -8,7 +8,8 @@ apt-get upgrade -y
 SCRIPT
 
 $script = <<-SCRIPT
-apt-get install -y git docker.io
+# The last two are for the scripts/utils in this repo
+apt-get install -y git docker.io dos2unix moreutils
 sudo usermod -aG docker vagrant
 SCRIPT
 
