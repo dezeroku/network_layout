@@ -116,7 +116,7 @@ Thanks to this mechanism you can keep only a list of entries that are custom to 
 2. Get new `config.buildinfo` for the release and put it in `config/<DEVICE>/config.orig`
 3. (Recommended) Remove old workspace in `builds`
 4. Run `end-to-end-build` script with `ONLY_INITIALIZE_WORKSPACE=true` in your env
-5. Use `scripts/utils/generate-diffconfig.sh` to override `config/<DEVICE>/config` and check the changes
+5. Use `scripts/utils/generate-diffconfig` to override `config/<DEVICE>/config` and check the changes
 6. Run the build as usual with `end-to-end-build` script
 
 For the convenvience this can be done by calling `scripts/utils/update-openwrt-version`
