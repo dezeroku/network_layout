@@ -16,3 +16,8 @@ Base `.config` from upstream (generic ramips/mt7621): [config.orig](https://down
 
 1. `iperf3` for local network speedtesting
 2. `iw-full` for WLAN runtime configuration if needed
+
+## Tips
+
+1. You can go to `files/etc/dropbear` and run the `generate_host_keys.sh` script, so the host keys stay the same when flashing new images
+   This makes the process a little bit less annoying (less modifications to `~/.ssh/known_hosts` needed)
