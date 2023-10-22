@@ -8,8 +8,7 @@ uci -q get acme.routerhostname && uci del acme.routerhostname
 
 uci set acme.routerhostname=cert
 uci set acme.routerhostname.enabled='1'
-uci set acme.routerhostname.keylength='2048'
-uci set acme.routerhostname.update_uhttpd='1'
+uci set acme.routerhostname.keysize='rsa2048'
 uci set acme.routerhostname.validation_method='dns'
 uci set acme.routerhostname.dns='${LETSENCRYPT_DNS_VERIFICATION_TEMPLATE}'
 
@@ -24,7 +23,7 @@ uci commit acme
 
 # Make sure that it's set
 uci set uhttpd.main.redirect_https='on'
+
 uci commit uhttpd
 
-/etc/init.d/acme start
 fi
