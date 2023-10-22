@@ -46,3 +46,5 @@ Perform a reboot afterwards to apply the settings
 1. It seems that manual "reset" is required after the new sysupgrade is uploaded.
    Without it, there are some leftovers?
 2. 512MiB SD card is required to flash the generated image (because of the partition sizes)
+3. You can go to `files/etc/dropbear` and run the `generate_host_keys.sh` script, so the host keys stay the same when flashing new images
+   This makes the process a little bit less annoying (less modifications to `~/.ssh/known_hosts` needed)
