@@ -5,6 +5,7 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
 # shellcheck source=build/scripts/common.sh
 . "${SCRIPTS_DIR}/common.sh"
+parse_env_args
 
 # Prepare separate cache directories for each environment
 BUILDDIR_SUFFIX="$(basename "${BUILDDIR}")"
@@ -23,7 +24,12 @@ if [ -z "${CCACHE_HOST_STORAGE:-}" ]; then
 	CCACHE_HOST_STORAGE="$(readlink -f "${CCACHE_HOST_STORAGE}")"
 fi
 
-exec docker run --rm -i \
+ADDITIONAL_DOCKER_FLAGS=""
+if [[ "${INTERACTIVE_USAGE:-}" == "true" ]]; then
+	ADDITIONAL_DOCKER_FLAGS="-t"
+fi
+
+exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
 	-e "SCCACHE_CACHE_SIZE=50G" \
 	-v "${PWD}:/builder" \
 	-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
