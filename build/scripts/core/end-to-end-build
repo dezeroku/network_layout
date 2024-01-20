@@ -13,9 +13,11 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 . "${SCRIPTS_DIR}"/common.sh
 parse_env_args
 
-echoerr "Build docker build environment image"
-sleep "${SLEEP_BETWEEN_STAGES}"
-"${SCRIPTS_DIR}/core/setup-image"
+if [[ ! "${SKIP_DOCKER_SETUP}" == "true" ]]; then
+	echoerr "Build docker build environment image"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	"${SCRIPTS_DIR}/core/setup-image"
+fi
 
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
 	echoerr "Clone the openwrt repo"

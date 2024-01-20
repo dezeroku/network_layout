@@ -5,7 +5,12 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
 # shellcheck source=build/scripts/common.sh
 . "${SCRIPTS_DIR}/common.sh"
-parse_env_args
+#parse_env_args
+# just an excerpt
+if [ -z "${BUILDDIR:-}" ]; then
+	mkdir -p "${SCRIPTS_DIR}/../builds"
+	BUILDDIR="${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}"
+fi
 
 # Prepare separate cache directories for each environment
 BUILDDIR_SUFFIX="$(basename "${BUILDDIR}")"
@@ -24,14 +29,22 @@ if [ -z "${CCACHE_HOST_STORAGE:-}" ]; then
 	CCACHE_HOST_STORAGE="$(readlink -f "${CCACHE_HOST_STORAGE}")"
 fi
 
-ADDITIONAL_DOCKER_FLAGS=""
+ADDITIONAL_DOCKER_FLAGS="${ADDITIONAL_DOCKER_FLAGS:-}"
 if [[ "${INTERACTIVE_USAGE:-}" == "true" ]]; then
 	ADDITIONAL_DOCKER_FLAGS="-t"
 fi
 
-exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
-	-e "SCCACHE_CACHE_SIZE=50G" \
-	-v "${PWD}:/builder" \
-	-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
-	-v "${CCACHE_HOST_STORAGE}:/home/builder/.cache/sccache" \
-	openwrt-builder "$@"
+if [[ "${NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN:-}" != "true" ]]; then
+	# shellcheck disable=SC2086
+	exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
+		-e "SCCACHE_CACHE_SIZE=50G" \
+		-e "NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN=true" \
+		-v "${PWD}:/builder" \
+		-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
+		-v "${CCACHE_HOST_STORAGE}:/home/builder/.cache/sccache" \
+		openwrt-builder "$@"
+else
+	# We are already in the container, don't nest
+	echoerr "scripts/core/run called from within the container: $*"
+	exec "$@"
+fi

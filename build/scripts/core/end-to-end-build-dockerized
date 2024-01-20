@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+# To not build docker image in end-to-end-build script
+export SKIP_DOCKER_SETUP=true
+
+# For the version file generation
+SCRIPTS_VERSION="$(cd "${SCRIPTS_DIR}" && git describe HEAD)"
+export SCRIPTS_VERSION
+SCRIPTS_COMMIT="$(cd "${SCRIPTS_DIR}" && git rev-parse HEAD)"
+export SCRIPTS_COMMIT
+
+tmpfile="$(mktemp)"
+env >"${tmpfile}"
+
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}/common.sh"
+
+echoerr "Build docker build environment image"
+"${SCRIPTS_DIR}/core/setup-image"
+
+# Pass the whole env to the container
+# TODO: This should probably be limited to an allow-list of variables we actually care about
+export ADDITIONAL_DOCKER_FLAGS="--env-file ${tmpfile}"
+
+"${SCRIPTS_DIR}/core/run" /builder/scripts/core/end-to-end-build

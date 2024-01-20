@@ -64,7 +64,12 @@ function parse_env_args() {
 
 	[ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
-	BUILDDIR="$(readlink -f "${BUILDDIR}")"
+	# This is pretty hacky
+	# We rely on clone step to create this directory
+	# but we also want it to be an absolute path in the next steps
+	if [ -d "$BUILDDIR" ]; then
+		BUILDDIR="$(readlink -f "${BUILDDIR}")"
+	fi
 
 	echoerr "BUILDDIR=${BUILDDIR}"
 	echoerr "OPENWRT_VERSION=${OPENWRT_VERSION}"
