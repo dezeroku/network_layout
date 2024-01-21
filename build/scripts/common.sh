@@ -9,6 +9,15 @@ function echoerr() {
 	echo "$@" 1>&2
 }
 
+check_tool() {
+	local tool
+	tool="$1"
+	if ! command -v "${tool}" >/dev/null; then
+		echoerr "${tool} command not found"
+		return 1
+	fi
+}
+
 function parse_env_args() {
 	if [ -z "${SCRIPTS_DIR:-}" ]; then
 		echo "SCRIPTS_DIR is required to be in env"
@@ -31,12 +40,6 @@ function parse_env_args() {
 		DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_ENV_FILE}")"
 	fi
 
-	if [ -z "${DEVICE_SECRET_TEMPLATE_ENV_FILE:-}" ]; then
-		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables" ] && DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables")"
-	else
-		DEVICE_SECRET_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_SECRET_TEMPLATE_ENV_FILE}")"
-	fi
-
 	[ -z "${REPRODUCE_UPSTREAM_BUILD:-}" ] && REPRODUCE_UPSTREAM_BUILD="false"
 
 	[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/config")"
@@ -47,9 +50,6 @@ function parse_env_args() {
 	echoerr "DEVICE_ENV_FILE=${DEVICE_ENV_FILE}"
 	if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
 		echoerr "DEVICE_TEMPLATE_ENV_FILE=${DEVICE_TEMPLATE_ENV_FILE}"
-	fi
-	if [ -n "${DEVICE_SECRET_TEMPLATE_ENV_FILE:-}" ]; then
-		echoerr "DEVICE_SECRET_TEMPLATE_ENV_FILE=${DEVICE_SECRET_TEMPLATE_ENV_FILE}"
 	fi
 	echoerr "REPRODUCE_UPSTREAM_BUILD=${REPRODUCE_UPSTREAM_BUILD}"
 
