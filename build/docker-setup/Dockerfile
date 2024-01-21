@@ -55,6 +55,8 @@ RUN \
     apt-get clean && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
+COPY --from=hairyhenderson/gomplate:v3.11 /gomplate /bin/gomplate
+
 ENV LANG=en_US.utf8
 
 # Get wrapper for sccache

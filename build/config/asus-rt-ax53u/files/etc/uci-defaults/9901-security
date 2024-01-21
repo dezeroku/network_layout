@@ -1,10 +1,10 @@
 passwd root << EOF
-${ROOT_PASSWORD_TEMPLATE}
-${ROOT_PASSWORD_TEMPLATE}
+{{ .Env.ROOT_PASSWORD_TEMPLATE }}
+{{ .Env.ROOT_PASSWORD_TEMPLATE }}
 EOF
 
 cat >> /etc/dropbear/authorized_keys << EOI
-${SSH_AUTHORIZED_KEYS_TEMPLATE}
+{{ .Env.SSH_AUTHORIZED_KEYS_TEMPLATE }}
 EOI
 
 uci -q batch << EOI

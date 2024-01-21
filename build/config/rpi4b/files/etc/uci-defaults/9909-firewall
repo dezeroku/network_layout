@@ -31,15 +31,15 @@ uci set firewall.iot.network='iot'
 uci commit firewall
 
 uci set firewall.vpn=zone
-uci set firewall.vpn.name='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn.name='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.vpn.input='ACCEPT'
 uci set firewall.vpn.output='ACCEPT'
 uci set firewall.vpn.forward='REJECT'
-uci set firewall.vpn.network='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn.network='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci commit firewall
 
 uci set firewall.vpn_to_wan_forwarding=forwarding
-uci set firewall.vpn_to_wan_forwarding.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_to_wan_forwarding.src='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.vpn_to_wan_forwarding.dest='wan'
 uci commit firewall
 
@@ -49,8 +49,8 @@ uci commit firewall
 uci set firewall.vpn_in_zone_traffic=rule
 uci set firewall.vpn_in_zone_traffic.name='Allow VPN in-zone traffic'
 uci set firewall.vpn_in_zone_traffic.proto='all'
-uci set firewall.vpn_in_zone_traffic.src='${WIREGUARD_INTERFACE_TEMPLATE}'
-uci set firewall.vpn_in_zone_traffic.dest='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_in_zone_traffic.src='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
+uci set firewall.vpn_in_zone_traffic.dest='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.vpn_in_zone_traffic.target='ACCEPT'
 
 # Does this actually do anything?
@@ -59,9 +59,9 @@ uci set firewall.vpn_dns_redirect=redirect
 uci set firewall.vpn_dns_redirect.dest='lan'
 uci set firewall.vpn_dns_redirect.target='DNAT'
 uci set firewall.vpn_dns_redirect.name='Redirect VPN DNS'
-uci set firewall.vpn_dns_redirect.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_dns_redirect.src='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.vpn_dns_redirect.src_dport='53'
-uci set firewall.vpn_dns_redirect.dest_ip='${LAN_IPADDR_TEMPLATE}'
+uci set firewall.vpn_dns_redirect.dest_ip='{{ .Env.LAN_IPADDR_TEMPLATE }}'
 uci set firewall.vpn_dns_redirect.dest_port='53'
 uci commit firewall
 
@@ -81,14 +81,14 @@ uci set firewall.allow_wan_vpn=rule
 uci set firewall.allow_wan_vpn.name='Allow-Wireguard-VPN-From-WAN'
 uci set firewall.allow_wan_vpn.proto='udp'
 uci set firewall.allow_wan_vpn.src='wan'
-uci set firewall.allow_wan_vpn.dest_port='${VPN_LISTEN_PORT_TEMPLATE}'
+uci set firewall.allow_wan_vpn.dest_port='{{ .Env.VPN_LISTEN_PORT_TEMPLATE }}'
 uci set firewall.allow_wan_vpn.target='ACCEPT'
 uci commit firewall
 
 uci set firewall.allow_lan_guest_router_access=rule
 uci set firewall.allow_lan_guest_router_access.name='Allow-Guest-Router-Access-From-LAN'
 uci set firewall.allow_lan_guest_router_access.src='lan'
-uci set firewall.allow_lan_guest_router_access.dest_ip='${GUEST_ROUTER_IP_TEMPLATE}'
+uci set firewall.allow_lan_guest_router_access.dest_ip='{{ .Env.GUEST_ROUTER_IP_TEMPLATE }}'
 uci set firewall.allow_lan_guest_router_access.target='ACCEPT'
 uci set firewall.allow_lan_guest_router_access.dest='guest'
 uci commit firewall
@@ -152,7 +152,7 @@ uci add_list firewall.allow_dhcp_vpn.proto='tcp'
 uci add_list firewall.allow_dhcp_vpn.proto='udp'
 uci add_list firewall.allow_dhcp_vpn.proto='icmp'
 uci set firewall.allow_dhcp_vpn.target='ACCEPT'
-uci set firewall.allow_dhcp_vpn.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.allow_dhcp_vpn.src='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.allow_dhcp_vpn.dest_port='53 67 68'
 
 # Allow WAN access to some IOT IPs
@@ -177,7 +177,7 @@ uci set firewall.lan_iot_allowed_access.enabled='0'
 
 # Allow some IOT access from VPN
 uci set firewall.vpn_iot_allowed_access=rule
-uci set firewall.vpn_iot_allowed_access.src='${WIREGUARD_INTERFACE_TEMPLATE}'
+uci set firewall.vpn_iot_allowed_access.src='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 uci set firewall.vpn_iot_allowed_access.dest='iot'
 uci set firewall.vpn_iot_allowed_access.target='ACCEPT'
 uci set firewall.vpn_iot_allowed_access.name='Allow-VPN-To-IoT-Access'
@@ -199,9 +199,9 @@ uci add_list firewall.iot_lan_allowed_access.proto='icmp'
 uci set firewall.iot_lan_allowed_access.enabled='0'
 
 
-if [ -n '${IOT_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
+if [ -n '{{ .Env.IOT_MDNS_ALLOWED_IPS_TEMPLATE }}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
-  TEMP_VARIABLE='${IOT_MDNS_ALLOWED_IPS_TEMPLATE}'
+  TEMP_VARIABLE='{{ .Env.IOT_MDNS_ALLOWED_IPS_TEMPLATE }}'
   # Key may not exist
   uci del firewall.allow_mdns_iot_broadcast.src_ip || true
   # Enable the rule
@@ -214,9 +214,9 @@ if [ -n '${IOT_MDNS_ALLOWED_IPS_TEMPLATE}' ]; then
   uci commit firewall
 fi
 
-if [ -n '${IOT_INTERNET_ALLOWED_IPS_TEMPLATE}' ]; then
+if [ -n '{{ .Env.IOT_INTERNET_ALLOWED_IPS_TEMPLATE }}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
-  TEMP_VARIABLE='${IOT_INTERNET_ALLOWED_IPS_TEMPLATE}'
+  TEMP_VARIABLE='{{ .Env.IOT_INTERNET_ALLOWED_IPS_TEMPLATE }}'
   # Key may not exist
   uci del firewall.iot_internet_access.src_ip || true
   # Enable the rule
@@ -229,9 +229,9 @@ if [ -n '${IOT_INTERNET_ALLOWED_IPS_TEMPLATE}' ]; then
   uci commit firewall
 fi
 
-if [ -n '${LAN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
+if [ -n '{{ .Env.LAN_IOT_ALLOWED_IPS_TEMPLATE }}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
-  TEMP_VARIABLE='${LAN_IOT_ALLOWED_IPS_TEMPLATE}'
+  TEMP_VARIABLE='{{ .Env.LAN_IOT_ALLOWED_IPS_TEMPLATE }}'
   # Key may not exist
   uci del firewall.lan_iot_allowed_access.src_ip || true
   uci del firewall.iot_lan_allowed_access.dest_ip || true
@@ -247,9 +247,9 @@ if [ -n '${LAN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
   uci commit firewall
 fi
 
-if [ -n '${VPN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
+if [ -n '{{ .Env.VPN_IOT_ALLOWED_IPS_TEMPLATE }}' ]; then
   # Use TEMP_VARIABLE to work properly with first-pass templating
-  TEMP_VARIABLE='${VPN_IOT_ALLOWED_IPS_TEMPLATE}'
+  TEMP_VARIABLE='{{ .Env.VPN_IOT_ALLOWED_IPS_TEMPLATE }}'
   # Key may not exist
   uci del firewall.vpn_iot_allowed_access.src_ip || true
   # Enable the rule
@@ -262,7 +262,7 @@ if [ -n '${VPN_IOT_ALLOWED_IPS_TEMPLATE}' ]; then
   uci commit firewall
 fi
 
-${FIREWALL_CUSTOM_RULES_TEMPLATE}
+{{ .Env.FIREWALL_CUSTOM_RULES_TEMPLATE }}
 
 
 # Use restart instead of reload as fw4 may not yet be started?

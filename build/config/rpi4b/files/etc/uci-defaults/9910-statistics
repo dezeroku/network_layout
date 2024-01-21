@@ -6,7 +6,7 @@ set luci_statistics.collectd_df.enable='1'
 set luci_statistics.collectd_dns.enable='1'
 
 del luci_statistics.collectd_dns.Interfaces
-add_list luci_statistics.collectd_dns.Interfaces='${WIREGUARD_INTERFACE_TEMPLATE}'
+add_list luci_statistics.collectd_dns.Interfaces='{{ .Env.WIREGUARD_INTERFACE_TEMPLATE }}'
 add_list luci_statistics.collectd_dns.Interfaces='br-lan.20'
 add_list luci_statistics.collectd_dns.Interfaces='br-lan.30'
 add_list luci_statistics.collectd_dns.Interfaces='br-lan.99'
