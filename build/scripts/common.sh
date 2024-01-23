@@ -35,9 +35,15 @@ function parse_env_args() {
 	DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
 	if [ -z "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
-		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables")"
+		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables.yaml" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables.yaml")"
 	else
 		DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_ENV_FILE}")"
+	fi
+
+	if [ -z "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
+		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables.yaml" ] && DEVICE_TEMPLATE_SECRET_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables.yaml")"
+	else
+		DEVICE_TEMPLATE_SECRET_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_SECRET_ENV_FILE}")"
 	fi
 
 	[ -z "${REPRODUCE_UPSTREAM_BUILD:-}" ] && REPRODUCE_UPSTREAM_BUILD="false"
@@ -50,6 +56,9 @@ function parse_env_args() {
 	echoerr "DEVICE_ENV_FILE=${DEVICE_ENV_FILE}"
 	if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
 		echoerr "DEVICE_TEMPLATE_ENV_FILE=${DEVICE_TEMPLATE_ENV_FILE}"
+	fi
+	if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
+		echoerr "DEVICE_TEMPLATE_SECRET_ENV_FILE=${DEVICE_TEMPLATE_SECRET_ENV_FILE}"
 	fi
 	echoerr "REPRODUCE_UPSTREAM_BUILD=${REPRODUCE_UPSTREAM_BUILD}"
 

@@ -1,16 +1,16 @@
 set -e
 
-if [ "{{ .Env.ENABLE_LETSENCRYPT_CERTS_TEMPLATE }}" = "true" ]; then
-    uci set system.@system[0].hostname='{{ .Env.HOSTNAME_TEMPLATE }}.{{ .Env.LETSENCRYPT_HOSTNAME_TEMPLATE }}'
+if [ "{{ .ENABLE_LETSENCRYPT_CERTS_TEMPLATE }}" = "true" ]; then
+    uci set system.@system[0].hostname='{{ .HOSTNAME_TEMPLATE }}.{{ .LETSENCRYPT_HOSTNAME_TEMPLATE }}'
     uci commit system
 else
-    uci set system.@system[0].hostname='{{ .Env.HOSTNAME_TEMPLATE }}'
+    uci set system.@system[0].hostname='{{ .HOSTNAME_TEMPLATE }}'
     uci commit system
 fi
 
 uci batch << EOI
-set system.@system[0].zonename='{{ .Env.ZONENAME_TEMPLATE }}'
-set system.@system[0].timezone='{{ .Env.TIMEZONE_TEMPLATE }}'
+set system.@system[0].zonename='{{ .ZONENAME_TEMPLATE }}'
+set system.@system[0].timezone='{{ .TIMEZONE_TEMPLATE }}'
 set system.@system[0].log_proto='udp'
 set system.@system[0].conloglevel='8'
 set system.@system[0].cronloglevel='5'

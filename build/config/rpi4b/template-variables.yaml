@@ -1,0 +1,90 @@
+# The values provided in below file are exemplary
+# You will HAVE to change these to match your setup
+# At the very least modify passwords
+
+# 9900-base
+# If set to true, then hostname of the router will be set to "${HOSTNAME_TEMPLATE}.${LETSENCRYPT_HOSTNAME_TEMPLATE}"
+# and cert from let's encrypt will be obtained
+# Also look at configuration variables for 9911-letsencrypt
+ENABLE_LETSENCRYPT_CERTS_TEMPLATE: false
+LETSENCRYPT_HOSTNAME_TEMPLATE: "example.com"
+
+HOSTNAME_TEMPLATE: "somerouter"
+ZONENAME_TEMPLATE: "Europe/Warsaw"
+TIMEZONE_TEMPLATE: "CET-1CEST,M3.5.0,M10.5.0/3"
+
+# 9901-security
+ROOT_PASSWORD_TEMPLATE: "testtest"
+SSH_AUTHORIZED_KEYS_TEMPLATE: ""
+
+# 9902-network
+GLOBAL_ULA_PREFIX_TEMPLATE: "fd6d:8246:307d::/48"
+LAN_IPADDR_TEMPLATE: "192.168.1.1"
+LAN_IPADDR_GATEWAY_TEMPLATE: "192.168.240.99"
+WAN_IPADDR_GATEWAY_TEMPLATE: "192.168.240.1"
+GUEST_IPADDR_TEMPLATE: "192.168.2.1"
+GUEST_ROUTER_IP_TEMPLATE: "192.168.2.2"
+IOT_IPADDR_TEMPLATE: "192.168.3.1"
+IOT_ROUTER_IP_TEMPLATE: "192.168.3.2"
+
+# 9903-wireless
+WIRELESS_COUNTRY_TEMPLATE: "PL"
+WIRELESS_ONE_NETWORK_TEMPLATE: "lan"
+WIRELESS_ONE_SSID_TEMPLATE: "SomeNetworkRecovery"
+WIRELESS_ONE_KEY_TEMPLATE: "testtest"
+WIRELESS_ONE_ENCRYPTION_TEMPLATE: "sae-mixed"
+
+# 9905-dhcp
+# None added here, you can use UCI entries to do it
+DHCP_CUSTOM_HOSTS_CONFIG_TEMPLATE: ""
+
+# 9907-adblock
+ADBLOCK_SOURCES_TEMPLATE: |-
+  del  adblock.global.adb_sources
+  add_list  adblock.global.adb_sources="disconnect"
+  add_list  adblock.global.adb_sources="reg_pl1"
+  add_list  adblock.global.adb_sources="reg_pl2"
+  add_list  adblock.global.adb_sources="smarttv_tracking"
+  add_list  adblock.global.adb_sources="spam404"
+
+# 9908-wireguard
+# All of this is exemplary, don't get your hopes up :D
+WIREGUARD_INTERFACE_TEMPLATE: "VPN"
+VPN_PRIVATE_KEY_TEMPLATE: "iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA="
+VPN_LISTEN_PORT_TEMPLATE: "12345"
+VPN_ADDRESSES_TEMPLATE: "192.168.20.1/24"
+# None added here, you can use UCI entries to do it
+VPN_CUSTOM_CLIENTS_CONFIG_TEMPLATE: |-
+  uci -q delete network.wgclient
+  uci set network.wgclient="wireguard_${WG_IF}"
+  uci set network.wgclient.public_key="some-public-key"
+  uci set network.wgclient.preshared_key="some-preshared-key"
+  uci set network.wgclient.persistent_keepalive="25"
+  uci add_list network.wgclient.allowed_ips="some-ip/32"
+  uci set network.wgclient.description="Some client"
+
+# 9909-firewall
+# Remember to run uci commit at the end if you decide to use it
+FIREWALL_CUSTOM_RULES_TEMPLATE: ""
+# Tip: for all the ips that you are going to list below,
+# set up static DHCP leases in secret-variables file that you maintain
+# Set to space-separated IPs, if you want to allow some devices to propagate mDNS throughout the networks
+# This is created with IoT hubs/connectors in mind mostly
+IOT_MDNS_ALLOWED_IPS_TEMPLATE: ""
+IOT_INTERNET_ALLOWED_IPS_TEMPLATE: ""
+
+# This variable lists "bridges" that can both communicate to IOT network and receive packages from it
+# The IPs must be in LAN network
+# This is created with IoT hubs/connectors in mind mostly
+# Devices listed here can both communicate to IoT and receive communication from it
+LAN_IOT_ALLOWED_IPS_TEMPLATE: ""
+
+# This variable lists IOT IPs that can be accessed from within the VPN
+VPN_IOT_ALLOWED_IPS_TEMPLATE: ""
+
+# 9911-letsencrypt
+# This is tailored specifically for Route53 at the moment
+LETSENCRYPT_ACCOUNT_EMAIL_TEMPLATE: "user@example.com"
+LETSENCRYPT_DNS_VERIFICATION_TEMPLATE: "dns_aws"
+LETSENCRYPT_AWS_ACCESS_KEY_ID_TEMPLATE: "your-key-id"
+LETSENCRYPT_AWS_ACCESS_KEY_SECRET_TEMPLATE: "your-key-secret"

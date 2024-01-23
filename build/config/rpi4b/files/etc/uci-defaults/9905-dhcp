@@ -20,7 +20,7 @@ set dhcp.iot.start='100'
 set dhcp.iot.limit='150'
 set dhcp.iot.leasetime='12h'
 
-{{ .Env.DHCP_CUSTOM_HOSTS_CONFIG_TEMPLATE }}
+{{ .DHCP_CUSTOM_HOSTS_CONFIG_TEMPLATE }}
 
 commit dhcp
 EOI

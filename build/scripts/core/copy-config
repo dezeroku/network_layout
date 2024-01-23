@@ -34,12 +34,21 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 		# Replace all the _TEMPLATE variables in files with values from env
 		# All such values should come from ${DEVICE_TEMPLATE_ENV_FILE} file
 		if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
-			echoerr "Applying template-variables templating on top of ${BUILDDIR}/files"
+			echoerr "Applying template-variables.yaml templating on top of ${BUILDDIR}/files"
+
+			GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE}"
+
+			if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
+				echoerr "Detected secret-variables.yaml override, applying"
+				GOMPLATE_COMMAND_SUFFIX="-c \".=merge:secrets|config\" -d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+			fi
+
+			GOMPLATE_COMMAND="gomplate ${GOMPLATE_COMMAND_SUFFIX}"
 
 			find "${BUILDDIR}/files" -type f | sort | while read -r file; do
 				echoerr "Templating ${file}"
 				TMPFILE="$(mktemp)"
-				env -i bash -c ". ${DEVICE_TEMPLATE_ENV_FILE} && cat ${file} | gomplate" >"${TMPFILE}"
+				env -i bash -c "cat ${file} | ${GOMPLATE_COMMAND}" >"${TMPFILE}"
 				mv "${TMPFILE}" "${file}"
 			done
 		fi

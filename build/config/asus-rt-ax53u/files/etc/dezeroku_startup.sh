@@ -14,7 +14,7 @@ echo "Starting acme"
 /etc/init.d/acme start
 
 # shellcheck disable=SC2017,SC2016
-if [ ! -f '/etc/ssl/acme/{{ .Env.HOSTNAME_TEMPLATE }}.{{ .Env.LETSENCRYPT_HOSTNAME_TEMPLATE }}.crt' ]; then
+if [ ! -f '/etc/ssl/acme/{{ .HOSTNAME_TEMPLATE }}.{{ .LETSENCRYPT_HOSTNAME_TEMPLATE }}.crt' ]; then
 	echo "Couldn't obtain cert, STOP"
 	exit 1
 else
@@ -24,9 +24,9 @@ fi
 echo "Align uhttpd to use ACME obtained certs"
 
 # shellcheck disable=SC2017,SC2016
-uci set uhttpd.main.cert='/etc/ssl/acme/{{ .Env.HOSTNAME_TEMPLATE }}.{{ .Env.LETSENCRYPT_HOSTNAME_TEMPLATE }}.crt'
+uci set uhttpd.main.cert='/etc/ssl/acme/{{ .HOSTNAME_TEMPLATE }}.{{ .LETSENCRYPT_HOSTNAME_TEMPLATE }}.crt'
 # shellcheck disable=SC2017,SC2016
-uci set uhttpd.main.key='/etc/ssl/acme/{{ .Env.HOSTNAME_TEMPLATE }}.{{ .Env.LETSENCRYPT_HOSTNAME_TEMPLATE }}.key'
+uci set uhttpd.main.key='/etc/ssl/acme/{{ .HOSTNAME_TEMPLATE }}.{{ .LETSENCRYPT_HOSTNAME_TEMPLATE }}.key'
 
 # Make sure default cert generation will not mess up the symlinks
 uci -q get uhttpd.defaults && uci delete uhttpd.defaults

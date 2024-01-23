@@ -1,9 +1,9 @@
 uci -q batch << EOI
 # Country settings
-set wireless.radio0.country='{{ .Env.WIRELESS_COUNTRY_TEMPLATE }}'
+set wireless.radio0.country='{{ .WIRELESS_COUNTRY_TEMPLATE }}'
 set wireless.radio0.cell_density='0'
 
-set wireless.radio1.country='{{ .Env.WIRELESS_COUNTRY_TEMPLATE }}'
+set wireless.radio1.country='{{ .WIRELESS_COUNTRY_TEMPLATE }}'
 set wireless.radio1.cell_density='0'
 
 # Make sure that default networks are disabled
@@ -16,18 +16,18 @@ commit wireless
 set wireless.guest_two_ghz=wifi-iface
 set wireless.guest_two_ghz.device='radio0'
 set wireless.guest_two_ghz.mode='ap'
-set wireless.guest_two_ghz.ssid='{{ .Env.WIRELESS_GUEST_SSID_TEMPLATE }}'
-set wireless.guest_two_ghz.encryption='{{ .Env.WIRELESS_GUEST_ENCRYPTION_TEMPLATE }}'
-set wireless.guest_two_ghz.key='{{ .Env.WIRELESS_GUEST_KEY_TEMPLATE }}'
+set wireless.guest_two_ghz.ssid='{{ .WIRELESS_GUEST_SSID_TEMPLATE }}'
+set wireless.guest_two_ghz.encryption='{{ .WIRELESS_GUEST_ENCRYPTION_TEMPLATE }}'
+set wireless.guest_two_ghz.key='{{ .WIRELESS_GUEST_KEY_TEMPLATE }}'
 set wireless.guest_two_ghz.network='guest'
 set wireless.guest_two_ghz.isolate='1'
 
 set wireless.guest_five_ghz=wifi-iface
 set wireless.guest_five_ghz.device='radio1'
 set wireless.guest_five_ghz.mode='ap'
-set wireless.guest_five_ghz.ssid='{{ .Env.WIRELESS_GUEST_5G_SSID_TEMPLATE }}'
-set wireless.guest_five_ghz.encryption='{{ .Env.WIRELESS_GUEST_5G_ENCRYPTION_TEMPLATE }}'
-set wireless.guest_five_ghz.key='{{ .Env.WIRELESS_GUEST_5G_KEY_TEMPLATE }}'
+set wireless.guest_five_ghz.ssid='{{ .WIRELESS_GUEST_5G_SSID_TEMPLATE }}'
+set wireless.guest_five_ghz.encryption='{{ .WIRELESS_GUEST_5G_ENCRYPTION_TEMPLATE }}'
+set wireless.guest_five_ghz.key='{{ .WIRELESS_GUEST_5G_KEY_TEMPLATE }}'
 set wireless.guest_five_ghz.network='guest'
 set wireless.guest_five_ghz.isolate='1'
 
@@ -37,18 +37,18 @@ commit wireless
 set wireless.iot_two_ghz=wifi-iface
 set wireless.iot_two_ghz.device='radio0'
 set wireless.iot_two_ghz.mode='ap'
-set wireless.iot_two_ghz.ssid='{{ .Env.WIRELESS_IOT_SSID_TEMPLATE }}'
-set wireless.iot_two_ghz.encryption='{{ .Env.WIRELESS_IOT_ENCRYPTION_TEMPLATE }}'
-set wireless.iot_two_ghz.key='{{ .Env.WIRELESS_IOT_KEY_TEMPLATE }}'
+set wireless.iot_two_ghz.ssid='{{ .WIRELESS_IOT_SSID_TEMPLATE }}'
+set wireless.iot_two_ghz.encryption='{{ .WIRELESS_IOT_ENCRYPTION_TEMPLATE }}'
+set wireless.iot_two_ghz.key='{{ .WIRELESS_IOT_KEY_TEMPLATE }}'
 set wireless.iot_two_ghz.network='iot'
 set wireless.iot_two_ghz.isolate='1'
 
 set wireless.iot_five_ghz=wifi-iface
 set wireless.iot_five_ghz.device='radio1'
 set wireless.iot_five_ghz.mode='ap'
-set wireless.iot_five_ghz.ssid='{{ .Env.WIRELESS_IOT_5G_SSID_TEMPLATE }}'
-set wireless.iot_five_ghz.encryption='{{ .Env.WIRELESS_IOT_5G_ENCRYPTION_TEMPLATE }}'
-set wireless.iot_five_ghz.key='{{ .Env.WIRELESS_IOT_5G_KEY_TEMPLATE }}'
+set wireless.iot_five_ghz.ssid='{{ .WIRELESS_IOT_5G_SSID_TEMPLATE }}'
+set wireless.iot_five_ghz.encryption='{{ .WIRELESS_IOT_5G_ENCRYPTION_TEMPLATE }}'
+set wireless.iot_five_ghz.key='{{ .WIRELESS_IOT_5G_KEY_TEMPLATE }}'
 set wireless.iot_five_ghz.network='iot'
 set wireless.iot_five_ghz.isolate='1'
 
