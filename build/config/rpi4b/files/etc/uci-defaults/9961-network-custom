@@ -1,0 +1,4 @@
+set network.globals.packet_steering='1'
+
+/etc/init.d/network restart
+/etc/init.d/odhcpd reload

@@ -1,0 +1,11 @@
+# together with the whole WAN stuff?
+uci set firewall.@defaults[0].synflood_protect='1'
+
+# This is for WAN
+# Make it a bit more hidden from the outside world
+# TODO: check if this can be done as part of the template-variables.yaml
+uci set firewall.@zone[1].input='DROP'
+uci set firewall.@rule[1].target='REJECT'
+
+uci commit firewall
+/etc/init.d/firewall restart

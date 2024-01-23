@@ -3,7 +3,10 @@ set adblock.global.adb_maxqueue='4'
 set adblock.global.adb_report='1'
 set adblock.global.adb_repiface='br-lan'
 
-{{ .ADBLOCK_SOURCES_TEMPLATE }}
+del adblock.global.adb_sources
+{{- range .adblock.sources }}
+add_list adblock.global.adb_sources="{{ . }}"
+{{- end }}
 
 commit adblock
 EOI

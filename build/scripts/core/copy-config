@@ -24,35 +24,46 @@ fi
 
 "${SCRIPTS_DIR}/core/run" make defconfig
 
+# Remove the custom files present a
 rm -rf "${BUILDDIR}/files"
 if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
-	# Remove the custom files present and copy from config dir
+	# Copy files from common config dir
+	echoerr "Copying common files from ${SCRIPTS_DIR}/../config/common/files"
+	cp -r "${SCRIPTS_DIR}/../config/common/files" "${BUILDDIR}/files"
+
+	GOMPLATE_COMMAND_SUFFIX="-d base=$(readlink -f "${SCRIPTS_DIR}/../config/common/template-variables.yaml")"
+	GOMPLATE_MERGE_CONTEXT="base"
+
+	# Copy files from device specific config dir
 	if [ -d "${SCRIPTS_DIR}/../config/${DEVICE}/files" ]; then
-		echoerr "Copying custom files from ${SCRIPTS_DIR}/../config/${DEVICE}/files"
-		cp -r "${SCRIPTS_DIR}/../config/${DEVICE}/files" "${BUILDDIR}/files"
+		echoerr "Copying device-specific files from ${SCRIPTS_DIR}/../config/${DEVICE}/files"
+		cp -r "${SCRIPTS_DIR}/../config/${DEVICE}/files/"* "${BUILDDIR}/files"
 
 		# Replace all the _TEMPLATE variables in files with values from env
 		# All such values should come from ${DEVICE_TEMPLATE_ENV_FILE} file
 		if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
 			echoerr "Applying template-variables.yaml templating on top of ${BUILDDIR}/files"
 
-			GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE}"
+			GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+			GOMPLATE_MERGE_CONTEXT="config|${GOMPLATE_MERGE_CONTEXT}"
 
 			if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
 				echoerr "Detected secret-variables.yaml override, applying"
-				GOMPLATE_COMMAND_SUFFIX="-c \".=merge:secrets|config\" -d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+				GOMPLATE_COMMAND_SUFFIX="-d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+				GOMPLATE_MERGE_CONTEXT="secrets|config|${GOMPLATE_MERGE_CONTEXT}"
 			fi
-
-			GOMPLATE_COMMAND="gomplate ${GOMPLATE_COMMAND_SUFFIX}"
-
-			find "${BUILDDIR}/files" -type f | sort | while read -r file; do
-				echoerr "Templating ${file}"
-				TMPFILE="$(mktemp)"
-				env -i bash -c "cat ${file} | ${GOMPLATE_COMMAND}" >"${TMPFILE}"
-				mv "${TMPFILE}" "${file}"
-			done
 		fi
 	fi
+
+	GOMPLATE_COMMAND_SUFFIX="-c \".=merge:${GOMPLATE_MERGE_CONTEXT}\" ${GOMPLATE_COMMAND_SUFFIX}"
+	GOMPLATE_COMMAND="gomplate ${GOMPLATE_COMMAND_SUFFIX}"
+
+	find "${BUILDDIR}/files" -type f | sort | while read -r file; do
+		echoerr "Templating ${file}"
+		TMPFILE="$(mktemp)"
+		env -i bash -c "cat ${file} | ${GOMPLATE_COMMAND}" >"${TMPFILE}"
+		mv "${TMPFILE}" "${file}"
+	done
 else
 	echoerr "Skipping copying custom files because of REPRODUCE_UPSTREAM_BUILD=true"
 fi

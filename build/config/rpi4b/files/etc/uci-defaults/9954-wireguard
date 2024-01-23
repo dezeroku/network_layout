@@ -1,0 +1,38 @@
+uci batch << EOI
+{{- range $name, $config := .vpns }}
+{{- if eq $config.interface.proto "wireguard" }}
+set network.{{ print $name }}=interface
+set network.{{ print $name }}.proto='{{ $config.interface.proto }}'
+{{- if $config.interface.force_link }}
+set network.{{ print $name }}.force_link='1'
+{{ else }}
+set network.{{ print $name }}.force_link='0'
+{{- end }}
+set network.{{ print $name }}.private_key='{{ $config.interface.private_key }}'
+set network.{{ print $name }}.listen_port='{{ $config.interface.listen_port }}'
+{{- range $config.interface.addresses }}
+add_list network.{{ print $name }}.addresses='{{ . }}'
+{{- end }}
+
+{{- range $client_name, $client_config := $config.clients }}
+{{ $client_name_uci := printf "wg_%s" $client_name }}
+del network.{{ print $client_name_uci }}
+set network.{{ print $client_name_uci }}='wireguard_{{ $name }}'
+set network.{{ print $client_name_uci }}.public_key='{{ $client_config.public_key }}'
+set network.{{ print $client_name_uci }}.preshared_key='{{ $client_config.preshared_key }}'
+{{- if has $client_config "persistent_keepalive" }}
+set network.{{ print $client_name_uci }}.persistent_keepalive='{{ $client_config.persistent_keepalive }}'
+{{- end }}
+set network.{{ print $client_name_uci }}.description='{{ if has $client_config "description" }}{{ $client_config.description }}{{ else }}{{ print $client_name }}{{ end }}'
+del network.{{ print $client_name_uci }}.allowed_ips
+{{- range $client_config.allowed_ips }}
+add_list network.{{ print $client_name_uci }}.allowed_ips='{{ . }}'
+{{- end }}
+{{- end }}
+
+commit network
+{{- end }}
+{{- end }}
+EOI
+
+/etc/init.d/network restart

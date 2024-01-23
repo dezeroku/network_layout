@@ -1,0 +1,18 @@
+set -e
+
+uci del mdns_repeater.main.interface || true
+{{- range $name, $config := .networks }}
+{{- if has $config "broadcast_mdns" }}
+{{- if $config.broadcast_mdns }}
+{{- if has $config "device" }}
+uci add_list mdns_repeater.main.interface='{{ $config.device }}'
+{{ else }}
+uci add_list mdns_repeater.main.interface='br-lan.{{ $config.vlan.id }}'
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+uci commit mdns_repeater
+
+/etc/init.d/mdns-repeater restart

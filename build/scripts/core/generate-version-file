@@ -46,21 +46,32 @@ else
 fi
 
 # This should be a list of everything that may affect the build
+
 [ -f "${DEVICE_ENV_FILE}" ] && dump_file "${DEVICE_ENV_FILE}" "variables"
+
+dump_file "${SCRIPTS_DIR}/../config/common/template-variables.yaml" "base-template-variables.yaml"
+
 if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ] && [ -f "${DEVICE_TEMPLATE_ENV_FILE}" ]; then
-	dump_file "${DEVICE_TEMPLATE_ENV_FILE}" "template_variables"
-	# TODO: This is "unofficial" extension of the protocol
-	# but it's meant to be followed by all the configs
-	# We probably want to make this cleaner
-	secret_template_variables_file="$(dirname "${DEVICE_TEMPLATE_ENV_FILE}")/secret-variables"
-	if [ -f "${secret_template_variables_file}" ]; then
-		dump_file "${secret_template_variables_file}" "secret_template_variables"
-	fi
+	dump_file "${DEVICE_TEMPLATE_ENV_FILE}" "template-variables.yaml"
 fi
+
+if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ] && [ -f "${DEVICE_TEMPLATE_SECRET_ENV_FILE}" ]; then
+	dump_file "${DEVICE_TEMPLATE_SECRET_ENV_FILE}" "secret-variables.yaml"
+fi
+
 [ -f "${DEVICE_CONFIG_FILE}" ] && dump_file "${DEVICE_CONFIG_FILE}" "config"
 dump_file "${DEVICE_DIR}/config.orig" "config.orig"
 
+# Dump the base "files/" dir if present
+if [ -d "${DEVICE_DIR}/files" ]; then
+	find "${DEVICE_DIR}/files" -type f | sort | while read -r f; do
+		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"
+	done
+fi
+
 # Dump the "files/" dir if present
+# It will overwrite the base files if needed
+# exactly the same way as it happens during the templating
 if [ -d "${DEVICE_DIR}/files" ]; then
 	find "${DEVICE_DIR}/files" -type f | sort | while read -r f; do
 		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"

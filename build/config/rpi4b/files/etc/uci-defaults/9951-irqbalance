@@ -1,0 +1,4 @@
+uci set irqbalance.irqbalance.enabled='1'
+uci commit irqbalance
+
+/etc/init.d/irqbalance start
