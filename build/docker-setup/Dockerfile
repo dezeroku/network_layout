@@ -1,5 +1,6 @@
 # This Dockerfile is really inspired (basically copy-pasted) by the `docker/buildworker/Dockerfile` available in [OpenWRT buildbot repo](https://git.openwrt.org/?p=buildbot.git;a=summary)
 # At the time of writing it was based on 85ffd9a27da104698b3ee433aaf0ffb0cb13504e hash
+# It also includes `sccache` and `gomplate`
 
 FROM rust:1.71.0@sha256:bef59af02f103760cd57e8d6ccadf364954b0ae5e74ea7c7203d26744aeec051 as sccache-build
 
@@ -11,7 +12,6 @@ RUN cargo install sccache \
         --features openssl/vendored \
         --root /sccache-output \
         --target=x86_64-unknown-linux-musl
-
 
 FROM        ubuntu:22.04@sha256:817cfe4672284dcbfee885b1a66094fd907630d610cab329114d036716be49ba
 
