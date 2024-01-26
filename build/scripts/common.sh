@@ -31,24 +31,38 @@ function parse_env_args() {
 		echo "DEVICE is required to be in env" && exit 1
 	fi
 
-	[ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/variables")"
+	if [ -d "${SCRIPTS_DIR}/../config/${DEVICE}" ]; then
+		DEVICE_CONFIG_DIR="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}")"
+	else
+		echoerr "${SCRIPTS_DIR}/../config/${DEVICE} directory does not exist"
+		echoerr "Did you create the config directory for ${DEVICE}?"
+		exit 1
+	fi
+
+	[ -z "${DEVICE_ENV_FILE:-}" ] && DEVICE_ENV_FILE="$(readlink -f "${DEVICE_CONFIG_DIR}/variables")"
 	DEVICE_ENV_FILE="$(readlink -f "${DEVICE_ENV_FILE}")"
 
+	if [ ! -f "${DEVICE_ENV_FILE}" ]; then
+		echoerr "${DEVICE_ENV_FILE} file does not exist"
+		echoerr "Did you create the 'variables' file for ${DEVICE}?"
+		exit 1
+	fi
+
 	if [ -z "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
-		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables.yaml" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/template-variables.yaml")"
+		[ -f "${DEVICE_CONFIG_DIR}/template-variables.yaml" ] && DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_CONFIG_DIR}/template-variables.yaml")"
 	else
 		DEVICE_TEMPLATE_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_ENV_FILE}")"
 	fi
 
 	if [ -z "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
-		[ -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables.yaml" ] && DEVICE_TEMPLATE_SECRET_ENV_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/secret-variables.yaml")"
+		[ -f "${DEVICE_CONFIG_DIR}/secret-variables.yaml" ] && DEVICE_TEMPLATE_SECRET_ENV_FILE="$(readlink -f "${DEVICE_CONFIG_DIR}/secret-variables.yaml")"
 	else
 		DEVICE_TEMPLATE_SECRET_ENV_FILE="$(readlink -f "${DEVICE_TEMPLATE_SECRET_ENV_FILE}")"
 	fi
 
 	[ -z "${REPRODUCE_UPSTREAM_BUILD:-}" ] && REPRODUCE_UPSTREAM_BUILD="false"
 
-	[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${SCRIPTS_DIR}/../config/${DEVICE}/config")"
+	[ -z "${DEVICE_CONFIG_FILE:-}" ] && DEVICE_CONFIG_FILE="$(readlink -f "${DEVICE_CONFIG_DIR}/config")"
 	DEVICE_CONFIG_FILE="$(readlink -f "${DEVICE_CONFIG_FILE}")"
 
 	echoerr "DEVICE=${DEVICE}"

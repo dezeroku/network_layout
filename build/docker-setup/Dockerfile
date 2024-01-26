@@ -1,6 +1,6 @@
 # This Dockerfile is really inspired (basically copy-pasted) by the `docker/buildworker/Dockerfile` available in [OpenWRT buildbot repo](https://git.openwrt.org/?p=buildbot.git;a=summary)
 # At the time of writing it was based on 85ffd9a27da104698b3ee433aaf0ffb0cb13504e hash
-# It also includes `sccache` and `gomplate`
+# It also includes `sccache`, `gomplate` and `dropbearkey`
 
 FROM rust:1.71.0@sha256:bef59af02f103760cd57e8d6ccadf364954b0ae5e74ea7c7203d26744aeec051 as sccache-build
 
@@ -51,6 +51,7 @@ RUN \
         zlib1g-dev \
         libssl-dev \
         file \
+        dropbear-bin \
         && \
     apt-get clean && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8

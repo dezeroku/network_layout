@@ -17,6 +17,7 @@ On top of that utility scriptlets ([scripts/utils](scripts/utils)) are provided 
 1. diffing the built images
 2. applying the `sysupgrade` in an automated way
 3. updating the OpenWRT revision to be used
+4. generating SSH host keys for the router
 
 The builds are performed based on the settings defined in the [config](config) directory, each device should have its own
 directory in there. More details about the directory layout can be found in the [docs/config.md](docs/config.md) file.

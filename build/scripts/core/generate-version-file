@@ -32,8 +32,6 @@ function dump_file() {
 	echo ""
 }
 
-DEVICE_DIR="${SCRIPTS_DIR}/../config/${DEVICE}"
-
 if [ -n "${SCRIPTS_VERSION}" ]; then
 	echo SCRIPTS_VERSION="${SCRIPTS_VERSION}"
 else
@@ -60,21 +58,21 @@ if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ] && [ -f "${DEVICE_TEMPLATE_SECR
 fi
 
 [ -f "${DEVICE_CONFIG_FILE}" ] && dump_file "${DEVICE_CONFIG_FILE}" "config"
-dump_file "${DEVICE_DIR}/config.orig" "config.orig"
+dump_file "${DEVICE_CONFIG_DIR}/config.orig" "config.orig"
 
 # Dump the base "files/" dir if present
-if [ -d "${DEVICE_DIR}/files" ]; then
-	find "${DEVICE_DIR}/files" -type f | sort | while read -r f; do
-		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"
+if [ -d "${DEVICE_CONFIG_DIR}/files" ]; then
+	find "${DEVICE_CONFIG_DIR}/files" -type f | sort | while read -r f; do
+		dump_file "${f}" "${f#"${DEVICE_CONFIG_DIR}/files"}"
 	done
 fi
 
 # Dump the "files/" dir if present
 # It will overwrite the base files if needed
 # exactly the same way as it happens during the templating
-if [ -d "${DEVICE_DIR}/files" ]; then
-	find "${DEVICE_DIR}/files" -type f | sort | while read -r f; do
-		dump_file "${f}" "${f#"${DEVICE_DIR}/files"}"
+if [ -d "${DEVICE_CONFIG_DIR}/files" ]; then
+	find "${DEVICE_CONFIG_DIR}/files" -type f | sort | while read -r f; do
+		dump_file "${f}" "${f#"${DEVICE_CONFIG_DIR}/files"}"
 	done
 fi
 
