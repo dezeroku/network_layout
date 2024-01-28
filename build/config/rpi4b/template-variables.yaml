@@ -364,6 +364,15 @@ firewall:
       proto:
         - tcp
 
+# This is a netboot server redirect for tftp
+netboot:
+  enabled: true
+  # One of the homeserver nodes
+  ip: 192.168.3.10
+  dest_port: 32169
+  src: lan
+  dest: iot
+
 statistics:
   ping:
     enabled: true

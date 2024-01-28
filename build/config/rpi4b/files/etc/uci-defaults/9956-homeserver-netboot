@@ -1,0 +1,33 @@
+{{ if .netboot.enabled }}
+cat >> /etc/dnsmasq.conf <<HEREDOC
+dhcp-match=set:bios,60,PXEClient:Arch:00000
+dhcp-boot=tag:bios,netboot.xyz.kpxe,,{{ .netboot.ip }}
+dhcp-match=set:efi32,60,PXEClient:Arch:00002
+dhcp-boot=tag:efi32,netboot.xyz.efi,,{{ .netboot.ip }}
+dhcp-match=set:efi32-1,60,PXEClient:Arch:00006
+dhcp-boot=tag:efi32-1,netboot.xyz.efi,,{{ .netboot.ip }}
+dhcp-match=set:efi64,60,PXEClient:Arch:00007
+dhcp-boot=tag:efi64,netboot.xyz.efi,,{{ .netboot.ip }}
+dhcp-match=set:efi64-1,60,PXEClient:Arch:00008
+dhcp-boot=tag:efi64-1,netboot.xyz.efi,,{{ .netboot.ip }}
+dhcp-match=set:efi64-2,60,PXEClient:Arch:00009
+dhcp-boot=tag:efi64-2,netboot.xyz.efi,,{{ .netboot.ip }}
+HEREDOC
+
+/etc/init.d/dnsmasq restart
+
+uci set firewall.netboot_port_forward=redirect
+uci set firewall.netboot_port_forward.dest='{{ .netboot.dest }}'
+uci set firewall.netboot_port_forward.target='DNAT'
+uci add_list firewall.netboot_port_forward.proto='udp'
+uci set firewall.netboot_port_forward.src='{{ .netboot.src }}'
+uci set firewall.netboot_port_forward.src_dport='69'
+uci set firewall.netboot_port_forward.dest_port='{{ .netboot.dest_port }}'
+uci set firewall.netboot_port_forward.src_dip='{{ .netboot.ip }}'
+uci set firewall.netboot_port_forward.dest_ip='{{ .netboot.ip }}'
+
+uci commit firewall
+
+# TODO: Doesn't uci take care of that for us?
+/etc/init.d/firewall restart
+{{ end }}
