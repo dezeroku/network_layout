@@ -35,6 +35,12 @@ if [[ "${INTERACTIVE_USAGE:-}" == "true" ]]; then
 fi
 
 if [[ "${NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN:-}" != "true" ]]; then
+	env_tmpfile="$(mktemp)"
+	env >"${env_tmpfile}"
+	# Pass the whole env to the container
+	# TODO: This should probably be limited to an allow-list of variables we actually care about
+	export ADDITIONAL_DOCKER_FLAGS="${ADDITIONAL_DOCKER_FLAGS} --env-file ${env_tmpfile}"
+
 	# shellcheck disable=SC2086
 	exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
 		-e "SCCACHE_CACHE_SIZE=50G" \
