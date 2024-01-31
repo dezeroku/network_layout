@@ -51,7 +51,7 @@ This part of the configuration is not covered by this repo.
 | LAN       | 192.168.1.1/24  | yes             | yes                     |
 | Guest     | 192.168.2.1/24  | yes             | no                      |
 | IoT       | 192.168.3.1/24  | no              | no                      |
-| VPN       | 10.200.200.0/24 | yes             | yes                     |
+| VPN       | 192.168.69.1/24 | yes             | yes                     |
 
 ## Hardware Setup
 

@@ -112,7 +112,7 @@ vpns:
       private_key: iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA=
       listen_port: 12345
       addresses:
-        - 192.168.20.1/24
+        - 192.168.69.1/24
     firewall:
       add_rule_for_wan_access: true
       zone:
