@@ -39,6 +39,10 @@ echoerr "Copy config for ${DEVICE}"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/copy-config"
 
+echoerr "Template custom files"
+sleep "${SLEEP_BETWEEN_STAGES}"
+"${SCRIPTS_DIR}/core/template-files"
+
 if [[ ! "${SKIP_VERSION_FILE_GENERATION}" == "true" ]]; then
 	echoerr "Generating version file"
 	sleep "${SLEEP_BETWEEN_STAGES}"

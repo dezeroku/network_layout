@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
+
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}"/common.sh
+parse_env_args
+
+check_tool gomplate
+
+cd "${BUILDDIR}"
+
+# Remove the custom files present
+rm -rf "${BUILDDIR}/files"
+if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
+	# Copy files from common config dir
+	echoerr "Copying common files from ${SCRIPTS_DIR}/../config/common/files"
+	cp -r "${SCRIPTS_DIR}/../config/common/files" "${BUILDDIR}/files"
+
+	GOMPLATE_COMMAND_SUFFIX="-d base=$(readlink -f "${SCRIPTS_DIR}/../config/common/template-variables.yaml")"
+	GOMPLATE_MERGE_CONTEXT="base"
+
+	# Copy files from device specific config dir
+	if [ -d "${DEVICE_CONFIG_DIR}/files" ]; then
+		echoerr "Copying device-specific files from ${DEVICE_CONFIG_DIR}/files"
+		cp -r "${DEVICE_CONFIG_DIR}/files/"* "${BUILDDIR}/files"
+
+		# Replace all the _TEMPLATE variables in files with values from env
+		# All such values should come from ${DEVICE_TEMPLATE_ENV_FILE} file
+		if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
+			echoerr "Applying template-variables.yaml templating on top of ${BUILDDIR}/files"
+
+			GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+			GOMPLATE_MERGE_CONTEXT="config|${GOMPLATE_MERGE_CONTEXT}"
+
+			if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
+				echoerr "Detected secret-variables.yaml override, applying"
+				GOMPLATE_COMMAND_SUFFIX="-d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+				GOMPLATE_MERGE_CONTEXT="secrets|config|${GOMPLATE_MERGE_CONTEXT}"
+			fi
+		fi
+	fi
+
+	GOMPLATE_COMMAND_SUFFIX="-c \".=merge:${GOMPLATE_MERGE_CONTEXT}\" ${GOMPLATE_COMMAND_SUFFIX}"
+	GOMPLATE_COMMAND="gomplate ${GOMPLATE_COMMAND_SUFFIX}"
+
+	find "${BUILDDIR}/files" -type f | sort | while read -r file; do
+		echoerr "Templating ${file}"
+		TMPFILE="$(mktemp)"
+		env -i bash -c "cat ${file} | ${GOMPLATE_COMMAND}" >"${TMPFILE}"
+		mv "${TMPFILE}" "${file}"
+	done
+else
+	echoerr "Skipping copying custom files because of REPRODUCE_UPSTREAM_BUILD=true"
+fi
