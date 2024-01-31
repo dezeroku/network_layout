@@ -18,6 +18,7 @@ On top of that utility scriptlets ([scripts/utils](scripts/utils)) are provided 
 2. applying the `sysupgrade` in an automated way
 3. updating the OpenWRT revision to be used
 4. generating SSH host keys for the router
+5. entering interactive shell in the container
 
 The builds are performed based on the settings defined in the [config](config) directory, each device should have its own
 directory in there. More details about the directory layout can be found in the [docs/config.md](docs/config.md) file.
@@ -90,3 +91,13 @@ DEVICE=example ./scripts/core/run ./scripts/core/template-files
 While possible to run outside of the provided docker container (without the `./scripts/core/run` wrapper), it's not recommended,
 as it changes the build env used during the "real builds" and a single step run.
 This can become especially problematic with the stages related to the make config.
+
+### Entering the container
+
+In case of modifying the make config with `make menuconfig` and debugging, interactive shell may come in handy.
+An easy way to enter shell in the container with common build variables set is to run `./scripts/utils/enter-shell`
+using the same set of env variables as for the normal builds
+
+```
+DEVICE=example ./scripts/utils/enter-shell
+```

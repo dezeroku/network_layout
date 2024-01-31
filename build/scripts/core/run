@@ -7,6 +7,9 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 . "${SCRIPTS_DIR}/common.sh"
 #parse_env_args
 # just an excerpt
+if [ -z "${DEVICE:-}" ]; then
+	echo "DEVICE is required to be in env" && exit 1
+fi
 if [ -z "${BUILDDIR:-}" ]; then
 	mkdir -p "${SCRIPTS_DIR}/../builds"
 	BUILDDIR="${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}"

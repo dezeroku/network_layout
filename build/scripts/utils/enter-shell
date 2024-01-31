@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Enter the shell in a build environment
+
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
+
+# shellcheck disable=SC2086
+INTERACTIVE_USAGE=true ${SCRIPTS_DIR}/core/run bash -c '\
+    SCRIPTS_DIR=./scripts/ && \
+    . scripts/common.sh && \
+    parse_env_args && \
+    bash'
