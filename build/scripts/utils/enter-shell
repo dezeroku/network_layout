@@ -4,9 +4,14 @@ set -euo pipefail
 # Enter the shell in a build environment
 
 SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}"/common.sh
+
+echoerr "Build docker build environment image (development)"
+DOCKER_BUILD_DEV_IMAGE=true "${SCRIPTS_DIR}/core/setup-image"
 
 # shellcheck disable=SC2086
-INTERACTIVE_USAGE=true ${SCRIPTS_DIR}/core/run bash -c '\
+DOCKER_IMAGE=openwrt-builder-dev INTERACTIVE_USAGE=true ${SCRIPTS_DIR}/core/run bash -c '\
     SCRIPTS_DIR=./scripts/ && \
     . scripts/common.sh && \
     parse_env_args && \

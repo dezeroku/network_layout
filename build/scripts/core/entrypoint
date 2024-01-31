@@ -2,9 +2,6 @@
 
 set -e
 
-# To not build docker image in end-to-end-build script
-export SKIP_DOCKER_SETUP=true
-
 # For the version file generation
 SCRIPTS_VERSION="$(cd "${SCRIPTS_DIR}" && git describe HEAD)"
 export SCRIPTS_VERSION
@@ -15,6 +12,8 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 # shellcheck source=build/scripts/common.sh
 . "${SCRIPTS_DIR}/common.sh"
 
+# To not build docker image in end-to-end-build script
+export SKIP_DOCKER_SETUP=true
 echoerr "Build docker build environment image"
 "${SCRIPTS_DIR}/core/setup-image"
 
