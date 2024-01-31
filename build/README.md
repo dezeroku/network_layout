@@ -77,3 +77,16 @@ ditch the `SKIP_DOWNLOADS=true` option once to achieve that.
 ```
 DEVICE=example SKIP_DOWNLOADS=true ./scripts/core/entrypoint
 ```
+
+### Running a single build step
+
+From time to time it may be useful to only run a single build step, e.g. only template the custom files or override the
+make config. This can be achieved by running step's script in the `scripts/core` directory as so:
+
+```
+DEVICE=example ./scripts/core/run ./scripts/core/template-files
+```
+
+While possible to run outside of the provided docker container (without the `./scripts/core/run` wrapper), it's not recommended,
+as it changes the build env used during the "real builds" and a single step run.
+This can become especially problematic with the stages related to the make config.
