@@ -51,7 +51,10 @@ RUN \
         zlib1g-dev \
         libssl-dev \
         file \
+        \
         dropbear-bin \
+        dos2unix \
+        moreutils \
         && \
     apt-get clean && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
