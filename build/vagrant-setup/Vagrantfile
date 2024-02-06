@@ -8,8 +8,7 @@ apt-get upgrade -y
 SCRIPT
 
 $script = <<-SCRIPT
-# The last two are for the scripts/utils in this repo
-apt-get install -y git docker.io dos2unix moreutils
+apt-get install -y git docker.io
 sudo usermod -aG docker vagrant
 SCRIPT
 
@@ -17,7 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = 'generic/ubuntu2204'
 
   if Vagrant.has_plugin?("vagrant-disksize")
-    config.disksize.size = '80GB'
+    config.disksize.size = '200GB'
   end
 
   config.vm.provider "virtualbox" do |v|
