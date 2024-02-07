@@ -1,0 +1,86 @@
+# Values that can be considered "secrets", provided in this file are exemplary
+# secret-variables.yaml file with appropriate overrides should be created
+#
+# Take a look at common/template-variables.yaml
+# to see some docs and examples
+
+hostname: switch
+
+#security:
+#  root_password: ...
+#
+#  ssh:
+#    keys:
+#      - ...
+#
+# ACME is too big for the FS
+#letsencrypt:
+#  enabled: false
+#  domain: ...
+#  acme:
+#    email: ...
+#    route53:
+#      access_key_id: ...
+#      access_key_secret: ...
+
+networks:
+  lan:
+    proto: static
+    device: switch
+    ipaddr: 192.168.1.4
+    gateway: 192.168.1.1
+    netmask: 255.255.255.0
+    dns:
+      - 192.168.1.1
+    vlan:
+      id: 99
+      ports:
+        # mainrouter
+        - lan1:t
+        - lan2
+        - lan3
+        - lan4
+        # aprouter
+        - lan5:t
+        #- lan4:u*
+
+  guest:
+    proto: none
+    device: switch
+    vlan:
+      id: 20
+      ports:
+        # mainrouter
+        - lan1:t
+        # aprouter
+        - lan5:t
+
+  iot:
+    proto: none
+    device: switch
+    vlan:
+      id: 30
+      ports:
+        # mainrouter
+        - lan1:t
+        # aprouter
+        - lan5:t
+        # HomeServer machines
+        - lan6
+        - lan7
+        - lan8
+
+dhcp:
+  default_dns_server: 192.168.1.1
+
+custom_commands: |-
+  # Delete the default VLAN configuration, we have our own
+  uci del network.lan_vlan
+  uci del network.lan.ip6assign
+
+  # Apply changes
+  /etc/init.d/network restart
+
+  # Get rid of firewall that's not needed on just a switch
+  /etc/init.d/firewall disable
+  /etc/init.d/firewall stop || true
