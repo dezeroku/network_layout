@@ -4,6 +4,24 @@
 # Take a look at common/template-variables.yaml
 # to see some docs and examples
 
+hostname: aprouter
+
+#security:
+#  root_password: ...
+#
+#  ssh:
+#    keys:
+#      - ...
+#
+#letsencrypt:
+#  enabled: true
+#  domain: ...
+#  acme:
+#    email: ...
+#    route53:
+#      access_key_id: ...
+#      access_key_secret: ...
+
 wireless:
   radios:
     radio0:
