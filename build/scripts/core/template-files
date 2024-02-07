@@ -25,20 +25,19 @@ if [[ ! "${REPRODUCE_UPSTREAM_BUILD}" == "true" ]]; then
 	if [ -d "${DEVICE_CONFIG_DIR}/files" ]; then
 		echoerr "Copying device-specific files from ${DEVICE_CONFIG_DIR}/files"
 		cp -r "${DEVICE_CONFIG_DIR}/files/"* "${BUILDDIR}/files"
+	fi
 
-		# Replace all the _TEMPLATE variables in files with values from env
-		# All such values should come from ${DEVICE_TEMPLATE_ENV_FILE} file
-		if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
-			echoerr "Applying template-variables.yaml templating on top of ${BUILDDIR}/files"
+	# Template the files
+	if [ -n "${DEVICE_TEMPLATE_ENV_FILE:-}" ]; then
+		echoerr "Applying template-variables.yaml templating on top of ${BUILDDIR}/files"
 
-			GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
-			GOMPLATE_MERGE_CONTEXT="config|${GOMPLATE_MERGE_CONTEXT}"
+		GOMPLATE_COMMAND_SUFFIX="-d config=${DEVICE_TEMPLATE_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+		GOMPLATE_MERGE_CONTEXT="config|${GOMPLATE_MERGE_CONTEXT}"
 
-			if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
-				echoerr "Detected secret-variables.yaml override, applying"
-				GOMPLATE_COMMAND_SUFFIX="-d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
-				GOMPLATE_MERGE_CONTEXT="secrets|config|${GOMPLATE_MERGE_CONTEXT}"
-			fi
+		if [ -n "${DEVICE_TEMPLATE_SECRET_ENV_FILE:-}" ]; then
+			echoerr "Detected secret-variables.yaml override, applying"
+			GOMPLATE_COMMAND_SUFFIX="-d secrets=${DEVICE_TEMPLATE_SECRET_ENV_FILE} ${GOMPLATE_COMMAND_SUFFIX}"
+			GOMPLATE_MERGE_CONTEXT="secrets|config|${GOMPLATE_MERGE_CONTEXT}"
 		fi
 	fi
 
