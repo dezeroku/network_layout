@@ -66,4 +66,6 @@ commit network
 EOI
 
 /etc/init.d/network restart
-/etc/init.d/odhcpd reload
+if [ -f /etc/init.d/odhcpd ]; then
+    /etc/init.d/odhcpd reload
+fi

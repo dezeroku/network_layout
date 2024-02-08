@@ -1,3 +1,6 @@
+# In case we run this on a switch
+if [ -f /etc/init.d/dnsmasq ]; then
+
 uci batch << EOI
 set dhcp.@dnsmasq[0].server='{{ .dhcp.default_dns_server }}'
 
@@ -49,5 +52,11 @@ add_list dhcp.@dnsmasq[0].address='/{{ print $name }}/{{ . }}'
 commit dhcp
 EOI
 
-/etc/init.d/dnsmasq reload
-/etc/init.d/odhcpd reload
+fi
+
+if [ -f /etc/init.d/dnsmasq ]; then
+    /etc/init.d/dnsmasq reload
+fi
+if [ -f /etc/init.d/odhcpd ]; then
+    /etc/init.d/odhcpd reload
+fi
