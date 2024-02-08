@@ -68,6 +68,9 @@ networks:
         - lan1:t
         - lan3
 
+dhcp:
+  default_dns_server: 192.168.1.1
+
 custom_commands: |-
   del network.lan.ip6assign
 
