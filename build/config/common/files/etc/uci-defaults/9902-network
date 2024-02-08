@@ -1,7 +1,9 @@
 uci batch << EOI
 
 # Global options
+{{- if has .network.globals "ula_prefix" }}
 set network.globals.ula_prefix='{{ .network.globals.ula_prefix }}'
+{{- end }}
 {{- if has .network.globals "packet_steering" }}
 {{- if .network.globals.packet_steering }}
 set network.globals.packet_steering='1'

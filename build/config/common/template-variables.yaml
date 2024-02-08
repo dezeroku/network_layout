@@ -2,9 +2,9 @@
 # secret-variables.yaml file with appropriate overrides should be created
 
 network:
-  globals:
-    ula_prefix: "fd6d:8246:307d::/48"
-    # packet_steering: true
+  globals: {}
+  # ula_prefix: "fd6d:8246:307d::/48"
+  # packet_steering: true
 
 hostname: somerouter
 timezone:
