@@ -4,10 +4,10 @@ uci del mdns_repeater.main.interface || true
 {{- range $name, $config := .networks }}
 {{- if has $config "broadcast_mdns" }}
 {{- if $config.broadcast_mdns }}
-{{- if has $config "device" }}
-uci add_list mdns_repeater.main.interface='{{ $config.device }}'
+{{- if has $config "vlan" }}
+uci add_list mdns_repeater.main.interface='{{ $config.device }}.{{ $config.vlan.id }}'
 {{ else }}
-uci add_list mdns_repeater.main.interface='br-lan.{{ $config.vlan.id }}'
+uci add_list mdns_repeater.main.interface='{{ $config.device }}'
 {{- end }}
 {{- end }}
 {{- end }}
