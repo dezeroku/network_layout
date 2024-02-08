@@ -26,7 +26,7 @@ set network.@device[0].bridge_empty='0'
 {{ range $name, $config := .networks }}
 {{- if has $config "vlan" }}
 set network.bridge_vlan_{{ print $name }}='bridge-vlan'
-set network.bridge_vlan_{{ print $name }}.device='br-lan'
+set network.bridge_vlan_{{ print $name }}.device='{{ $config.device }}'
 set network.bridge_vlan_{{ print $name }}.vlan='{{ $config.vlan.id }}'
 {{- range $config.vlan.ports }}
 add_list network.bridge_vlan_{{ print $name }}.ports='{{ . }}'
@@ -44,10 +44,10 @@ set network.{{ print $name }}.ipaddr='{{ $config.ipaddr }}'
 set network.{{ print $name }}.gateway='{{ $config.gateway }}'
 set network.{{ print $name }}.netmask='{{ $config.netmask }}'
 {{- end }}
-{{- if has $config "device" }}
-set network.{{ print $name }}.device='{{ $config.device }}'
+{{- if has $config "vlan" }}
+set network.{{ print $name }}.device='{{ $config.device }}.{{ $config.vlan.id }}'
 {{ else }}
-set network.{{ print $name }}.device='br-lan.{{ $config.vlan.id }}'
+set network.{{ print $name }}.device='{{ $config.device }}'
 {{- end }}
 {{- if has $config "type" }}
 set network.{{ print $name }}.type='{{ $config.type }}'

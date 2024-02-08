@@ -30,17 +30,17 @@ del luci_statistics.collectd_dns.Interfaces
 */}}
 {{- if has $config "collect_dns_statistics" }}
 {{- if $config.collect_dns_statistics }}
-{{- if has $config "device" }}
-add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}'
+{{- if has $config "vlan" }}
+add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}.{{ $config.vlan.id }}'
 {{ else }}
-add_list luci_statistics.collectd_dns.Interfaces='br-lan.{{ $config.vlan.id }}'
+add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}'
 {{- end }}
 {{- end }}
 {{ else }}
-{{- if has $config "device" }}
-add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}'
+{{- if has $config "vlan" }}
+add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}.{{ $config.vlan.id }}'
 {{ else }}
-add_list luci_statistics.collectd_dns.Interfaces='br-lan.{{ $config.vlan.id }}'
+add_list luci_statistics.collectd_dns.Interfaces='{{ $config.device }}'
 {{- end }}
 {{- end }}
 {{- end }}

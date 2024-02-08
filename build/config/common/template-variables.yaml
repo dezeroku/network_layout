@@ -30,8 +30,8 @@ security:
     # interface: lan
 
 networks: {}
-# either 'vlan' or 'device' must be specified for each network
 #  example:
+#    device: br-lan
 #    ipaddr: 192.168.13.1
 #    gateway: 192.168.13.1
 #    netmask: 255.255.255.0
@@ -39,7 +39,6 @@ networks: {}
 #      id: 13
 #      ports:
 #        - eth2:t
-#    device: br-lan.13
 #    type: bridge
 #    # If set to true, mdns requests from the network
 #    # will be broadcasted to the different ones
