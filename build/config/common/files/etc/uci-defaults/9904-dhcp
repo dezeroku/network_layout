@@ -1,6 +1,4 @@
 uci batch << EOI
-# This is going to be changed by https-dns-proxy in the end
-# This value is just a fallback
 set dhcp.@dnsmasq[0].server='{{ .dhcp.default_dns_server }}'
 
 {{ range $name, $config := .networks }}
