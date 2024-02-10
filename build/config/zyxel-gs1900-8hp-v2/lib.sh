@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# This file is sourced, not run
 
 function unpack_image() {
 	# $1 -> .img.gz to unpack

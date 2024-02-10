@@ -9,9 +9,5 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 . "${SCRIPTS_DIR}"/common.sh
 parse_env_args
 
-# Reference import
-# shellcheck source=build/scripts/libs/rpi4b
-. "${SCRIPTS_DIR}/libs/${DEVICE}.sh"
-
 # shellcheck source=build/scripts/libs/apply-sysupgrade.sh
 . "${SCRIPTS_DIR}/libs/apply-sysupgrade.sh"

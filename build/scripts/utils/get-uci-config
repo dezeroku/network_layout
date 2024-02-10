@@ -13,9 +13,7 @@ parse_env_args
 # shellcheck source=build/scripts/libs/uci
 . "${SCRIPTS_DIR}/libs/uci.sh"
 
-# Reference import
-# shellcheck source=build/scripts/libs/rpi4b
-. "${SCRIPTS_DIR}/libs/${DEVICE}.sh"
+source_device_lib
 
 # shellcheck source=build/scripts/libs/get-uci-config-runner
 . "${SCRIPTS_DIR}/libs/get-uci-config-runner.sh"

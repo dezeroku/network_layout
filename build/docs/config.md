@@ -29,3 +29,6 @@ Take a look at the YAML based templating document please see [templating.md](tem
 3. `template-variables.yaml` - file containing variables that are templated into `files/`.
    Customisable with `DEVICE_TEMPLATE_ENV_FILE`
 4. `secret-variables.yaml` - file overriding "template-variables.yaml" values.
+5. `lib.sh` - file definining few bash functions useful from the `utils` point of view:
+
+- `unpack_image() [.img.gz to unpack] [directory to output]` - used e.g. when diffing the built images

@@ -9,12 +9,31 @@ function echoerr() {
 	echo "$@" 1>&2
 }
 
-check_tool() {
+function check_tool() {
 	local tool
 	tool="$1"
 	if ! command -v "${tool}" >/dev/null; then
 		echoerr "${tool} command not found"
 		return 1
+	fi
+}
+
+function source_device_lib() {
+	if [ -z "${DEVICE_CONFIG_DIR:-}" ]; then
+		echoerr "DEVICE_CONFIG_DIR variable is empty"
+		echoerr "Did you call parse_env_args function in your script?"
+		exit 1
+	fi
+
+	local lib_file="${DEVICE_CONFIG_DIR}/lib.sh"
+
+	if [ -f "${lib_file}" ]; then
+		# This file is dynamic, we can't follow it
+		# shellcheck disable=SC1090
+		. "${lib_file}"
+	else
+		echoerr "File ${lib_file} does not exist"
+		exit 1
 	fi
 }
 
