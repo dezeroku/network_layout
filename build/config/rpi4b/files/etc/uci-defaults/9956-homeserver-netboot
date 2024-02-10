@@ -17,6 +17,7 @@ HEREDOC
 /etc/init.d/dnsmasq restart
 
 uci set firewall.netboot_port_forward=redirect
+uci set firewall.netboot_port_forward.name='homeserver_pxe'
 uci set firewall.netboot_port_forward.dest='{{ .netboot.dest }}'
 uci set firewall.netboot_port_forward.target='DNAT'
 uci add_list firewall.netboot_port_forward.proto='udp'
