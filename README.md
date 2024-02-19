@@ -9,7 +9,7 @@ With this approach flashing the device applies all the settings that are require
 including wireless, VLANs, firewall and additional features.
 For more details take a look at [build/README.md](build/README.md) file.
 
-Repository [home_server](https://github.com/dezeroku/home_server) assumes the
+Repository [homelab](https://github.com/dezeroku/homelab) assumes the
 `homeserver` IPs match the ones defined in this repo.
 
 ## General Overview
