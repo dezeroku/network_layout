@@ -1,0 +1,41 @@
+# Delete the default config
+uci delete "poe.@global[0]"
+uci delete "poe.@port[0]"
+
+{{ if has . "poe" }}
+uci set poe.global=global
+uci set poe.global.budget='{{ .poe.budget }}'
+
+{{ range $name, $config := .poe.ports }}
+uci set poe.{{ print $name }}=port
+{{- if has $config "enabled" }}
+{{- if $config.enabled }}
+uci set poe.{{ print $name }}.enable='1'
+{{- else }}
+uci set poe.{{ print $name }}.enable='0'
+{{- end }}
+{{- else }}
+uci set poe.{{ print $name }}.enable='0'
+{{- end }}
+uci set poe.{{ print $name }}.id='{{ $config.id }}'
+uci set poe.{{ print $name }}.name='{{ $name }}'
+{{- if has $config "poe_plus" }}
+{{- if $config.poe_plus }}
+uci set poe.{{ print $name }}.poe_plus='1'
+{{ else }}
+uci set poe.{{ print $name }}.poe_plus='0'
+{{- end }}
+{{- else }}
+uci set poe.{{ print $name }}.poe_plus='1'
+{{- end }}
+{{- if has $config "priority" }}
+uci set poe.{{ print $name }}.priority='{{ $config.priority }}'
+{{- else }}
+uci set poe.{{ print $name }}.priority='2'
+{{- end }}
+{{ end }}
+{{ end }}
+
+uci commit poe
+
+/etc/init.d/poe restart
