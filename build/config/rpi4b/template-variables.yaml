@@ -181,6 +181,12 @@ dhcp:
       ip: "192.168.3.12"
       dns: true
 
+    # a worker node
+    homeserver-four:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.3.14"
+      dns: true
+
     homekit-hub:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.1.10"
@@ -211,6 +217,7 @@ dhcp:
       - 192.168.3.10
       - 192.168.3.11
       - 192.168.3.12
+      # Don't add 192.168.3.14 here, as it's a worker without an ingress
 
 adblock:
   sources:
@@ -285,6 +292,7 @@ firewall:
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
+        - 192.168.3.14
       src_port:
         - 5353
       dest_port:
@@ -302,6 +310,7 @@ firewall:
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
+        - 192.168.3.14
         # few smart devices that need it
         # as they can't be controlled via LAN only
         - 192.168.3.21
@@ -343,6 +352,7 @@ firewall:
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
+        - 192.168.3.14
 
     allow_guest_to_homeserver_http:
       target: ACCEPT
@@ -381,6 +391,7 @@ firewall:
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
+        - 192.168.3.14
       dest: lan
       dest_ip:
         # desktop and devserver
