@@ -57,12 +57,12 @@ This part of the configuration is not covered by this repo.
 
 ### Main router
 
-| VLAN       | ETH0  | ETH1       | ETH2         |
-| ---------- | ----- | ---------- | ------------ |
-| 20 (guest) | -     |            | aprouter (t) |
-| 30 (iot)   | -     |            | aprouter (t) |
-| 99 (lan)   | (u\*) |            | aprouter (t) |
-|            |       | WAN router |              |
+| VLAN       | ETH0  | ETH1       |
+| ---------- | ----- | ---------- |
+| 20 (guest) | t     |            |
+| 30 (iot)   | t     |            |
+| 99 (lan)   | (t\*) |            |
+|            |       | WAN router |
 
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
 It's paired with two TP-Link UE300 USB-Ethernet adapters (RTL8153), one is used for WAN, the other for AP Router.
@@ -77,20 +77,26 @@ It does all the heavy lifting in this setup:
 
 Look into [its config for more details](build/config/rpi4b/template-variables.yaml).
 
-### Main AP
+### Main switch
 
-TP-Link RE605x exposes the LAN in AP mode.
+| VLAN       | LAN1 (mainrouter) | LAN2 | LAN3 | LAN4 | LAN5 (aprouter) | LAN6 | LAN7 | LAN8 |
+| ---------- | ----------------- | ---- | ---- | ---- | --------------- | ---- | ---- | ---- |
+| 20 (guest) | t                 |      |      |      | t               |      |      |      |
+| 30 (iot)   | t                 |      |      |      | t               | u    | u    | u    |
+| 99 (lan)   | t                 | u    | u    | u    | t               |      |      |      |
 
-It's redundant in this setup, as the AP Router could take over this role.
+Zyxel GS1900-8HP powering some devices over PoE and switching traffic with VLANs.
+
+Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/template-variables.yaml).
 
 ### AP Router
 
-| VLAN       | WAN | LAN1           | LAN2          | LAN3           |
-| ---------- | --- | -------------- | ------------- | -------------- |
-| 20 (guest) |     | mainrouter (t) | devserver (u) |                |
-| 30 (iot)   |     | mainrouter (t) |               | IOT switch (u) |
-| 99 (lan)   |     | mainrouter (t) |               |                |
+| VLAN       | WAN | LAN1           | LAN2 | LAN3 |
+| ---------- | --- | -------------- | ---- | ---- |
+| 20 (guest) |     | mainrouter (t) |      |      |
+| 30 (iot)   |     | mainrouter (t) |      |      |
+| 99 (lan)   |     | mainrouter (t) |      |      |
 
-ASUS RT-AX53U running openwrt, used as a managed switch and an AP for the `guest` and `iot` network.
+ASUS RT-AX53U running openwrt, used as a managed switch and an AP for all the networks.
 
 Look into [its config for more details](build/config/asus-rt-ax53u/template-variables.yaml).

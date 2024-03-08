@@ -15,7 +15,6 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
     with Cluster("LAN (192.168.1.0/24)"):
         homekit_hub = Switch("Homekit Hub\n192.168.1.10")
         ap_router = Switch("AP Router\n192.168.1.3")
-        main_ap = Switch("Main AP\n192.168.1.2")
 
         lan_middle = ap_router
 
