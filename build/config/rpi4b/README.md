@@ -19,6 +19,8 @@ Base `.config` from upstream (rpi4b): [config.orig](https://downloads.openwrt.or
 13. `acme` for cert requesting
 14. `luci-app-acme` for cert requesting
 15. `acme-dnsapi` for cert requesting
+16. `kmod-pwm-raspberrypi-poe` for PoE+ hat fan control (TODO: it fails on installing `kmod-thermal` currently, to be checked. `opkg install` from upstream works).
+    It makes the Pi run a bit hotter, but a lot more quiet
 
 ## Tips
 
