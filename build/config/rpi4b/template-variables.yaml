@@ -31,12 +31,10 @@ bridge_config:
   # We have one built-in ethernet
   # and two adapters connected
   # thus we get
-  # eth0 for LAN
+  # eth0 for all the stuff (via tagged VLANs)
   # eth1 for WAN
-  # eth2 for all the rest (via tagged VLANs)
   ports:
     - eth0
-    - eth2
   # TODO: do we need this?
   # This bridge won't ever be empty
   empty: true
@@ -51,8 +49,7 @@ networks:
     vlan:
       id: 99
       ports:
-        - eth0:u*
-        - eth2:t
+        - eth0:t*
     broadcast_mdns: true
     dhcp:
       start: 100
@@ -84,7 +81,7 @@ networks:
     vlan:
       id: 20
       ports:
-        - eth2:t
+        - eth0:t
     type: bridge
     dhcp:
       start: 100
@@ -107,7 +104,7 @@ networks:
     vlan:
       id: 30
       ports:
-        - eth2:t
+        - eth0:t
     type: bridge
     # TODO: this is only added so home-assistant, IoT devices and homekit-hub can see each other
     broadcast_mdns: true
@@ -200,11 +197,6 @@ dhcp:
     switch:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.1.4"
-      dns: true
-
-    tplinkap:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.1.2"
       dns: true
 
   domains: {}
