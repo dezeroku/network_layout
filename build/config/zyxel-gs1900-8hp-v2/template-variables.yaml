@@ -84,9 +84,9 @@ poe:
     #   priority: 2
     #   enabled: false
     # Set all ports to "auto" mode
-    #lan1:
-    #  enabled: true
-    #  id: 1
+    lan1:
+      enabled: true
+      id: 1
     #lan2:
     #  enabled: true
     #  id: 2
@@ -96,9 +96,9 @@ poe:
     #lan4:
     #  enabled: true
     #  id: 4
-    #lan5:
-    #  enabled: true
-    #  id: 5
+    lan5:
+      enabled: true
+      id: 5
     lan6:
       enabled: true
       id: 6
