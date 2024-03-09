@@ -79,11 +79,11 @@ Look into [its config for more details](build/config/rpi4b/template-variables.ya
 
 ### Main switch
 
-| VLAN       | LAN1 (mainrouter) | LAN2 | LAN3 | LAN4 | LAN5 (aprouter) | LAN6 | LAN7 | LAN8 |
-| ---------- | ----------------- | ---- | ---- | ---- | --------------- | ---- | ---- | ---- |
-| 20 (guest) | t                 |      |      |      | t               |      |      |      |
-| 30 (iot)   | t                 |      |      |      | t               | u    | u    | u    |
-| 99 (lan)   | t                 | u    | u    | u    | t               |      |      |      |
+| VLAN       | LAN1 (mainrouter) | LAN2 | LAN3 | LAN4 (aprouter) | LAN5 | LAN6 | LAN7 | LAN8 |
+| ---------- | ----------------- | ---- | ---- | --------------- | ---- | ---- | ---- | ---- |
+| 20 (guest) | t                 |      |      | t               |      |      |      |      |
+| 30 (iot)   | t                 |      |      | t               | u    | u    | u    | u    |
+| 99 (lan)   | t                 | u    | u    | t               |      |      |      |      |
 
 Zyxel GS1900-8HP powering some devices over PoE and switching traffic with VLANs.
 
