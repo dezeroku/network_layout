@@ -1,0 +1,24 @@
+From 9e9083ca9eba0e13c3be6ee8b347f4e2225348c3 Mon Sep 17 00:00:00 2001
+From: dezeroku <dezeroku@gmail.com>
+Date: Tue, 12 Mar 2024 04:04:51 +0100
+Subject: [PATCH] config.txt: Make the fan quieter
+
+---
+ target/linux/bcm27xx/image/config.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/target/linux/bcm27xx/image/config.txt b/target/linux/bcm27xx/image/config.txt
+index f8ca1bf2d4..17396e53ab 100644
+--- a/target/linux/bcm27xx/image/config.txt
++++ b/target/linux/bcm27xx/image/config.txt
+@@ -12,3 +12,8 @@ include distroconfig.txt
+
+ [all]
+ # Place your custom settings here.
++# Set better fan thresholds
++dtparam=poe_fan_temp0=50000
++dtparam=poe_fan_temp1=60000
++dtparam=poe_fan_temp2=70000
++dtparam=poe_fan_temp3=80000
+--
+2.44.0
