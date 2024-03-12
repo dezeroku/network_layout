@@ -6,7 +6,8 @@ Scripts in this repo can be used to perform the build of OpenWRT from source and
 2. setting up the .config for the build
 3. downloading the projects dependencies
 4. applying custom configuration
-5. performing the build
+5. applying custom patches
+6. performing the build
 
 The idea here was to simplify the whole process, so it can be run with a single command, e.g. in the CI environment.
 All the build scripts are run in a container and only require `docker` to be present on host.
@@ -69,8 +70,9 @@ in previous point.
 
 With every call this command will:
 
-1. apply the customizations
-2. perform the build (reusing cache from previous builds)
+1. reset the repo to base tag, defined in `variables` file
+2. apply the customizations
+3. perform the build (reusing cache from previous builds)
 
 Note that if you change the `config/example/config` file, so that some new dependencies need to be downloaded, you can just
 ditch the `SKIP_DOWNLOADS=true` option once to achieve that.

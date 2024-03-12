@@ -43,6 +43,10 @@ echoerr "Copy config for ${DEVICE}"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/copy-config"
 
+echoerr "Apply buildroot patches"
+sleep "${SLEEP_BETWEEN_STAGES}"
+"${SCRIPTS_DIR}/core/apply-patches"
+
 echoerr "Template custom files"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/template-files"

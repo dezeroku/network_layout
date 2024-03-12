@@ -18,6 +18,16 @@ function check_tool() {
 	fi
 }
 
+function set_git_info() {
+	# If not present, configure the user's name and email
+	if ! git config user.email; then
+		git config user.email "openwrt-builder@example.com"
+	fi
+	if ! git config user.name; then
+		git config user.name "openwrt-builder"
+	fi
+}
+
 function source_device_lib() {
 	if [ -z "${DEVICE_CONFIG_DIR:-}" ]; then
 		echoerr "DEVICE_CONFIG_DIR variable is empty"
