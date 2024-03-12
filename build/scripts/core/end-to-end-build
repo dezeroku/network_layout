@@ -27,6 +27,10 @@ else
 	echoerr "Skipping cloning because of SKIP_DOWNLOADS=true"
 fi
 
+echoerr "Reset repo to commit: ${OPENWRT_VERSION}"
+sleep "${SLEEP_BETWEEN_STAGES}"
+"${SCRIPTS_DIR}/core/repo-reset"
+
 if [[ ! "${SKIP_DOWNLOADS}" == "true" ]]; then
 	echoerr "Update source feeds"
 	sleep "${SLEEP_BETWEEN_STAGES}"
