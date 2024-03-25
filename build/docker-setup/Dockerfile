@@ -79,6 +79,10 @@ RUN \
     --gid 1000 --uid 1000 --shell /bin/bash buildbot && \
     chown buildbot:buildbot /home/builder
 
+# WA the issue with local home directory not matching the /home/builder
+# Probably a better approach here would be to create the required dir via script?
+RUN chown buildbot:buildbot /home
+
 USER buildbot
 
 WORKDIR /builder

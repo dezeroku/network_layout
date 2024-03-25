@@ -16,12 +16,10 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 . "${SCRIPTS_DIR}/common.sh"
 parse_env_args
 
-cd "${BUILDDIR}"
-
 TMPFILE_DIRTY="$(mktemp)"
 TMPFILE="$(mktemp)"
 
-"${SCRIPTS_DIR}/core/run" ./scripts/diffconfig.sh >"${TMPFILE_DIRTY}"
+"${SCRIPTS_DIR}/core/run" bash -c "cd ${BUILDDIR} && ./scripts/diffconfig.sh" >"${TMPFILE_DIRTY}"
 
 # sanitize generated diffconfig
 ADDITIONAL_DOCKER_FLAGS="-v ${TMPFILE_DIRTY}:${TMPFILE_DIRTY}" "${SCRIPTS_DIR}/core/run" bash -c "dos2unix < ${TMPFILE_DIRTY}" >"${TMPFILE}"

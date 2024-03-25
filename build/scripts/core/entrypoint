@@ -17,4 +17,4 @@ export SKIP_DOCKER_SETUP=true
 echoerr "Build docker build environment image"
 "${SCRIPTS_DIR}/core/setup-image"
 
-"${SCRIPTS_DIR}/core/run" /builder/scripts/core/end-to-end-build
+"${SCRIPTS_DIR}/core/run" "${SCRIPTS_DIR}/core/end-to-end-build"

@@ -29,8 +29,8 @@ export BUILDDIR
 
 echoerr "Using BUILDDIR: ${BUILDDIR}"
 
-ONLY_INITIALIZE_WORKSPACE=true "${SCRIPTS_DIR}/core/end-to-end-build"
+ONLY_INITIALIZE_WORKSPACE=true "${SCRIPTS_DIR}/core/entrypoint"
 
 "${SCRIPTS_DIR}/utils/generate-diffconfig" >"${DEVICE_CONFIG_FILE}"
 
-echoerr "Now check the modified ${DEVICE_CONFIG_FILE} and ${DEVICE_CONFIG_FILE}.orig for changes and run build as usual"
+echoerr "Now check the modified ${DEVICE_CONFIG_FILE} and ${DEVICE_CONFIG_FILE}.orig for changes and run the build as usual"

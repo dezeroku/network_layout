@@ -50,7 +50,7 @@ if [[ "${NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN:-}" != "true" ]]; then
 	exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
 		-e "SCCACHE_CACHE_SIZE=50G" \
 		-e "NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN=true" \
-		-v "${PWD}:/builder" \
+		-v "${PWD}:${PWD}" \
 		-v "${CCACHE_TARGET_STORAGE}:/ccache-storage" \
 		-v "${CCACHE_HOST_STORAGE}:/home/builder/.cache/sccache" \
 		"${DOCKER_IMAGE}" "$@"
