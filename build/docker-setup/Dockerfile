@@ -2,11 +2,11 @@
 # At the time of writing it was based on 85ffd9a27da104698b3ee433aaf0ffb0cb13504e hash
 # It also includes `sccache`, `gomplate` and `dropbearkey`
 
-FROM rust:1.71.0@sha256:bef59af02f103760cd57e8d6ccadf364954b0ae5e74ea7c7203d26744aeec051 as sccache-build
+FROM rust:1.74.0 as sccache-build
 
 RUN apt-get update && \
         apt-get install -y musl-tools
-RUN rustup target add x86_64-unknown-linux-musl
+RUN rustup target add x86_64-unknown-linux-musl --toolchain 1.74.0
 RUN cargo install sccache \
         --version 0.5.4 \
         --features openssl/vendored \
