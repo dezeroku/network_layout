@@ -374,6 +374,18 @@ firewall:
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
+        - 192.168.3.14
+
+    allow_vpn_main_to_devserver:
+      target: ACCEPT
+      src: vpn_main
+      dest: lan
+      proto:
+        - tcp
+        - udp
+        - icmp
+      dest_ip:
+        - 192.168.1.14
 
     allow_lan_server_node_exporter_scrape_from_iot:
       target: ACCEPT
