@@ -375,6 +375,12 @@ firewall:
         - 192.168.3.11
         - 192.168.3.12
         - 192.168.3.14
+      dest_port:
+        - 22
+        - 80
+        - 443
+        # For K8S api
+        - 6443
 
     allow_vpn_main_to_devserver:
       target: ACCEPT
@@ -386,6 +392,8 @@ firewall:
         - icmp
       dest_ip:
         - 192.168.1.14
+      dest_port:
+        - 22
 
     allow_lan_server_node_exporter_scrape_from_iot:
       target: ACCEPT
