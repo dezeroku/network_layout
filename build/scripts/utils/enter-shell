@@ -10,9 +10,9 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 echoerr "Build docker build environment image (development)"
 DOCKER_BUILD_DEV_IMAGE=true "${SCRIPTS_DIR}/core/setup-image"
 
-# shellcheck disable=SC2086
-DOCKER_IMAGE=openwrt-builder-dev INTERACTIVE_USAGE=true ${SCRIPTS_DIR}/core/run bash -c '\
-    SCRIPTS_DIR=./scripts/ && \
-    . scripts/common.sh && \
+# shellcheck disable=SC2086,SC2016,SC2097,SC2098
+CUR_DIR="$PWD" SCRIPTS_DIR="$SCRIPTS_DIR" DOCKER_IMAGE=openwrt-builder-dev INTERACTIVE_USAGE=true ${SCRIPTS_DIR}/core/run bash -c '\
+    cd ${CUR_DIR} && \
+    . ${SCRIPTS_DIR}/common.sh && \
     parse_env_args && \
     bash'
