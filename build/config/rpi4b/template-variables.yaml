@@ -142,6 +142,25 @@ vpns:
         - wan
     clients: {}
 
+  vpn_guest:
+    interface:
+      proto: wireguard
+      force_link: true
+      # All of this is exemplary, don't get your hopes up :D
+      private_key: iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA=
+      listen_port: 12345
+      addresses:
+        - 192.168.70.1/24
+    firewall:
+      add_rule_for_wan_access: true
+      zone:
+        input: REJECT
+        output: ACCEPT
+        forward: REJECT
+        #forwarding:
+        #- wan
+    clients: {}
+
 wireless:
   radios:
     radio0:
@@ -253,6 +272,18 @@ firewall:
         - icmp
       target: ACCEPT
       src: vpn_main
+      dest_port:
+        - 53
+        - 67
+        - 68
+
+    allow_dhcp_dns_icmp_vpn_guest:
+      proto:
+        - tcp
+        - udp
+        - icmp
+      target: ACCEPT
+      src: vpn_guest
       dest_port:
         - 53
         - 67
@@ -381,6 +412,24 @@ firewall:
         - 443
         # For K8S api
         - 6443
+
+    allow_vpn_guest_to_homeserver:
+      target: ACCEPT
+      src: vpn_guest
+      dest: iot
+      proto:
+        - tcp
+        - udp
+        - icmp
+      dest_ip:
+        # Homeserver nodes
+        - 192.168.3.10
+        - 192.168.3.11
+        - 192.168.3.12
+        - 192.168.3.14
+      dest_port:
+        - 80
+        - 443
 
     allow_vpn_main_to_devserver:
       target: ACCEPT
