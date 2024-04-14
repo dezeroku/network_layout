@@ -15,7 +15,7 @@ add_list network.{{ print $name }}.addresses='{{ . }}'
 {{- end }}
 
 {{- range $client_name, $client_config := $config.clients }}
-{{ $client_name_uci := printf "wg_%s" $client_name }}
+{{ $client_name_uci := printf "wg_%s_%s" $name $client_name }}
 del network.{{ print $client_name_uci }}
 set network.{{ print $client_name_uci }}='wireguard_{{ $name }}'
 set network.{{ print $client_name_uci }}.public_key='{{ $client_config.public_key }}'
