@@ -148,6 +148,9 @@ statistics:
   df:
     enabled: true
 
+node_exporter: {}
+# listen_interface: "some-interface"
+
 # This is a placeholder for scripting
 # that doesn't really suit any other place
 # Don't use it if it can be avoided, it's just
