@@ -463,6 +463,20 @@ firewall:
       proto:
         - tcp
 
+    allow_mainrouter_node_exporter_scrape_from_iot:
+      target: ACCEPT
+      src: iot
+      src_ip:
+        # Homeserver nodes
+        - 192.168.3.10
+        - 192.168.3.11
+        - 192.168.3.12
+        - 192.168.3.14
+      dest_port:
+        - 9100
+      proto:
+        - tcp
+
 # This is a netboot server redirect for tftp
 netboot:
   enabled: true
@@ -484,3 +498,7 @@ statistics:
       - 8.8.8.8
   dns:
     enabled: true
+
+node_exporter:
+  # For the homeserver nodes
+  listen_interface: iot
