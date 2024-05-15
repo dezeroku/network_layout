@@ -74,9 +74,9 @@ dhcp:
 
 # Switch specific config
 poe:
-  # TODO: I've found some conflicting info about either 70 or 77W being available
-  # Falling back to 70, just in case
-  budget: 70
+  # Official firmware fot it shows 77W
+  # Probably because it's the v3 (rev b2) model
+  budget: 77
   ports:
     # Default options:
     # port_name:
