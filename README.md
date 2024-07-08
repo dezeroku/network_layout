@@ -28,7 +28,7 @@ What's covered:
 - \[x\] Secure connectivity from outside the network via Wireguard
 - \[x\] Encrypted DNS queries sent out to Cloudflare
 - \[x\] DNS level ad-blocking
-- \[ \] applying custom patches
+- \[x\] applying custom patches
 - \[ \] bit-to-bit reproducible builds (there seem to be some issues with `libgcc` or `libgcc1` being required, only the name differs though)
 
 ## Interfaces
