@@ -31,10 +31,14 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
 
         iot_middle = homeserver_two
 
-    with Cluster("VPN (192.168.69.1/24)"):
-        vpn_network = Blank()
+    with Cluster("VPN Main (192.168.69.1/24)"):
+        vpn_main = Blank()
 
-        vpn_middle = vpn_network
+    with Cluster("VPN Guest (192.168.70.1/24)"):
+        vpn_guest = Blank()
+
+    with Cluster("VPN Family (192.168.71.1/24)"):
+        vpn_family = Blank()
 
     internet >> isp_router
     isp_router >> main_router
@@ -44,4 +48,6 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
     main_router >> lan_middle
     main_router >> guest_middle
     main_router >> iot_middle
-    main_router >> vpn_network
+    main_router >> vpn_main
+    main_router >> vpn_guest
+    main_router >> vpn_family
