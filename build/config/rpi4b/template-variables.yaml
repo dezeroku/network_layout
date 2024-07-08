@@ -444,6 +444,18 @@ firewall:
       dest_port:
         - 22
 
+    allow_vpn_guest_to_devserver_minecraft:
+      target: ACCEPT
+      src: vpn_guest
+      dest: lan
+      proto:
+        - tcp
+        - udp
+      dest_ip:
+        - 192.168.1.14
+      dest_port:
+        - 25565
+
     allow_lan_server_node_exporter_scrape_from_iot:
       target: ACCEPT
       src: iot
