@@ -127,9 +127,8 @@ vpns:
     interface:
       proto: wireguard
       force_link: true
-      # All of this is exemplary, don't get your hopes up :D
-      private_key: iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA=
-      listen_port: 12345
+      # private_key: secret
+      # listen_port: secret
       addresses:
         - 192.168.69.1/24
     firewall:
@@ -146,9 +145,8 @@ vpns:
     interface:
       proto: wireguard
       force_link: true
-      # All of this is exemplary, don't get your hopes up :D
-      private_key: iG/zFGNWekkpyt2bwwmYWjfu/xKrHpkS4XNWnjxaWnA=
-      listen_port: 12345
+      # private_key: secret
+      # listen_port: secret
       addresses:
         - 192.168.70.1/24
     firewall:
@@ -159,6 +157,24 @@ vpns:
         forward: REJECT
         #forwarding:
         #- wan
+    clients: {}
+
+  vpn_family:
+    interface:
+      proto: wireguard
+      force_link: true
+      # private_key: secret
+      # listen_port: secret
+      addresses:
+        - 192.168.71.1/24
+    firewall:
+      add_rule_for_wan_access: true
+      zone:
+        input: REJECT
+        output: ACCEPT
+        forward: REJECT
+      forwarding:
+        - wan
     clients: {}
 
 wireless:
@@ -284,6 +300,18 @@ firewall:
         - icmp
       target: ACCEPT
       src: vpn_guest
+      dest_port:
+        - 53
+        - 67
+        - 68
+
+    allow_dhcp_dns_icmp_vpn_family:
+      proto:
+        - tcp
+        - udp
+        - icmp
+      target: ACCEPT
+      src: vpn_family
       dest_port:
         - 53
         - 67
@@ -419,8 +447,22 @@ firewall:
       dest: iot
       proto:
         - tcp
-        - udp
-        - icmp
+      dest_ip:
+        # Homeserver nodes
+        - 192.168.3.10
+        - 192.168.3.11
+        - 192.168.3.12
+        - 192.168.3.14
+      dest_port:
+        - 80
+        - 443
+
+    allow_vpn_family_to_homeserver:
+      target: ACCEPT
+      src: vpn_family
+      dest: iot
+      proto:
+        - tcp
       dest_ip:
         # Homeserver nodes
         - 192.168.3.10
