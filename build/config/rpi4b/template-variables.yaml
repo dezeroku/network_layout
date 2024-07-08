@@ -240,11 +240,11 @@ dhcp:
 
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
   addresses:
-    homeserver:
+    homeserver: &homeserver_nodes
       - 192.168.3.10
       - 192.168.3.11
       - 192.168.3.12
-      # Don't add 192.168.3.14 here, as it's a worker without an ingress
+      - 192.168.3.14
 
 adblock:
   sources:
@@ -337,13 +337,8 @@ firewall:
       proto:
         - udp
       src: iot
-      src_ip:
-        # Homeserver nodes
-        # For the home-assistant to work properly
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      # For the home-assistant to work properly
+      src_ip: *homeserver_nodes
       src_port:
         - 5353
       dest_port:
@@ -357,7 +352,7 @@ firewall:
       src: iot
       dest: wan
       src_ip:
-        # Homeserver nodes
+        # *homeserver_nodes
         - 192.168.3.10
         - 192.168.3.11
         - 192.168.3.12
@@ -398,22 +393,13 @@ firewall:
       target: ACCEPT
       src: lan
       dest: iot
-      dest_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      dest_ip: *homeserver_nodes
 
     allow_guest_to_homeserver_http:
       target: ACCEPT
       src: guest
       dest: iot
-      dest_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
+      dest_ip: *homeserver_nodes
       dest_port:
         - 80
         - 443
@@ -428,12 +414,7 @@ firewall:
         - tcp
         - udp
         - icmp
-      dest_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      dest_ip: *homeserver_nodes
       dest_port:
         - 22
         - 80
@@ -447,12 +428,7 @@ firewall:
       dest: iot
       proto:
         - tcp
-      dest_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      dest_ip: *homeserver_nodes
       dest_port:
         - 80
         - 443
@@ -463,12 +439,7 @@ firewall:
       dest: iot
       proto:
         - tcp
-      dest_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      dest_ip: *homeserver_nodes
       dest_port:
         - 80
         - 443
@@ -501,12 +472,7 @@ firewall:
     allow_lan_server_node_exporter_scrape_from_iot:
       target: ACCEPT
       src: iot
-      src_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      src_ip: *homeserver_nodes
       dest: lan
       dest_ip:
         # desktop and devserver
@@ -520,12 +486,7 @@ firewall:
     allow_mainrouter_node_exporter_scrape_from_iot:
       target: ACCEPT
       src: iot
-      src_ip:
-        # Homeserver nodes
-        - 192.168.3.10
-        - 192.168.3.11
-        - 192.168.3.12
-        - 192.168.3.14
+      src_ip: *homeserver_nodes
       dest_port:
         - 9100
       proto:
