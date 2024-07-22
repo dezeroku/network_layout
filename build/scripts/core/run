@@ -46,8 +46,11 @@ if [[ "${NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN:-}" != "true" ]]; then
 	# TODO: This should probably be limited to an allow-list of variables we actually care about
 	export ADDITIONAL_DOCKER_FLAGS="${ADDITIONAL_DOCKER_FLAGS} --env-file ${env_tmpfile}"
 
+	# See https://github.com/moby/moby/issues/45436 for details regarding ulimit
+	# Without it the fakeroot initialisation is insanely slow
 	# shellcheck disable=SC2086
 	exec docker run --rm -i $ADDITIONAL_DOCKER_FLAGS \
+		--ulimit 'nofile=1024:1048576' \
 		-e "SCCACHE_CACHE_SIZE=50G" \
 		-e "NETWORK_LAYOUT_BUILD_SCRIPTS_CORE_RUN=true" \
 		-v "${PWD}:${PWD}" \
