@@ -14,7 +14,12 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 
 # To not build docker image in end-to-end-build script
 export SKIP_DOCKER_SETUP=true
+
 echoerr "Build docker build environment image"
 "${SCRIPTS_DIR}/core/setup-image"
+
+# To use the timestamp with host's timezone
+ARTIFACTS_TIMESTAMP="$(date +%Y_%m_%dT%H_%M_%S)"
+export ARTIFACTS_TIMESTAMP
 
 "${SCRIPTS_DIR}/core/run" "${SCRIPTS_DIR}/core/end-to-end-build"

@@ -114,6 +114,12 @@ function parse_env_args() {
 		BUILDDIR="${SCRIPTS_DIR}/../builds/openwrt-${DEVICE}"
 	fi
 
+	if [ -z "${ARTIFACTS_DIR:-}" ]; then
+		mkdir -p "${SCRIPTS_DIR}/../artifacts"
+		ARTIFACTS_DIR="${SCRIPTS_DIR}/../artifacts"
+	fi
+	ARTIFACTS_DIR="$(readlink -f "${ARTIFACTS_DIR}")"
+
 	[ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
 	# This is pretty hacky

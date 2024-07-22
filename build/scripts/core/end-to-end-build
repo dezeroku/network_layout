@@ -4,6 +4,7 @@ set -e
 
 [ -z "${SLEEP_BETWEEN_STAGES}" ] && SLEEP_BETWEEN_STAGES=0
 [ -z "${SKIP_DOWNLOADS:-}" ] && SKIP_DOWNLOADS="false"
+[ -z "${SKIP_COPYING_ARTIFACTS:-}" ] && SKIP_COPYING_ARTIFACTS="false"
 [ -z "${SKIP_VERSION_FILE_GENERATION:-}" ] && SKIP_VERSION_FILE_GENERATION="false"
 [ -z "${ONLY_INITIALIZE_WORKSPACE:-}" ] && ONLY_INITIALIZE_WORKSPACE="false"
 
@@ -76,3 +77,11 @@ fi
 echoerr "Compile the final image"
 sleep "${SLEEP_BETWEEN_STAGES}"
 "${SCRIPTS_DIR}/core/build-compile"
+
+if [[ ! "${SKIP_COPYING_ARTIFACTS}" == "true" ]]; then
+	echoerr "Copy artifacts"
+	sleep "${SLEEP_BETWEEN_STAGES}"
+	"${SCRIPTS_DIR}/core/copy-artifacts"
+else
+	echoerr "Skipping copying artifacts because of SKIP_COPYING_ARTIFACTS=true"
+fi

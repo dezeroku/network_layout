@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
+
+# shellcheck source=build/scripts/common.sh
+. "${SCRIPTS_DIR}"/common.sh
+parse_env_args
+
+cd "${BUILDDIR}"
+
+[ -z "${ARTIFACTS_TIMESTAMP:-}" ] && ARTIFACTS_TIMESTAMP="$(date -u +%Y_%m_%dT%H_%M_%S%Z)"
+
+TARGET_DIR="${ARTIFACTS_DIR}/${DEVICE}-${ARTIFACTS_TIMESTAMP}"
+
+cp -r "${BUILDDIR}/bin" "$TARGET_DIR"
