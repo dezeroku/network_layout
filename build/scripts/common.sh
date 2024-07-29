@@ -115,10 +115,16 @@ function parse_env_args() {
 	fi
 
 	if [ -z "${ARTIFACTS_DIR:-}" ]; then
-		mkdir -p "${SCRIPTS_DIR}/../artifacts"
 		ARTIFACTS_DIR="${SCRIPTS_DIR}/../artifacts"
+		mkdir -p "${ARTIFACTS_DIR}"
 	fi
 	ARTIFACTS_DIR="$(readlink -f "${ARTIFACTS_DIR}")"
+
+	if [ -z "${APPLIED_SYSUPGRADES_DIR:-}" ]; then
+		APPLIED_SYSUPGRADES_DIR="${SCRIPTS_DIR}/../applied-sysupgrades"
+		mkdir -p "${APPLIED_SYSUPGRADES_DIR}"
+	fi
+	APPLIED_SYSUPGRADES_DIR="$(readlink -f "${APPLIED_SYSUPGRADES_DIR}")"
 
 	[ -z "${OPENWRT_VERSION:-}" ] && echo "No OPENWRT_VERSION provided" && exit 1
 
