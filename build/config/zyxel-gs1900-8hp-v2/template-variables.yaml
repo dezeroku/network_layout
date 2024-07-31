@@ -37,10 +37,13 @@ networks:
       ports:
         # mainrouter
         - lan1:t
-        - lan2
-        - lan3
         # aprouter
-        - lan4:t
+        - lan2:t
+        - lan3
+        - lan4
+        - lan5
+        - lan6
+        - lan7
 
   guest:
     proto: none
@@ -51,7 +54,7 @@ networks:
         # mainrouter
         - lan1:t
         # aprouter
-        - lan4:t
+        - lan2:t
 
   iot:
     proto: none
@@ -62,11 +65,8 @@ networks:
         # mainrouter
         - lan1:t
         # aprouter
-        - lan4:t
+        - lan2:t
         # HomeServer machines
-        - lan5
-        - lan6
-        - lan7
         - lan8
 
 dhcp:
