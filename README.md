@@ -81,11 +81,11 @@ Look into [its config for more details](build/config/rpi4b/template-variables.ya
 
 ### Main switch
 
-| VLAN       | LAN1 (mainrouter) | LAN2 | LAN3 | LAN4 (aprouter) | LAN5 | LAN6 | LAN7 | LAN8 |
-| ---------- | ----------------- | ---- | ---- | --------------- | ---- | ---- | ---- | ---- |
-| 20 (guest) | t                 | t    |      |                 |      |      |      |      |
-| 30 (iot)   | t                 | t    |      |                 |      |      |      | u    |
-| 99 (lan)   | t                 | t    | u    | u               | u    | u    | u    |      |
+| VLAN       | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
+| ---------- | ----------------- | --------------- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 20 (guest) | t                 | t               |      |      |      |      |      |      |
+| 30 (iot)   | t                 | t               |      |      |      |      |      | u    |
+| 99 (lan)   | t                 | t               | u    | u    | u    | u    | u    |      |
 
 Zyxel GS1900-8HP switching traffic with VLANs.
 
