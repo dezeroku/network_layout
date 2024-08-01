@@ -87,7 +87,7 @@ Look into [its config for more details](build/config/rpi4b/template-variables.ya
 | 30 (iot)   | t                 | t    |      |                 |      |      |      | u    |
 | 99 (lan)   | t                 | t    | u    | u               | u    | u    | u    |      |
 
-Zyxel GS1900-8HP powering some devices over PoE and switching traffic with VLANs.
+Zyxel GS1900-8HP switching traffic with VLANs.
 
 Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/template-variables.yaml).
 
@@ -99,6 +99,6 @@ Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/templat
 | 30 (iot)   |     | mainrouter (t) |      |      |
 | 99 (lan)   |     | mainrouter (t) |      |      |
 
-ASUS RT-AX53U running openwrt, used as a managed switch and an AP for all the networks.
+ASUS RT-AX53U running openwrt, used as an AP for all the networks.
 
 Look into [its config for more details](build/config/asus-rt-ax53u/template-variables.yaml).
