@@ -67,7 +67,7 @@ This part of the configuration is not covered by this repo.
 |            |       | WAN router |
 
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
-It's paired with two TP-Link UE300 USB-Ethernet adapters (RTL8153), one is used for WAN, the other for AP Router.
+It's paired with TP-Link UE300 USB-Ethernet adapter (RTL8153), used for WAN.
 
 It does all the heavy lifting in this setup:
 
