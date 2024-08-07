@@ -72,43 +72,6 @@ networks:
 dhcp:
   default_dns_server: 192.168.1.1
 
-# Switch specific config
-poe:
-  # Official firmware fot it shows 77W
-  # Probably because it's the v3 (rev b2) model
-  budget: 77
-  ports:
-    # Default options:
-    # port_name:
-    #   poe_plus: true
-    #   priority: 2
-    #   enabled: false
-    # Set all ports to "auto" mode
-    lan1:
-      enabled: true
-      id: 1
-    #lan2:
-    #  enabled: true
-    #  id: 2
-    #lan3:
-    #  enabled: true
-    #  id: 3
-    #lan4:
-    #  enabled: true
-    #  id: 4
-    lan5:
-      enabled: true
-      id: 5
-    lan6:
-      enabled: true
-      id: 6
-    lan7:
-      enabled: true
-      id: 7
-    lan8:
-      enabled: true
-      id: 8
-
 custom_commands: |-
   # Delete the default VLAN configuration, we have our own
   uci del network.lan_vlan

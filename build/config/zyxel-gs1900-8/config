@@ -3,7 +3,6 @@ CONFIG_BPF_TOOLCHAIN_HOST_PATH="/usr/lib/llvm-14"
 CONFIG_BUILD_LOG=y
 CONFIG_CCACHE=y
 CONFIG_CCACHE_DIR="/ccache-storage"
-CONFIG_PACKAGE_realtek-poe=y
 CONFIG_USE_LLVM_HOST=y
 # CONFIG_IB is not set
 # CONFIG_MAKE_TOOLCHAIN is not set
@@ -40,5 +39,5 @@ CONFIG_USE_LLVM_HOST=y
 # CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-24e is not set
 # CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-24hp-v1 is not set
 # CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-24hp-v2 is not set
-# CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-8 is not set
 # CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-8hp-v1 is not set
+# CONFIG_TARGET_DEVICE_realtek_rtl838x_DEVICE_zyxel_gs1900-8hp-v2 is not set
