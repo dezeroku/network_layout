@@ -360,6 +360,7 @@ firewall:
         # few smart devices that need it
         # as they can't be controlled via LAN only
         - 192.168.3.21
+        - 192.168.3.22
         - 192.168.3.25
 
     # The two below rules are for communication between HomeKit hub
