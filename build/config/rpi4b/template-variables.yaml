@@ -493,6 +493,24 @@ firewall:
       proto:
         - tcp
 
+    allow_devserver_node_exporter_scrape_from_iot:
+      target: ACCEPT
+      src: iot
+      src_ip: *homeserver_nodes
+      dest_port:
+        - 9100
+      proto:
+        - tcp
+
+    allow_devserver_minio_access_from_iot:
+      target: ACCEPT
+      src: iot
+      src_ip: *homeserver_nodes
+      dest_port:
+        - 9000
+      proto:
+        - tcp
+
 # This is a netboot server redirect for tftp
 netboot:
   enabled: true
