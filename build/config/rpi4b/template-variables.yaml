@@ -219,6 +219,11 @@ dhcp:
       ip: "192.168.3.14"
       dns: true
 
+    homeserver-five:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.3.15"
+      dns: true
+
     homekit-hub:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.1.10"
@@ -245,6 +250,7 @@ dhcp:
       - 192.168.3.11
       - 192.168.3.12
       - 192.168.3.14
+      - 192.168.3.15
 
 adblock:
   sources:
@@ -357,6 +363,7 @@ firewall:
         - 192.168.3.11
         - 192.168.3.12
         - 192.168.3.14
+        - 192.168.3.15
         # few smart devices that need it
         # as they can't be controlled via LAN only
         - 192.168.3.21
