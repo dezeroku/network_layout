@@ -425,7 +425,7 @@ firewall:
 
     # The two below rules are for communication between HomeKit hub
     # and the IoT devices
-    allow_lan_to_iot_homekit:
+    allow_lan_to_iot_homekit_hub:
       target: ACCEPT
       src: lan
       src_ip:
@@ -436,9 +436,22 @@ firewall:
         - udp
         - icmp
 
-    allow_iot_to_lan_homekit:
+    allow_iot_to_lan_homekit_hub:
       target: ACCEPT
       src: iot
+      dest: lan
+      dest_ip:
+        - *homekit_hub
+      proto:
+        - tcp
+        - udp
+        - icmp
+
+    allow_homeserver_to_lan_homekit_hub:
+      target: ACCEPT
+      src: cluster
+      src_ip:
+        - *homeserver_nodes
       dest: lan
       dest_ip:
         - *homekit_hub
