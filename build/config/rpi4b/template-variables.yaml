@@ -578,7 +578,7 @@ firewall:
 netboot:
   enabled: true
   # One of the homeserver nodes
-  ip: 192.168.4.10
+  ip: 192.168.4.15
   dest_port: 32169
   src: lan
   dest: cluster
