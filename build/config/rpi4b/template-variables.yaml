@@ -72,6 +72,7 @@ networks:
       leasetime: 12h
       ra_flags:
         - "none"
+
   guest:
     proto: static
     device: br-lan
@@ -117,6 +118,31 @@ networks:
         input: REJECT
         output: ACCEPT
         forward: REJECT
+
+  cluster:
+    proto: static
+    device: br-lan
+    ipaddr: 192.168.4.1
+    gateway: 192.168.240.99
+    netmask: 255.255.255.0
+    vlan:
+      id: 40
+      ports:
+        - eth0:t
+    type: bridge
+    # TODO: this is only added so home-assistant, IoT devices and homekit-hub can see each other
+    broadcast_mdns: true
+    dhcp:
+      start: 100
+      limit: 150
+      leasetime: 12h
+    firewall:
+      zone:
+        input: REJECT
+        output: ACCEPT
+        forward: REJECT
+      forwarding:
+        - wan
 
 security:
   ssh:
@@ -200,43 +226,43 @@ dhcp:
     # MAC addresses have to be overriden in secret-variables.yaml
     homeserver-one:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.10"
+      ip: "192.168.4.11"
       dns: true
 
     homeserver-two:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.11"
+      ip: "192.168.4.12"
       dns: true
 
     homeserver-three:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.12"
+      ip: "192.168.4.13"
       dns: true
 
     # a worker node
     homeserver-four:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.14"
+      ip: "192.168.4.14"
       dns: true
 
     homeserver-five:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.15"
+      ip: "192.168.4.15"
       dns: true
 
     homeserver-six:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.16"
+      ip: "192.168.4.16"
       dns: true
 
     homeserver-seven:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.3.17"
+      ip: "192.168.4.17"
       dns: true
 
     homekit-hub:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.1.10"
+      ip: &homekit_hub "192.168.1.10"
       dns: true
 
     aprouter:
@@ -256,13 +282,22 @@ dhcp:
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
   addresses:
     homeserver: &homeserver_nodes
-      - 192.168.3.10
-      - 192.168.3.11
-      - 192.168.3.12
-      - 192.168.3.14
-      - 192.168.3.15
-      - 192.168.3.16
-      - 192.168.3.17
+      - 192.168.4.11
+      - 192.168.4.12
+      - 192.168.4.13
+      - 192.168.4.14
+      - 192.168.4.15
+      - 192.168.4.16
+      - 192.168.4.17
+    homeserver_cps: &homeserver_cps
+      - 192.168.4.15
+      - 192.168.4.16
+      - 192.168.4.17
+    # CPs are also used as LBs
+    homeserver_lbs: &homeserver_lbs
+      - 192.168.4.15
+      - 192.168.4.16
+      - 192.168.4.17
 
 adblock:
   sources:
@@ -294,6 +329,18 @@ firewall:
         - icmp
       target: ACCEPT
       src: iot
+      dest_port:
+        - 53
+        - 67
+        - 68
+
+    allow_dhcp_dns_icmp_cluster:
+      proto:
+        - tcp
+        - udp
+        - icmp
+      target: ACCEPT
+      src: cluster
       dest_port:
         - 53
         - 67
@@ -350,11 +397,11 @@ firewall:
         - 224.0.0.251
         #- ff02::fb
 
-    allow_iot_mdns_broadcast:
+    allow_cluster_mdns_broadcast:
       target: ACCEPT
       proto:
         - udp
-      src: iot
+      src: cluster
       # For the home-assistant to work properly
       src_ip: *homeserver_nodes
       src_port:
@@ -364,12 +411,6 @@ firewall:
       dest_ip:
         - 224.0.0.251
         #- ff02::fb
-
-    allow_iot_internet_access_homeserver:
-      target: ACCEPT
-      src: iot
-      dest: wan
-      src_ip: *homeserver_nodes
 
     allow_iot_internet_access:
       target: ACCEPT
@@ -388,8 +429,7 @@ firewall:
       target: ACCEPT
       src: lan
       src_ip:
-        # HomeKit hub
-        - 192.168.1.10
+        - *homekit_hub
       dest: iot
       proto:
         - tcp
@@ -401,25 +441,23 @@ firewall:
       src: iot
       dest: lan
       dest_ip:
-        # HomeKit hub
-        - 192.168.1.10
+        - *homekit_hub
       proto:
         - tcp
         - udp
         - icmp
 
-    # TODO: move the servers to a separate VLAN
     allow_lan_to_homeserver:
       target: ACCEPT
       src: lan
-      dest: iot
+      dest: cluster
       dest_ip: *homeserver_nodes
 
-    allow_guest_to_homeserver_http:
+    allow_guest_to_homeserver_lbs:
       target: ACCEPT
       src: guest
-      dest: iot
-      dest_ip: *homeserver_nodes
+      dest: cluster
+      dest_ip: *homeserver_lbs
       dest_port:
         - 80
         - 443
@@ -429,7 +467,7 @@ firewall:
     allow_vpn_main_to_homeserver:
       target: ACCEPT
       src: vpn_main
-      dest: iot
+      dest: cluster
       proto:
         - tcp
         - udp
@@ -442,24 +480,24 @@ firewall:
         # For K8S api
         - 6443
 
-    allow_vpn_guest_to_homeserver:
+    allow_vpn_guest_to_homeserver_lbs:
       target: ACCEPT
       src: vpn_guest
-      dest: iot
+      dest: cluster
       proto:
         - tcp
-      dest_ip: *homeserver_nodes
+      dest_ip: *homeserver_lbs
       dest_port:
         - 80
         - 443
 
-    allow_vpn_family_to_homeserver:
+    allow_vpn_family_to_homeserver_lbs:
       target: ACCEPT
       src: vpn_family
-      dest: iot
+      dest: cluster
       proto:
         - tcp
-      dest_ip: *homeserver_nodes
+      dest_ip: *homeserver_lbs
       dest_port:
         - 80
         - 443
@@ -489,9 +527,9 @@ firewall:
       dest_port:
         - 25565
 
-    allow_lan_server_node_exporter_scrape_from_iot:
+    allow_lan_server_node_exporter_scrape_from_homeserver:
       target: ACCEPT
-      src: iot
+      src: cluster
       src_ip: *homeserver_nodes
       dest: lan
       dest_ip:
@@ -503,18 +541,18 @@ firewall:
       proto:
         - tcp
 
-    allow_mainrouter_node_exporter_scrape_from_iot:
+    allow_mainrouter_node_exporter_scrape_from_homeserver:
       target: ACCEPT
-      src: iot
+      src: cluster
       src_ip: *homeserver_nodes
       dest_port:
         - 9100
       proto:
         - tcp
 
-    allow_devserver_node_exporter_scrape_from_iot:
+    allow_devserver_node_exporter_scrape_from_homeserver:
       target: ACCEPT
-      src: iot
+      src: cluster
       src_ip: *homeserver_nodes
       dest: lan
       dest_ip:
@@ -524,9 +562,9 @@ firewall:
       proto:
         - tcp
 
-    allow_devserver_minio_access_from_iot:
+    allow_devserver_minio_access_from_homeserver:
       target: ACCEPT
-      src: iot
+      src: cluster
       src_ip: *homeserver_nodes
       dest: lan
       dest_ip:
@@ -540,10 +578,10 @@ firewall:
 netboot:
   enabled: true
   # One of the homeserver nodes
-  ip: 192.168.3.10
+  ip: 192.168.4.10
   dest_port: 32169
   src: lan
-  dest: iot
+  dest: cluster
 
 statistics:
   ping:
@@ -560,4 +598,4 @@ statistics:
 
 node_exporter:
   # For the homeserver nodes
-  listen_interface: iot
+  listen_interface: cluster

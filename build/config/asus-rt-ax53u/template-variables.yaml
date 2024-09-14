@@ -68,6 +68,14 @@ networks:
         - lan1:t
         - lan3
 
+  cluster:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 40
+      ports:
+        - lan1:t
+
 dhcp:
   default_dns_server: 192.168.1.1
 

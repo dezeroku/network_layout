@@ -66,7 +66,18 @@ networks:
         - lan1:t
         # aprouter
         - lan2:t
-        # HomeServer machines
+
+  cluster:
+    proto: none
+    device: switch
+    vlan:
+      id: 40
+      ports:
+        # mainrouter
+        - lan1:t
+        # aprouter
+        - lan2:t
+        # homeserver nodes
         - lan8
 
 dhcp:

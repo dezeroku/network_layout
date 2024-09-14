@@ -1,5 +1,5 @@
 # Use python:3.10 to just install wheels for dependencies instead of compiling
-FROM python:3.10 as build
+FROM python:3.10 AS build
 
 WORKDIR /app
 
@@ -13,5 +13,5 @@ RUN mkdir created
 COPY *.py .
 RUN for x in $(ls *.py); do python $x; done; mv ./*.png created;
 
-FROM scratch as output
+FROM scratch AS output
 COPY --from=build /app/created/* .

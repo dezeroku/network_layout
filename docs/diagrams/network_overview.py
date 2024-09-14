@@ -24,12 +24,21 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
         guest_middle = guest_network
 
     with Cluster("IoT (192.168.3.0/24)"):
-        with Cluster("homeserver (k8s cluster)"):
-            homeserver_three = Rack("homeserver-three\n192.168.3.12")
-            homeserver_two = Rack("homeserver-two\n192.168.3.11")
-            homeserver_one = Rack("homeserver-one\n192.168.3.10")
+        iot_network = Blank()
 
-        iot_middle = homeserver_two
+        iot_middle = iot_network
+
+    with Cluster("Cluster (192.168.4.0/24)"):
+        with Cluster("homeserver (k8s cluster)"):
+            homeserver_seven = Rack("homeserver-seven\n192.168.4.17")
+            homeserver_six = Rack("homeserver-six\n192.168.4.16")
+            homeserver_five = Rack("homeserver-five\n192.168.4.15")
+            homeserver_four = Rack("homeserver-four\n192.168.4.14")
+            homeserver_three = Rack("homeserver-three\n192.168.4.13")
+            homeserver_two = Rack("homeserver-two\n192.168.4.12")
+            homeserver_one = Rack("homeserver-one\n192.168.4.11")
+
+        cluster_middle = homeserver_four
 
     with Cluster("VPN Main (192.168.69.1/24)"):
         vpn_main = Blank()
@@ -48,6 +57,7 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
     main_router >> lan_middle
     main_router >> guest_middle
     main_router >> iot_middle
+    main_router >> cluster_middle
     main_router >> vpn_main
     main_router >> vpn_guest
     main_router >> vpn_family

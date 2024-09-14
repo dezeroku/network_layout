@@ -51,6 +51,7 @@ This part of the configuration is not covered by this repo.
 | LAN        | 192.168.1.1/24  | yes             | yes                     |
 | Guest      | 192.168.2.1/24  | yes             | no                      |
 | IoT        | 192.168.3.1/24  | no              | no                      |
+| Cluster    | 192.168.4.1/24  | yes             | yes                     |
 | VPN Main   | 192.168.69.1/24 | yes             | yes                     |
 | VPN Guest  | 192.168.70.1/24 | no              | yes                     |
 | VPN Family | 192.168.71.1/24 | yes             | yes                     |
@@ -59,12 +60,13 @@ This part of the configuration is not covered by this repo.
 
 ### Main router
 
-| VLAN       | ETH0  | ETH1       |
-| ---------- | ----- | ---------- |
-| 20 (guest) | t     |            |
-| 30 (iot)   | t     |            |
-| 99 (lan)   | (t\*) |            |
-|            |       | WAN router |
+| VLAN         | ETH0  | ETH1       |
+| ------------ | ----- | ---------- |
+| 20 (guest)   | t     |            |
+| 30 (iot)     | t     |            |
+| 40 (cluster) | t     |            |
+| 99 (lan)     | (t\*) |            |
+|              |       | WAN router |
 
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
 It's paired with TP-Link UE300 USB-Ethernet adapter (RTL8153), used for WAN.
@@ -81,11 +83,12 @@ Look into [its config for more details](build/config/rpi4b/template-variables.ya
 
 ### Main switch
 
-| VLAN       | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
-| ---------- | ----------------- | --------------- | ---- | ---- | ---- | ---- | ---- | ---- |
-| 20 (guest) | t                 | t               |      |      |      |      |      |      |
-| 30 (iot)   | t                 | t               |      |      |      |      |      | u    |
-| 99 (lan)   | t                 | t               | u    | u    | u    | u    | u    |      |
+| VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
+| ------------ | ----------------- | --------------- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 20 (guest)   | t                 | t               |      |      |      |      |      |      |
+| 30 (iot)     | t                 | t               |      |      |      |      |      |      |
+| 40 (cluster) | t                 | t               |      |      |      |      |      | u    |
+| 99 (lan)     | t                 | t               | u    | u    | u    | u    | u    |      |
 
 Zyxel GS1900-8HP switching traffic with VLANs.
 
@@ -93,11 +96,12 @@ Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/templat
 
 ### AP Router
 
-| VLAN       | WAN | LAN1           | LAN2 | LAN3 |
-| ---------- | --- | -------------- | ---- | ---- |
-| 20 (guest) |     | mainrouter (t) |      |      |
-| 30 (iot)   |     | mainrouter (t) |      |      |
-| 99 (lan)   |     | mainrouter (t) |      |      |
+| VLAN         | WAN | LAN1           | LAN2 | LAN3 |
+| ------------ | --- | -------------- | ---- | ---- |
+| 20 (guest)   |     | mainrouter (t) |      |      |
+| 30 (iot)     |     | mainrouter (t) |      |      |
+| 40 (cluster) |     | mainrouter (t) |      |      |
+| 99 (lan)     |     | mainrouter (t) |      |      |
 
 ASUS RT-AX53U running openwrt, used as an AP for all the networks.
 
