@@ -412,7 +412,7 @@ firewall:
         - 224.0.0.251
         #- ff02::fb
 
-    allow_iot_internet_access:
+    allow_iot_to_wan:
       target: ACCEPT
       src: iot
       dest: wan
@@ -423,9 +423,7 @@ firewall:
         - 192.168.3.22
         - 192.168.3.25
 
-    # The two below rules are for communication between HomeKit hub
-    # and the IoT devices
-    allow_lan_to_iot_homekit_hub:
+    allow_homekit_hub_to_iot:
       target: ACCEPT
       src: lan
       src_ip:
@@ -436,7 +434,7 @@ firewall:
         - udp
         - icmp
 
-    allow_iot_to_lan_homekit_hub:
+    allow_iot_to_homekit_hub:
       target: ACCEPT
       src: iot
       dest: lan
@@ -447,7 +445,7 @@ firewall:
         - udp
         - icmp
 
-    allow_homeserver_to_lan_homekit_hub:
+    allow_homeserver_to_homekit_hub:
       target: ACCEPT
       src: cluster
       src_ip:
@@ -465,6 +463,15 @@ firewall:
       src: lan
       dest: cluster
       dest_ip: *homeserver_nodes
+
+    # TODO: this is done for home-assistant
+    # but do we actually need it?
+    # Or more importantly, do we need the reverse access rule too?
+    allow_homeserver_to_iot:
+      target: ACCEPT
+      src: cluster
+      src_ip: *homeserver_nodes
+      dest: iot
 
     allow_guest_to_homeserver_lbs:
       target: ACCEPT
@@ -515,7 +522,7 @@ firewall:
         - 80
         - 443
 
-    allow_vpn_main_to_devserver:
+    allow_vpn_main_to_devserver_ssh:
       target: ACCEPT
       src: vpn_main
       dest: lan
