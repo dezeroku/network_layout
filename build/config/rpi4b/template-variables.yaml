@@ -510,6 +510,7 @@ firewall:
       dest_port:
         - 80
         - 443
+        - 25565
 
     allow_vpn_family_to_homeserver_lbs:
       target: ACCEPT
