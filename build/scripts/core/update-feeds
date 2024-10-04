@@ -8,9 +8,5 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 parse_env_args
 
 cd "${BUILDDIR}"
-
-# Use Github mirrors
-sed -i -E 's;git.openwrt.org/(feed|project);github.com/openwrt;' feeds.conf.default
-
 "${SCRIPTS_DIR}/core/run" ./scripts/feeds update -a
 "${SCRIPTS_DIR}/core/run" ./scripts/feeds install -a

@@ -10,8 +10,7 @@ SCRIPTS_DIR="$(readlink -f "$(dirname "$0")")/.."
 parse_env_args
 
 if [[ ! -d "${BUILDDIR}" ]]; then
-	# Use Github mirror
-	git clone https://github.com/openwrt/openwrt.git "${BUILDDIR}"
+	git clone git://git.openwrt.org/openwrt/openwrt.git "${BUILDDIR}"
 else
 	while true; do
 		read -rp "There is already an openwrt dir, do you wish to use it? [Y/N]" yn
