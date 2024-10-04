@@ -33,7 +33,7 @@ TODO: obsolete this
 For the sake of reproducibility (avoiding issues with glibc matching), you can build `uci-runner` docker image with `scripts/utils/build-uci-host`.
 The image has `uci` available as `/usr/local/bin/uci`.
 
-Using `scripts/utils-rpi4b/get-uci-config` script it's possible to retrieve the UCI default values from built image.
+Using `scripts/utils/get-uci-config` script it's possible to retrieve the UCI default values from built image.
 When such a default config is obtained, it's easy to calculate diff between the config currently in use on the router and the default.
 
 `scripts/utils/diff-uci-configs` allows you to calculate a diff showing entries that are present in one file (the one that's meant to land on your device) and not present in the second one (the one that's default).

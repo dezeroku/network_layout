@@ -9,7 +9,7 @@ variable "ssh_priv_key_path" {
 variable "instance_type" {
   # 64 G RAM
   # 32 vCPUs
-  # This builds rpi4b from scratch in about 20 minutes
+  # This builds mainrouter from scratch in about 20 minutes
   #default = "c6gd.8xlarge"
   default = "c6a.8xlarge"
 }

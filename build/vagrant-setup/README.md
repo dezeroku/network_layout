@@ -29,17 +29,11 @@ vagrant ssh-config > ssh-config
 
 cd ..
 
-# Get all the built stuff for rpi4b
-rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vr --mkpath --delete default:/home/vagrant/network_layout/build/builds/openwrt-rpi4b/bin/ ./outputs/rpi4b-bin
+# Get all the built stuff for mainrouter
+rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vr --mkpath --delete default:/home/vagrant/network_layout/build/builds/openwrt-mainrouter/bin/ ./outputs/mainrouter-bin
 
-# Get only the images and checksums for rpi4b
-rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vmr --mkpath --delete --include="*/" --include="*.img.gz" --include="sha256sums" --exclude="*" default:/home/vagrant/network_layout/build/builds/openwrt-rpi4b/bin/ ./outputs/rpi4b-images
-
-# Get all the built stuff for asus-rt-ax53u
-rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vmr --mkpath --delete default:/home/vagrant/network_layout/build/builds/openwrt-asus-rt-ax53u/bin/ ./outputs/asus-rt-ax53u-bin
-
-# Get only the images and checksums for asus-rt-ax53u
-rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vmr --mkpath --delete --include="*/" --include="*.bin" --include="sha256sums" --exclude="*" default:/home/vagrant/network_layout/build/builds/openwrt-asus-rt-ax53u/bin/ ./outputs/asus-rt-ax53u-images
+# Get only the images and checksums for mainrouter
+rsync -e 'ssh -F ./vagrant-setup/ssh-config' -vmr --mkpath --delete --include="*/" --include="*.img.gz" --include="sha256sums" --exclude="*" default:/home/vagrant/network_layout/build/builds/openwrt-mainrouter/bin/ ./outputs/mainrouter-images
 ```
 
 # Cleaning up

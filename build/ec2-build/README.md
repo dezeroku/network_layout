@@ -28,17 +28,11 @@ Remember to `scp` or `rsync` the built files back to your local machine!
 For example:
 
 ```
-# Get all the built stuff for rpi4b
-rsync -vr --mkpath --delete ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-rpi4b/bin/ ./outputs/rpi4b-bin
+# Get all the built stuff for mainrouter
+rsync -vr --mkpath --delete ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-mainrouter/bin/ ./outputs/mainrouter-bin
 
-# Get only the images and checksums for rpi4b
-rsync -vmr --mkpath --delete --include="*/" --include="*.img.gz" --include="sha256sums" --exclude="*" ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-rpi4b/bin/ ./outputs/rpi4b-images
-
-# Get all the built stuff for asus-rt-ax53u
-rsync -vmr --mkpath --delete ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-asus-rt-ax53u/bin/ ./outputs/asus-rt-ax53u-bin
-
-# Get only the images and checksums for asus-rt-ax53u
-rsync -vmr --mkpath --delete --include="*/" --include="*.bin" --include="sha256sums" --exclude="*" ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-asus-rt-ax53u/bin/ ./outputs/asus-rt-ax53u-images
+# Get only the images and checksums for mainrouter
+rsync -vmr --mkpath --delete --include="*/" --include="*.img.gz" --include="sha256sums" --exclude="*" ec2-user@$(terraform output -raw instance_public_dns):/home/ec2-user/network_layout/build/builds/openwrt-mainrouter/bin/ ./outputs/mainrouter-images
 ```
 
 # Cleaning up (it's important!)

@@ -4,7 +4,7 @@
 # Take a look at common/template-variables.yaml
 # to see some docs and examples
 
-hostname: switch
+hostname: mainswitch
 
 #security:
 #  root_password: ...

@@ -79,7 +79,7 @@ It does all the heavy lifting in this setup:
 - DNS-level adblock
 - [SQM](https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm)
 
-Look into [its config for more details](build/config/rpi4b/template-variables.yaml).
+Look into [its config for more details](build/config/mainrouter/template-variables.yaml).
 
 ### Main switch
 
@@ -92,7 +92,7 @@ Look into [its config for more details](build/config/rpi4b/template-variables.ya
 
 Zyxel GS1900-8HP switching traffic with VLANs.
 
-Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/template-variables.yaml).
+Look into [its config for more details](build/config/mainswitch/template-variables.yaml).
 
 ### AP Router
 
@@ -105,4 +105,4 @@ Look into [its config for more details](build/config/zyxel-gs1900-8hp-v2/templat
 
 ASUS RT-AX53U running openwrt, used as an AP for all the networks.
 
-Look into [its config for more details](build/config/asus-rt-ax53u/template-variables.yaml).
+Look into [its config for more details](build/config/aprouter/template-variables.yaml).

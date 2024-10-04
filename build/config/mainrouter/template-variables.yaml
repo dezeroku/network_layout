@@ -270,7 +270,7 @@ dhcp:
       ip: "192.168.1.3"
       dns: true
 
-    switch:
+    mainswitch:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.1.4"
       dns: true
