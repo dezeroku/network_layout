@@ -287,26 +287,26 @@ dhcp:
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
-    homeserver_cps: &homeserver_cps
+    homeserver-cps: &homeserver_cps
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
     # CPs are also used as LBs
-    homeserver_lbs: &homeserver_lbs
+    homeserver-lbs: &homeserver_lbs
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
 
-    homeserver_backup: &homeserver_backup_nodes
+    homeserver-backup: &homeserver_backup_nodes
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
-    homeserver_backup_cps: &homeserver_backup_cps
+    homeserver-backup_cps: &homeserver_backup_cps
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
     # CPs are also used as LBs
-    homeserver_backup_lbs: &homeserver_backup_lbs
+    homeserver-backup_lbs: &homeserver_backup_lbs
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
