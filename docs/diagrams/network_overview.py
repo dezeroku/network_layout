@@ -29,16 +29,17 @@ with Diagram("Network Overview", show=False, outformat=["png"], direction='TB'):
         iot_middle = iot_network
 
     with Cluster("Cluster (192.168.4.0/24)"):
-        with Cluster("homeserver (k8s cluster)"):
+        with Cluster("homeserver (k8s)"):
             homeserver_seven = Rack("homeserver-seven\n192.168.4.17")
             homeserver_six = Rack("homeserver-six\n192.168.4.16")
             homeserver_five = Rack("homeserver-five\n192.168.4.15")
-            homeserver_four = Rack("homeserver-four\n192.168.4.14")
-            homeserver_three = Rack("homeserver-three\n192.168.4.13")
-            homeserver_two = Rack("homeserver-two\n192.168.4.12")
-            homeserver_one = Rack("homeserver-one\n192.168.4.11")
+        with Cluster("homeserver-backup (k8s)"):
+            homeserver_backup_three = Rack("homeserver-backup-three\n192.168.4.23")
+            homeserver_backup_two = Rack("homeserver-backup-two\n192.168.4.22")
+            homeserver_backup_one = Rack("homeserver-backup-one\n192.168.4.21")
 
-        cluster_middle = homeserver_four
+        pikvm = Rack("pikvm\n192.168.4.31")
+        cluster_middle = homeserver_backup_three
 
     with Cluster("VPN Main (192.168.69.1/24)"):
         vpn_main = Blank()
