@@ -224,27 +224,23 @@ dhcp:
   default_dns_server: 1.1.1.1
   hosts:
     # MAC addresses have to be overriden in secret-variables.yaml
-    homeserver-one:
+    # Backup cluster
+    homeserver-backup-one:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.11"
+      ip: "192.168.4.21"
       dns: true
 
-    homeserver-two:
+    homeserver-backup-two:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.12"
+      ip: "192.168.4.22"
       dns: true
 
-    homeserver-three:
+    homeserver-backup-three:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.13"
+      ip: "192.168.4.23"
       dns: true
 
-    # a worker node
-    homeserver-four:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.14"
-      dns: true
-
+    # Main cluster
     homeserver-five:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.15"
@@ -258,6 +254,12 @@ dhcp:
     homeserver-seven:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.17"
+      dns: true
+
+    # Misc
+    pikvm:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.31"
       dns: true
 
     homekit-hub:
@@ -282,10 +284,6 @@ dhcp:
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
   addresses:
     homeserver: &homeserver_nodes
-      - 192.168.4.11
-      - 192.168.4.12
-      - 192.168.4.13
-      - 192.168.4.14
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
@@ -298,6 +296,20 @@ dhcp:
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
+
+    homeserver_backup: &homeserver_backup_nodes
+      - 192.168.4.21
+      - 192.168.4.22
+      - 192.168.4.23
+    homeserver_backup_cps: &homeserver_backup_cps
+      - 192.168.4.21
+      - 192.168.4.22
+      - 192.168.4.23
+    # CPs are also used as LBs
+    homeserver_backup_lbs: &homeserver_backup_lbs
+      - 192.168.4.21
+      - 192.168.4.22
+      - 192.168.4.23
 
 adblock:
   sources:
@@ -464,6 +476,12 @@ firewall:
       dest: cluster
       dest_ip: *homeserver_nodes
 
+    allow_lan_to_homeserver_backup:
+      target: ACCEPT
+      src: lan
+      dest: cluster
+      dest_ip: *homeserver_backup_nodes
+
     # TODO: this is done for home-assistant
     # but do we actually need it?
     # Or more importantly, do we need the reverse access rule too?
@@ -493,6 +511,22 @@ firewall:
         - udp
         - icmp
       dest_ip: *homeserver_nodes
+      dest_port:
+        - 22
+        - 80
+        - 443
+        # For K8S api
+        - 6443
+
+    allow_vpn_main_to_homeserver_backup:
+      target: ACCEPT
+      src: vpn_main
+      dest: cluster
+      proto:
+        - tcp
+        - udp
+        - icmp
+      dest_ip: *homeserver_backup_nodes
       dest_port:
         - 22
         - 80
