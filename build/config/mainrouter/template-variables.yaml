@@ -301,12 +301,12 @@ dhcp:
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
-    homeserver-backup_cps: &homeserver_backup_cps
+    homeserver-backup-cps: &homeserver_backup_cps
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
     # CPs are also used as LBs
-    homeserver-backup_lbs: &homeserver_backup_lbs
+    homeserver-backup-lbs: &homeserver_backup_lbs
       - 192.168.4.21
       - 192.168.4.22
       - 192.168.4.23
