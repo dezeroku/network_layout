@@ -259,7 +259,7 @@ dhcp:
     # Misc
     pikvm:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.31"
+      ip: &pikvm "192.168.4.31"
       dns: true
 
     homekit-hub:
@@ -475,6 +475,13 @@ firewall:
       src: lan
       dest: cluster
       dest_ip: *homeserver_nodes
+
+    allow_lan_to_pikvm:
+      target: ACCEPT
+      src: lan
+      dest: cluster
+      dest_ip:
+        - *pikvm
 
     allow_lan_to_homeserver_backup:
       target: ACCEPT
