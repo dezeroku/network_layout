@@ -11,7 +11,7 @@ A picture is worth more than a thousand words:
 
 What's covered:
 
-- \[x\] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in `build`
+- \[x\] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in [openwrt_build_wrapper[(https://github.com/dezeroku/openwrt_build_wrapper) repo
 - \[x\] reproducible OpenWRT configuration, via `uci-defaults` (with YAML based config)
 - \[x\] basic monitoring enabled
 - \[x\] zero-touch bootstrap after the OpenWRT is flashed on a device
@@ -71,7 +71,7 @@ It does all the heavy lifting in this setup:
 - DNS-level adblock
 - [SQM](https://openwrt.org/docs/guide-user/network/traffic-shaping/sqm)
 
-Look into [its config for more details](build/config/mainrouter/template-variables.yaml).
+Look into [its config for more details](config/mainrouter/template-variables.yaml).
 
 ### Main switch
 
@@ -84,7 +84,7 @@ Look into [its config for more details](build/config/mainrouter/template-variabl
 
 Zyxel GS1900-8HP switching traffic with VLANs.
 
-Look into [its config for more details](build/config/mainswitch/template-variables.yaml).
+Look into [its config for more details](config/mainswitch/template-variables.yaml).
 
 ### AP Router
 
@@ -97,7 +97,7 @@ Look into [its config for more details](build/config/mainswitch/template-variabl
 
 ASUS RT-AX53U running openwrt, used as an AP for all the networks.
 
-Look into [its config for more details](build/config/aprouter/template-variables.yaml).
+Look into [its config for more details](config/aprouter/template-variables.yaml).
 
 ## How to build?
 
