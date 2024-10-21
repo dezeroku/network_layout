@@ -104,5 +104,5 @@ Look into [its config for more details](config/aprouter/template-variables.yaml)
 Take a look at [openwrt_build_wrapper repository](https://github.com/dezeroku/openwrt_build_wrapper) for details.
 General gist is to clone the repo with submodules (`git submodule update --init --recursive`) and run the build as follows:
 
-1. `time ONLY_INITIALIZE_WORKSPACE=true DEVICE=<device> ./openwrt_build_wrapper/scripts/core/entrypoint`
-2. `time SKIP_DOWNLOADS=true DEVICE=<device> ./openwrt_build_wrapper/scripts/core/entrypoint`
+1. `time DEVICE=<device> ONLY_INITIALIZE_WORKSPACE=true ./openwrt_build_wrapper/scripts/core/entrypoint`
+2. `time DEVICE=<device> SKIP_DOWNLOADS=true ./openwrt_build_wrapper/scripts/core/entrypoint`
