@@ -2,15 +2,7 @@
 
 This repository describes the configuration for my home network.
 
-It also includes a wrapper around the `OpenWRT` build system,
-allowing an easy way to template the configuration files that are then
-built-in as part of the image.
-With this approach flashing the device applies all the settings that are required,
-including wireless, VLANs, firewall and additional features.
-For more details take a look at [build/README.md](build/README.md) file.
-
-Repository [homelab](https://github.com/dezeroku/homelab) assumes the
-`homeserver` IPs match the ones defined in this repo.
+Build system used is defined in [openwrt_build_wrapper repository](https://github.com/dezeroku/openwrt_build_wrapper).
 
 ## General Overview
 
@@ -106,3 +98,11 @@ Look into [its config for more details](build/config/mainswitch/template-variabl
 ASUS RT-AX53U running openwrt, used as an AP for all the networks.
 
 Look into [its config for more details](build/config/aprouter/template-variables.yaml).
+
+## How to build?
+
+Take a look at [openwrt_build_wrapper repository](https://github.com/dezeroku/openwrt_build_wrapper) for details.
+General gist is to clone the repo with submodules (`git submodule update --init --recursive`) and run the build as follows:
+
+1. `time ONLY_INITIALIZE_WORKSPACE=true DEVICE=<device> ./openwrt_build_wrapper/scripts/core/entrypoint`
+2. `time SKIP_DOWNLOADS=true DEVICE=<device> ./openwrt_build_wrapper/scripts/core/entrypoint`
