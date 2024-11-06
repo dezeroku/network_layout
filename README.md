@@ -11,7 +11,7 @@ A picture is worth more than a thousand words:
 
 What's covered:
 
-- \[x\] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in [openwrt_build_wrapper[(https://github.com/dezeroku/openwrt_build_wrapper) repo
+- \[x\] reproducible OpenWRT builds using custom scripting (mostly wrappers over OpenWRT's build system) in [openwrt_build_wrapper](https://github.com/dezeroku/openwrt_build_wrapper) repo
 - \[x\] reproducible OpenWRT configuration, via `uci-defaults` (with YAML based config)
 - \[x\] basic monitoring enabled
 - \[x\] zero-touch bootstrap after the OpenWRT is flashed on a device
