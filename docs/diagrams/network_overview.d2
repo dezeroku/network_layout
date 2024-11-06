@@ -1,0 +1,140 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+    theme-id: 200
+  }
+}
+direction: down
+
+classes: {
+  *: {
+    label: ""
+    shape: rectangle
+    style: {
+      border-radius: 10
+    }
+  }
+}
+
+internet: {
+  shape: cloud
+  label: "Internet"
+}
+
+isp_router: {
+  label: "ISP Router"
+  explanation: |md
+    ### 192.168.240.1
+    - DDNS
+  |
+}
+
+mainrouter: {
+  label: "Main Router"
+  explanation: |md
+    ### 192.168.240.99
+  |
+}
+
+vlan_lan: {
+  label: "LAN - 192.168.1.0/24"
+}
+
+vlan_guest: {
+  label: "Guest - 192.168.2.0/24"
+}
+
+vlan_iot: {
+  label: "IoT - 192.168.3.0/24"
+}
+
+vlan_cluster: {
+  label: "Cluster - 192.168.4.0/24"
+}
+
+vpn: {
+  label: ""
+}
+
+vpn.main: {
+  label: "VPN main"
+  explanation: |md
+    ## 192.168.69.0/24
+  |
+}
+
+vpn.guest: {
+  label: "VPN guest"
+  explanation: |md
+    ## 192.168.70.0/24
+  |
+}
+
+vpn.family: {
+  label: "VPN guest"
+  explanation: |md
+    ## 192.168.71.0/24
+  |
+}
+
+vlan_lan.aprouter: {
+  explanation: |md
+    ## 192.168.1.3
+  |
+}
+
+vlan_lan.homekit_hub: {
+  explanation: |md
+    ## 192.168.1.10
+  |
+}
+
+vlan_cluster.pikvm: {
+  explanation: |md
+    ## 192.168.4.31
+  |
+}
+
+vlan_cluster.homeserver.five: {
+  explanation: |md
+    ## 192.168.4.15
+  |
+}
+
+vlan_cluster.homeserver.six: {
+  explanation: |md
+    ## 192.168.4.16
+  |
+}
+
+vlan_cluster.homeserver.seven: {
+  explanation: |md
+    ## 192.168.4.17
+  |
+}
+
+vlan_cluster.homeserver_backup.one: {
+  explanation: |md
+    ## 192.168.4.21
+  |
+}
+
+vlan_cluster.homeserver_backup.two: {
+  explanation: |md
+    ## 192.168.4.22
+  |
+}
+
+vlan_cluster.homeserver_backup.three: {
+  explanation: |md
+    ## 192.168.4.23
+  |
+}
+
+internet -- isp_router: "300/30 Mbps"
+isp_router -- mainrouter
+mainrouter -- vlan_lan: "VLAN 99"
+mainrouter -- vlan_guest: "VLAN 20"
+mainrouter -- vlan_iot: "VLAN 30"
+mainrouter -- vlan_cluster: "VLAN 40"
+mainrouter -- vpn

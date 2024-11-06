@@ -7,7 +7,7 @@ Build system used is defined in [openwrt_build_wrapper repository](https://githu
 ## General Overview
 
 A picture is worth more than a thousand words:
-![Network Overview](docs/diagrams/created/network_overview.png?raw=true "Network Overview")
+![Network Overview](docs/diagrams/created/network_overview.svg?raw=true "Network Overview")
 
 What's covered:
 
