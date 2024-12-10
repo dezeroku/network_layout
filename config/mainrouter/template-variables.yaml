@@ -460,8 +460,7 @@ firewall:
     allow_homeserver_to_homekit_hub:
       target: ACCEPT
       src: cluster
-      src_ip:
-        - *homeserver_nodes
+      src_ip: *homeserver_nodes
       dest: lan
       dest_ip:
         - *homekit_hub
