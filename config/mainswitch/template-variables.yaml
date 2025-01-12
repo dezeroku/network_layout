@@ -41,9 +41,6 @@ networks:
         - lan2:t
         - lan3
         - lan4
-        - lan5
-        - lan6
-        - lan7
 
   guest:
     proto: none
@@ -78,6 +75,9 @@ networks:
         # aprouter
         - lan2:t
         # homeserver nodes
+        - lan5
+        - lan6
+        - lan7
         - lan8
 
 dhcp:
