@@ -256,6 +256,11 @@ dhcp:
       ip: "192.168.4.17"
       dns: true
 
+    homeserver-eight:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.18"
+      dns: true
+
     # Misc
     pikvm:
       # mac: 'XX:XX:XX:XX:XX:XX'
@@ -292,6 +297,7 @@ dhcp:
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
+      - 192.168.4.18
     homeserver-cps: &homeserver_cps
       - 192.168.4.15
       - 192.168.4.16
