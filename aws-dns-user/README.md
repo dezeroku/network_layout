@@ -1,6 +1,6 @@
-# aws-cert-user
+# aws-dns-user
 
-This small terraform helper is responsible for creating an IAM user with proper permissions to be used with ACME.
+This small terraform helper is responsible for creating an IAM user with proper permissions to be used with ACME and DDNS.
 With this in place, you can obtain a certificate from Let's Encrypt for your router's LuCI web interface.
 
 ## Configuration
@@ -24,5 +24,5 @@ terraform output -raw access_key_id
 Finally, to obtain the access key secret for further use, you can run:
 
 ```
-terraform output -raw access_key
+terraform output -raw access_key_secret
 ```

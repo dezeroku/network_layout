@@ -21,6 +21,13 @@ hostname: mainrouter
 #    route53:
 #      access_key_id: ...
 #      access_key_secret: ...
+ddns:
+  enabled: false
+  #  lookup_host: my-server.example.com
+  #  hosted_zone_id: route53_zone_id
+  #  access_key_id: ...
+  #  access_key_secret: ...
+  check_interval_minutes: 5
 
 network:
   globals:

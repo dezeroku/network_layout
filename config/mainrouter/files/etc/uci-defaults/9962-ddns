@@ -1,0 +1,24 @@
+{{ if .ddns.enabled }}
+uci set ddns.route53=service
+uci set ddns.route53.service_name='route53-v1'
+uci set ddns.route53.use_ipv6='0'
+uci set ddns.route53.enabled='1'
+uci set ddns.route53.lookup_host='{{ .ddns.lookup_host }}'
+uci set ddns.route53.domain='{{ .ddns.hosted_zone_id }}'
+uci set ddns.route53.username='{{ .ddns.access_key_id }}'
+uci set ddns.route53.password='{{ .ddns.access_key_secret }}'
+uci set ddns.route53.interface='wan'
+uci set ddns.route53.use_syslog='2'
+uci set ddns.route53.check_interval='{{ .ddns.check_interval_minutes }}'
+uci set ddns.route53.check_unit='minutes'
+
+# TODO: currently we have to use the web for checking public IP,
+# because of the ISP router that's sitting in front of OpenWRT device
+# Get rid of this when mainrouter is actually the edge device
+uci set ddns.route53.ip_source='web'
+uci set ddns.route53.ip_url='http://checkip.amazonaws.com'
+
+uci commit ddns
+
+/etc/init.d/ddns restart
+{{ end }}
