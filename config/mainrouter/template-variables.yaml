@@ -299,7 +299,8 @@ dhcp:
   #   ip: '192.168.1.23'
 
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
-  addresses:
+  # With custom dynamic updates based on nodes availability
+  addresses_ha:
     homeserver: &homeserver_nodes
       - 192.168.4.15
       - 192.168.4.16
