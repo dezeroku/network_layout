@@ -294,6 +294,11 @@ dhcp:
       ip: "192.168.1.4"
       dns: true
 
+    fradio-server:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &fradio_server "192.168.3.20"
+      dns: true
+
   domains: {}
   # example.com:
   #   ip: '192.168.1.23'
@@ -490,6 +495,13 @@ firewall:
         - tcp
         - udp
         - icmp
+
+    allow_lan_to_fradio_server:
+      target: ACCEPT
+      src: lan
+      dest: iot
+      dest_ip:
+        - *fradio_server
 
     allow_lan_to_homeserver:
       target: ACCEPT
