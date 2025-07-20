@@ -64,21 +64,9 @@ networks:
       leasetime: 12h
 
   wan:
-    # Magic values set on the ISP router
-    # to allow for the DMZ based bridge
-    # via https://openwrt.org/docs/guide-user/network/wan/dmz-based-bridge-mode
-    proto: static
+    proto: dhcp
     device: eth1
-    ipaddr: 192.168.240.99
-    gateway: 192.168.240.1
-    netmask: 255.255.255.0
     collect_dns_statistics: false
-    dhcp:
-      start: 100
-      limit: 150
-      leasetime: 12h
-      ra_flags:
-        - "none"
 
   guest:
     proto: static

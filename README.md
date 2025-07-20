@@ -27,14 +27,7 @@ What's covered:
 
 ### ISP Router (WAN)
 
-Allows the internet connectivity via ISP's router (a temporary measure before obtaining the proper ONT. Unfortunately the device has to be provided by ISP, custom ones won't work).
-
-ISP's router spans the `192.168.240.1/24` network, main router is assigned the static IP of `192.168.240.99`.
-Main router is put in the DMZ, as described in the [OpenWRT wiki guide](https://openwrt.org/docs/guide-user/network/wan/dmz-based-bridge-mode).
-
-DDNS is set up on this device to point to a custom domain (test in progress to move DDNS setup to Main Router).
-
-This part of the configuration is not covered by this repo.
+Allows the internet connectivity via ISP.
 
 ### Main Router
 
