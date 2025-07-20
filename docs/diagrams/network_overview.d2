@@ -48,6 +48,10 @@ vlan_iot: {
   label: "IoT - 192.168.3.0/24"
 }
 
+vlan_iot_int: {
+  label: "IoT Int - 192.168.5.0/24"
+}
+
 vlan_cluster: {
   label: "Cluster - 192.168.4.0/24"
 }
@@ -136,5 +140,6 @@ isp_router -- mainrouter
 mainrouter -- vlan_lan: "VLAN 99"
 mainrouter -- vlan_guest: "VLAN 20"
 mainrouter -- vlan_iot: "VLAN 30"
+mainrouter -- vlan_iot_int: "VLAN 31"
 mainrouter -- vlan_cluster: "VLAN 40"
 mainrouter -- vpn

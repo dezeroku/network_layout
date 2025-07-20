@@ -43,6 +43,7 @@ This part of the configuration is not covered by this repo.
 | LAN        | 192.168.1.1/24  | yes             | yes                     |
 | Guest      | 192.168.2.1/24  | yes             | no                      |
 | IoT        | 192.168.3.1/24  | no              | no                      |
+| IoT Int    | 192.168.5.1/24  | yes             | no                      |
 | Cluster    | 192.168.4.1/24  | yes             | yes                     |
 | VPN Main   | 192.168.69.1/24 | yes             | yes                     |
 | VPN Guest  | 192.168.70.1/24 | no              | yes                     |
@@ -56,6 +57,7 @@ This part of the configuration is not covered by this repo.
 | ------------ | ----- | ---------- |
 | 20 (guest)   | t     |            |
 | 30 (iot)     | t     |            |
+| 31 (iot_int) | t     |            |
 | 40 (cluster) | t     |            |
 | 99 (lan)     | (t\*) |            |
 |              |       | WAN router |
@@ -79,6 +81,7 @@ Look into [its config for more details](config/mainrouter/template-variables.yam
 | ------------ | ----------------- | --------------- | ---- | ---- | ---- | ---- | ---- | ---- |
 | 20 (guest)   | t                 | t               |      |      |      |      |      |      |
 | 30 (iot)     | t                 | t               |      |      |      |      |      |      |
+| 31 (iot_int) | t                 | t               |      |      |      |      |      |      |
 | 40 (cluster) | t                 | t               |      |      |      |      |      | u    |
 | 99 (lan)     | t                 | t               | u    | u    | u    | u    | u    |      |
 
@@ -92,6 +95,7 @@ Look into [its config for more details](config/mainswitch/template-variables.yam
 | ------------ | --- | -------------- | ---- | ---- |
 | 20 (guest)   |     | mainrouter (t) |      |      |
 | 30 (iot)     |     | mainrouter (t) |      |      |
+| 31 (iot_int) |     | mainrouter (t) |      |      |
 | 40 (cluster) |     | mainrouter (t) |      |      |
 | 99 (lan)     |     | mainrouter (t) |      |      |
 

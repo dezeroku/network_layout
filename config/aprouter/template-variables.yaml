@@ -57,7 +57,6 @@ networks:
       id: 20
       ports:
         - lan1:t
-        - lan2
 
   iot:
     proto: none
@@ -66,7 +65,14 @@ networks:
       id: 30
       ports:
         - lan1:t
-        - lan3
+
+  iot_int:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 31
+      ports:
+        - lan1:t
 
   cluster:
     proto: none

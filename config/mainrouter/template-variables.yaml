@@ -126,6 +126,31 @@ networks:
         output: ACCEPT
         forward: REJECT
 
+  iot_int:
+    proto: static
+    device: br-lan
+    ipaddr: 192.168.5.1
+    gateway: 192.168.240.99
+    netmask: 255.255.255.0
+    vlan:
+      id: 31
+      ports:
+        - eth0:t
+    type: bridge
+    # TODO: this is only added so home-assistant, IoT devices and homekit-hub can see each other
+    broadcast_mdns: true
+    dhcp:
+      start: 100
+      limit: 150
+      leasetime: 12h
+    firewall:
+      zone:
+        input: REJECT
+        output: ACCEPT
+        forward: REJECT
+      forwarding:
+        - wan
+
   cluster:
     proto: static
     device: br-lan
@@ -370,6 +395,18 @@ firewall:
         - 67
         - 68
 
+    allow_dhcp_dns_icmp_iot_int:
+      proto:
+        - tcp
+        - udp
+        - icmp
+      target: ACCEPT
+      src: iot_int
+      dest_port:
+        - 53
+        - 67
+        - 68
+
     allow_dhcp_dns_icmp_cluster:
       proto:
         - tcp
@@ -471,9 +508,33 @@ firewall:
         - udp
         - icmp
 
+    allow_homekit_hubs_to_iot_int:
+      target: ACCEPT
+      src: lan
+      src_ip:
+        - *homekit_hub
+        - *homekit_homepod_one
+      dest: iot_int
+      proto:
+        - tcp
+        - udp
+        - icmp
+
     allow_iot_to_homekit_hubs:
       target: ACCEPT
       src: iot
+      dest: lan
+      dest_ip:
+        - *homekit_hub
+        - *homekit_homepod_one
+      proto:
+        - tcp
+        - udp
+        - icmp
+
+    allow_iot_int_to_homekit_hubs:
+      target: ACCEPT
+      src: iot_int
       dest: lan
       dest_ip:
         - *homekit_hub
@@ -530,6 +591,13 @@ firewall:
       src: cluster
       src_ip: *homeserver_nodes
       dest: iot
+
+    # TODO: same question as above
+    allow_homeserver_to_iot_int:
+      target: ACCEPT
+      src: cluster
+      src_ip: *homeserver_nodes
+      dest: iot_int
 
     allow_guest_to_homeserver_lbs:
       target: ACCEPT

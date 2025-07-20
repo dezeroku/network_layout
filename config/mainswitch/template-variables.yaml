@@ -65,6 +65,17 @@ networks:
         # fradio-server
         - lan6
 
+  iot_int:
+    proto: none
+    device: switch
+    vlan:
+      id: 31
+      ports:
+        # mainrouter
+        - lan1:t
+        # aprouter
+        - lan2:t
+
   cluster:
     proto: none
     device: switch
