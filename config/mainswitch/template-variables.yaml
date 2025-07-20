@@ -62,6 +62,8 @@ networks:
         - lan1:t
         # aprouter
         - lan2:t
+        # fradio-server
+        - lan6
 
   cluster:
     proto: none
@@ -73,10 +75,9 @@ networks:
         - lan1:t
         # aprouter
         - lan2:t
-        # homeserver nodes
-        - lan5
-        - lan6
+        # homeserver backup switch
         - lan7
+        # homeserver switch
         - lan8
 
 dhcp:
