@@ -25,7 +25,7 @@ What's covered:
 
 ## Interfaces
 
-### ISP Router (WAN)
+### ISP ONT (WAN)
 
 Allows the internet connectivity via ISP.
 
