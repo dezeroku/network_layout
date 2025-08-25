@@ -312,6 +312,11 @@ dhcp:
       ip: &fradio_server "192.168.3.20"
       dns: true
 
+    vacuum-ground:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &vacuum_ground "192.168.3.41"
+      dns: true
+
   domains: {}
   # example.com:
   #   ip: '192.168.1.23'
@@ -551,6 +556,13 @@ firewall:
       dest: iot
       dest_ip:
         - *fradio_server
+
+    allow_lan_to_vacuums:
+      target: ACCEPT
+      src: lan
+      dest: iot
+      dest_ip:
+        - *vacuum_ground
 
     allow_lan_to_homeserver:
       target: ACCEPT
