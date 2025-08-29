@@ -642,6 +642,27 @@ firewall:
         # For K8S api
         - 6443
 
+    allow_vpn_main_to_devserver_ssh:
+      target: ACCEPT
+      src: vpn_main
+      dest: lan
+      proto:
+        - tcp
+        - udp
+        - icmp
+      dest_ip:
+        - 192.168.1.14
+      dest_port:
+        - 22
+
+    allow_vpn_main_to_fradio_server:
+      # TODO: are we able to limit access to specific ports?
+      target: ACCEPT
+      src: vpn_main
+      dest: iot
+      dest_ip:
+        - *fradio_server
+
     allow_vpn_guest_to_homeserver_lbs:
       target: ACCEPT
       src: vpn_guest
@@ -664,31 +685,6 @@ firewall:
       dest_port:
         - 80
         - 443
-
-    allow_vpn_main_to_devserver_ssh:
-      target: ACCEPT
-      src: vpn_main
-      dest: lan
-      proto:
-        - tcp
-        - udp
-        - icmp
-      dest_ip:
-        - 192.168.1.14
-      dest_port:
-        - 22
-
-    allow_vpn_guest_to_devserver_minecraft:
-      target: ACCEPT
-      src: vpn_guest
-      dest: lan
-      proto:
-        - tcp
-        - udp
-      dest_ip:
-        - 192.168.1.14
-      dest_port:
-        - 25565
 
     allow_lan_server_node_exporter_scrape_from_homeserver:
       target: ACCEPT
