@@ -564,6 +564,16 @@ firewall:
       dest_ip:
         - *vacuum_ground
 
+    allow_vacuums_to_homeserver_mqtt:
+      target: ACCEPT
+      src: iot
+      dest: cluster
+      src_ip:
+        - *vacuum_ground
+      dest_ip: *homeserver_nodes
+      dest_port:
+        - 31883
+
     allow_lan_to_homeserver:
       target: ACCEPT
       src: lan
