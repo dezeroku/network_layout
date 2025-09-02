@@ -4,7 +4,7 @@
 # Take a look at common/template-variables.yaml
 # to see some docs and examples
 
-hostname: mainswitch
+hostname: labswitch
 
 #security:
 #  root_password: ...
@@ -26,7 +26,7 @@ networks:
   lan:
     proto: static
     device: switch
-    ipaddr: 192.168.1.2
+    ipaddr: 192.168.1.4
     gateway: 192.168.1.1
     netmask: 255.255.255.0
     dns:
@@ -36,23 +36,10 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # aprouter
+        - lan2:t
         - lan3
         - lan4
-        - lan5
-        - lan6
-        - lan7
-        - lan8
-
-  wan:
-    proto: none
-    device: switch
-    vlan:
-      id: 90
-      ports:
-        # mainrouter
-        - lan1:t
-        # ISP ONT
-        - lan2
 
   guest:
     proto: none
@@ -62,6 +49,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # aprouter
+        - lan2:t
 
   iot:
     proto: none
@@ -71,6 +60,10 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # aprouter
+        - lan2:t
+        # fradio-server
+        - lan6
 
   iot_int:
     proto: none
@@ -80,6 +73,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # aprouter
+        - lan2:t
 
   cluster:
     proto: none
@@ -89,6 +84,12 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # aprouter
+        - lan2:t
+        # homeserver backup switch
+        - lan7
+        # homeserver switch
+        - lan8
 
 dhcp:
   default_dns_server: 192.168.1.1

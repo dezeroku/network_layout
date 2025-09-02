@@ -21,14 +21,14 @@ internet: {
   label: "Internet"
 }
 
-isp_router: {
-  label: "ISP Router"
+isp_ont: {
+  label: "ISP ONT"
 }
 
 mainrouter: {
   label: "Main Router"
   explanation: |md
-    ### 192.168.240.99
+    ### 192.168.1.1
   |
 }
 
@@ -131,8 +131,8 @@ vlan_cluster.homeserver_backup.three: {
   |
 }
 
-internet -- isp_router: "555/555 Mbps"
-isp_router -- mainrouter
+internet -- isp_ont: "555/555 Mbps"
+isp_ont -- mainrouter: "via mainswitch, port 2"
 mainrouter -- vlan_lan: "VLAN 99"
 mainrouter -- vlan_guest: "VLAN 20"
 mainrouter -- vlan_iot: "VLAN 30"

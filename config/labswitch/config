@@ -1,6 +1,6 @@
 CONFIG_TARGET_realtek=y
 CONFIG_TARGET_realtek_rtl838x=y
-CONFIG_TARGET_realtek_rtl838x_DEVICE_netgear_gs108t-v3=y
+CONFIG_TARGET_realtek_rtl838x_DEVICE_zyxel_gs1900-8=y
 CONFIG_ALL_KMODS=y
 CONFIG_ALL_NONSHARED=y
 CONFIG_DEVEL=y
@@ -68,6 +68,7 @@ CONFIG_PACKAGE_luci-theme-bootstrap=y
 CONFIG_PACKAGE_openssl-util=y
 CONFIG_PACKAGE_px5g-mbedtls=y
 CONFIG_PACKAGE_qosify=m
+CONFIG_PACKAGE_realtek-poe=m
 CONFIG_PACKAGE_rpcd=y
 CONFIG_PACKAGE_rpcd-mod-file=y
 CONFIG_PACKAGE_rpcd-mod-iwinfo=y

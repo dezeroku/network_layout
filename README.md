@@ -46,17 +46,17 @@ Allows the internet connectivity via ISP.
 
 ### Main router
 
-| VLAN         | ETH0  | ETH1       |
-| ------------ | ----- | ---------- |
-| 20 (guest)   | t     |            |
-| 30 (iot)     | t     |            |
-| 31 (iot_int) | t     |            |
-| 40 (cluster) | t     |            |
-| 99 (lan)     | (t\*) |            |
-|              |       | WAN router |
+| VLAN         | ETH0 (labswitch) | ETH1 (mainswitch) |
+| ------------ | ---------------- | ----------------- |
+| 20 (guest)   | t                | t                 |
+| 30 (iot)     | t                | t                 |
+| 31 (iot_int) | t                | t                 |
+| 40 (cluster) | t                | t                 |
+| 90 (wan)     |                  | t                 |
+| 99 (lan)     | (t\*)            | t                 |
 
 Currently Raspberry Pi 4 (8GB RAM variant) is used as a main router.
-It's paired with TP-Link UE300 USB-Ethernet adapter (RTL8153), used for WAN.
+It's paired with TP-Link UE300 USB-Ethernet adapter (RTL8153), used for mainswitch connection.
 
 It does all the heavy lifting in this setup:
 
@@ -70,17 +70,32 @@ Look into [its config for more details](config/mainrouter/template-variables.yam
 
 ### Main switch
 
-| VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
-| ------------ | ----------------- | --------------- | ---- | ---- | ---- | ---- | ---- | ---- |
-| 20 (guest)   | t                 | t               |      |      |      |      |      |      |
-| 30 (iot)     | t                 | t               |      |      |      |      |      |      |
-| 31 (iot_int) | t                 | t               |      |      |      |      |      |      |
-| 40 (cluster) | t                 | t               |      |      |      |      |      | u    |
-| 99 (lan)     | t                 | t               | u    | u    | u    | u    | u    |      |
+| VLAN         | LAN1 (mainrouter) | LAN2 (WAN) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
+| ------------ | ----------------- | ---------- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 20 (guest)   | t                 |            |      |      |      |      |      |      |
+| 30 (iot)     | t                 |            |      |      |      |      |      |      |
+| 31 (iot_int) | t                 |            |      |      |      |      |      |      |
+| 40 (cluster) | t                 |            |      |      |      |      |      |      |
+| 90 (wan)     | t                 | u          |      |      |      |      |      |      |
+| 99 (lan)     | t                 |            | u    | u    | u    | u    | u    | u    |
 
-Zyxel GS1900-8HP switching traffic with VLANs.
+Netgear GS108T-300PES switching traffic with VLANs, located in the central infra cross point.
 
 Look into [its config for more details](config/mainswitch/template-variables.yaml).
+
+### Lab switch
+
+| VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 (fradio-server) | LAN7 | LAN8 |
+| ------------ | ----------------- | --------------- | ---- | ---- | ---- | -------------------- | ---- | ---- |
+| 20 (guest)   | t                 | t               |      |      |      |                      |      |      |
+| 30 (iot)     | t                 | t               |      |      |      | u                    |      |      |
+| 31 (iot_int) | t                 | t               |      |      |      |                      |      |      |
+| 40 (cluster) | t                 | t               |      |      |      |                      |      | u    |
+| 99 (lan)     | t                 | t               | u    | u    | u    |                      | u    |      |
+
+Zyxel GS1900-8 switching traffic with VLANs, located in the lab rack.
+
+Look into [its config for more details](config/labswitch/template-variables.yaml).
 
 ### AP Router
 
@@ -92,7 +107,7 @@ Look into [its config for more details](config/mainswitch/template-variables.yam
 | 40 (cluster) |     | mainrouter (t) |      |      |
 | 99 (lan)     |     | mainrouter (t) |      |      |
 
-ASUS RT-AX53U running openwrt, used as an AP for all the networks.
+ASUS RT-AX53U, used as an AP for all the networks.
 
 Look into [its config for more details](config/aprouter/template-variables.yaml).
 
