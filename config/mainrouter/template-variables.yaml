@@ -324,6 +324,11 @@ dhcp:
       ip: "192.168.1.4"
       dns: true
 
+    apfloor:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.1.5"
+      dns: true
+
     fradio-server:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: &fradio_server "192.168.3.20"

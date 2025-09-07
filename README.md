@@ -111,6 +111,20 @@ ASUS RT-AX53U, used as an AP for all the networks.
 
 Look into [its config for more details](config/aprouter/template-variables.yaml).
 
+### AP Floor
+
+| VLAN         | LAN1           |
+| ------------ | -------------- |
+| 20 (guest)   | mainrouter (t) |
+| 30 (iot)     | mainrouter (t) |
+| 31 (iot_int) | mainrouter (t) |
+| 40 (cluster) | mainrouter (t) |
+| 99 (lan)     | mainrouter (t) |
+
+Ubiquiti U6+, used as an AP for all the networks.
+
+Look into [its config for more details](config/apfloor/template-variables.yaml).
+
 ## How to build?
 
 Take a look at [openwrt_build_wrapper repository](https://github.com/dezeroku/openwrt_build_wrapper) for details.

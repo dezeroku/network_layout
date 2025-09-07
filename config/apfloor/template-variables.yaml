@@ -1,0 +1,102 @@
+# Values that can be considered "secrets", provided in this file are exemplary
+# secret-variables.yaml file with appropriate overrides should be created
+#
+# Take a look at common/template-variables.yaml
+# to see some docs and examples
+
+hostname: apfloor
+
+#security:
+#  root_password: ...
+#
+#  ssh:
+#    keys:
+#      - ...
+#
+#letsencrypt:
+#  enabled: true
+#  domain: ...
+#  acme:
+#    email: ...
+#    route53:
+#      access_key_id: ...
+#      access_key_secret: ...
+
+wireless:
+  radios:
+    radio0:
+      country: PL
+      enabled: false
+      cell_density: 0
+    radio1:
+      country: PL
+      enabled: false
+      cell_density: 0
+  # Appropriate networks are to be defined
+  # in secret-variables.yaml
+  networks: {}
+
+networks:
+  lan:
+    proto: static
+    device: br-lan
+    ipaddr: 192.168.1.5
+    gateway: 192.168.1.1
+    netmask: 255.255.255.0
+    dns:
+      - 192.168.1.1
+    vlan:
+      id: 99
+      ports:
+        - eth0:t
+
+  guest:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 20
+      ports:
+        - eth0:t
+
+  iot:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 30
+      ports:
+        - eth0:t
+
+  iot_int:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 31
+      ports:
+        - eth0:t
+
+  cluster:
+    proto: none
+    device: br-lan
+    vlan:
+      id: 40
+      ports:
+        - eth0:t
+
+dhcp:
+  default_dns_server: 192.168.1.1
+
+custom_commands: |-
+  del network.lan.ip6assign
+
+  # Apply changes
+  /etc/init.d/network restart
+
+  # Get rid of DHCP, DHCPv6 and firewall that are not needed on a dumb AP
+  /etc/init.d/dnsmasq disable
+  /etc/init.d/dnsmasq stop || true
+
+  /etc/init.d/odhcpd disable
+  /etc/init.d/odhcpd stop || true
+
+  /etc/init.d/firewall disable
+  /etc/init.d/firewall stop || true
