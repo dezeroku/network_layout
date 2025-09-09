@@ -86,7 +86,12 @@ dhcp:
   default_dns_server: 192.168.1.1
 
 custom_commands: |-
-  del network.lan.ip6assign
+  # Get rid of ipv6 setup
+  uci set 'network.lan.ipv6=0'
+  uci set 'dhcp.lan.dhcpv6=disabled'
+  uci -q delete dhcp.lan.dhcpv6
+  uci -q delete dhcp.lan.ra
+  uci commit
 
   # Apply changes
   /etc/init.d/network restart
