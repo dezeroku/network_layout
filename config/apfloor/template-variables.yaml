@@ -98,3 +98,7 @@ custom_commands: |-
 
   /etc/init.d/firewall disable
   /etc/init.d/firewall stop || true
+
+custom_commands_persistent: |-
+  # Turn off the blue dome LED
+  echo "0" > /sys/class/leds/blue:dome/brightness
