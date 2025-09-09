@@ -24,13 +24,8 @@ hostname: mainswitch
 
 networks:
   lan:
-    proto: static
+    proto: none
     device: switch
-    ipaddr: 192.168.1.2
-    gateway: 192.168.1.1
-    netmask: 255.255.255.0
-    dns:
-      - 192.168.1.1
     vlan:
       id: 99
       ports:
@@ -90,8 +85,17 @@ networks:
         # mainrouter
         - lan1:t
 
+  admin:
+    proto: dhcp
+    device: switch
+    vlan:
+      id: 80
+      ports:
+        # mainrouter
+        - lan1:t
+
 dhcp:
-  default_dns_server: 192.168.1.1
+  default_dns_server: 192.168.80.1
 
 custom_commands: |-
   # Delete the default VLAN configuration, we have our own

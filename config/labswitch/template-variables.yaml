@@ -24,13 +24,8 @@ hostname: labswitch
 
 networks:
   lan:
-    proto: static
+    proto: none
     device: switch
-    ipaddr: 192.168.1.4
-    gateway: 192.168.1.1
-    netmask: 255.255.255.0
-    dns:
-      - 192.168.1.1
     vlan:
       id: 99
       ports:
@@ -91,8 +86,17 @@ networks:
         # homeserver switch
         - lan8
 
+  admin:
+    proto: dhcp
+    device: switch
+    vlan:
+      id: 80
+      ports:
+        - lan1:t
+        - lan2:t
+
 dhcp:
-  default_dns_server: 192.168.1.1
+  default_dns_server: 192.168.80.1
 
 custom_commands: |-
   # Delete the default VLAN configuration, we have our own

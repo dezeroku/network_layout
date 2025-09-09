@@ -41,6 +41,7 @@ Allows the internet connectivity via ISP.
 | VPN Main   | 192.168.69.1/24 | yes             | yes                     |
 | VPN Guest  | 192.168.70.1/24 | no              | yes                     |
 | VPN Family | 192.168.71.1/24 | yes             | yes                     |
+| Admin      | 192.168.80.1/24 | yes             | yes                     |
 
 ## Hardware Setup
 
@@ -52,6 +53,7 @@ Allows the internet connectivity via ISP.
 | 30 (iot)     | t                | t                 |
 | 31 (iot_int) | t                | t                 |
 | 40 (cluster) | t                | t                 |
+| 80 (admin)   | t                | t                 |
 | 90 (wan)     |                  | t                 |
 | 99 (lan)     | (t\*)            | t                 |
 
@@ -76,6 +78,7 @@ Look into [its config for more details](config/mainrouter/template-variables.yam
 | 30 (iot)     | t                 |            |      |      |      |      |      |      |
 | 31 (iot_int) | t                 |            |      |      |      |      |      |      |
 | 40 (cluster) | t                 |            |      |      |      |      |      |      |
+| 80 (admin)   | t                 |            |      |      |      |      |      |      |
 | 90 (wan)     | t                 | u          |      |      |      |      |      |      |
 | 99 (lan)     | t                 |            | u    | u    | u    | u    | u    | u    |
 
@@ -91,6 +94,7 @@ Look into [its config for more details](config/mainswitch/template-variables.yam
 | 30 (iot)     | t                 | t               |      |      |      | u                    |      |      |
 | 31 (iot_int) | t                 | t               |      |      |      |                      |      |      |
 | 40 (cluster) | t                 | t               |      |      |      |                      |      | u    |
+| 80 (admin)   | t                 | t               |      |      |      |                      |      |      |
 | 99 (lan)     | t                 | t               | u    | u    | u    |                      | u    |      |
 
 Zyxel GS1900-8 switching traffic with VLANs, located in the lab rack.
@@ -105,6 +109,7 @@ Look into [its config for more details](config/labswitch/template-variables.yaml
 | 30 (iot)     |     | mainrouter (t) |      |      |
 | 31 (iot_int) |     | mainrouter (t) |      |      |
 | 40 (cluster) |     | mainrouter (t) |      |      |
+| 80 (admin)   |     | mainrouter (t) |      |      |
 | 99 (lan)     |     | mainrouter (t) |      |      |
 
 ASUS RT-AX53U, used as an AP for all the networks.
@@ -119,6 +124,7 @@ Look into [its config for more details](config/aprouter/template-variables.yaml)
 | 30 (iot)     | mainrouter (t) |
 | 31 (iot_int) | mainrouter (t) |
 | 40 (cluster) | mainrouter (t) |
+| 80 (admin)   | mainrouter (t) |
 | 99 (lan)     | mainrouter (t) |
 
 Ubiquiti U6+, used as an AP for all the networks.
@@ -132,3 +138,13 @@ General gist is to clone the repo with submodules (`git submodule update --init 
 
 1. `time DEVICE=<device> ONLY_INITIALIZE_WORKSPACE=true ./openwrt_build_wrapper/scripts/core/entrypoint`
 2. `time DEVICE=<device> SKIP_DOWNLOADS=true ./openwrt_build_wrapper/scripts/core/entrypoint`
+
+## Notes
+
+### Emergency access
+
+All the devices configured here are set to use `admin` network for management.
+
+This network is run on VLAN `80` and in most cases requires you to provide a DHCP server on the emergency device (e.g.
+a laptop that's connected directly to the device being recovered).
+The only exception from this rule is `mainrouter` that is set to a static IP of `192.168.80.1` on the same VLAN.

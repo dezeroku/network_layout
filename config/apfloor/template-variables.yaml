@@ -38,13 +38,8 @@ wireless:
 
 networks:
   lan:
-    proto: static
+    proto: none
     device: br-lan
-    ipaddr: 192.168.1.5
-    gateway: 192.168.1.1
-    netmask: 255.255.255.0
-    dns:
-      - 192.168.1.1
     vlan:
       id: 99
       ports:
@@ -82,20 +77,18 @@ networks:
       ports:
         - eth0:t
 
+  admin:
+    proto: dhcp
+    device: br-lan
+    vlan:
+      id: 80
+      ports:
+        - eth0:t
+
 dhcp:
-  default_dns_server: 192.168.1.1
+  default_dns_server: 192.168.80.1
 
 custom_commands: |-
-  # Get rid of ipv6 setup
-  uci set 'network.lan.ipv6=0'
-  uci set 'dhcp.lan.dhcpv6=disabled'
-  uci -q delete dhcp.lan.dhcpv6
-  uci -q delete dhcp.lan.ra
-  uci commit
-
-  # Apply changes
-  /etc/init.d/network restart
-
   # Get rid of DHCP, DHCPv6 and firewall that are not needed on a dumb AP
   /etc/init.d/dnsmasq disable
   /etc/init.d/dnsmasq stop || true
