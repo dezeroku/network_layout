@@ -72,15 +72,15 @@ Look into [its config for more details](config/mainrouter/template-variables.yam
 
 ### Main switch
 
-| VLAN         | LAN1 (mainrouter) | LAN2 (WAN) | LAN3 | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
-| ------------ | ----------------- | ---------- | ---- | ---- | ---- | ---- | ---- | ---- |
-| 20 (guest)   | t                 |            |      |      |      |      |      |      |
-| 30 (iot)     | t                 |            |      |      |      |      |      |      |
-| 31 (iot_int) | t                 |            |      |      |      |      |      |      |
-| 40 (cluster) | t                 |            |      |      |      |      |      |      |
-| 80 (admin)   | t                 |            |      |      |      |      |      |      |
-| 90 (wan)     | t                 | u          |      |      |      |      |      |      |
-| 99 (lan)     | t                 |            | u    | u    | u    | u    | u    | u    |
+| VLAN         | LAN1 (mainrouter) | LAN2 (WAN) | LAN3 (apfloor) | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
+| ------------ | ----------------- | ---------- | -------------- | ---- | ---- | ---- | ---- | ---- |
+| 20 (guest)   | t                 |            | t              |      |      |      |      |      |
+| 30 (iot)     | t                 |            | t              |      |      |      |      |      |
+| 31 (iot_int) | t                 |            | t              |      |      |      |      |      |
+| 40 (cluster) | t                 |            |                |      |      |      |      |      |
+| 80 (admin)   | t                 |            | t              |      |      |      |      |      |
+| 90 (wan)     | t                 | u          |                |      |      |      |      |      |
+| 99 (lan)     | t                 |            | t              | u    | u    | u    | u    | u    |
 
 Netgear GS108T-300PES switching traffic with VLANs, located in the central infra cross point.
 

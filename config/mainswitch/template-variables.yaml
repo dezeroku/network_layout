@@ -31,7 +31,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
-        - lan3
+        # apfloor
+        - lan3:t
         - lan4
         - lan5
         - lan6
@@ -57,6 +58,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # apfloor
+        - lan3:t
 
   iot:
     proto: none
@@ -66,6 +69,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # apfloor
+        - lan3:t
 
   iot_int:
     proto: none
@@ -75,6 +80,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # apfloor
+        - lan3:t
 
   cluster:
     proto: none
@@ -93,6 +100,8 @@ networks:
       ports:
         # mainrouter
         - lan1:t
+        # apfloor
+        - lan3:t
 
 dhcp:
   default_dns_server: 192.168.80.1
