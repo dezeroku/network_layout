@@ -610,6 +610,10 @@ firewall:
 
     allow_lan_to_admin:
       target: ACCEPT
+      proto:
+        - udp
+        - tcp
+        - icmp
       src: lan
       dest: admin
 

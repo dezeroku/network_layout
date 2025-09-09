@@ -147,4 +147,7 @@ All the devices configured here are set to use `admin` network for management.
 
 This network is run on VLAN `80` and in most cases requires you to provide a DHCP server on the emergency device (e.g.
 a laptop that's connected directly to the device being recovered).
+
 The only exception from this rule is `mainrouter` that is set to a static IP of `192.168.80.1` on the same VLAN.
+In it's case it's recommended to rely on DHCP in VLAN `99` and obtain IP in the `192.168.1.1` subnet, as it is the only
+one that allows incoming SSH traffic.
