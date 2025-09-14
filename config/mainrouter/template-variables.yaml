@@ -124,6 +124,32 @@ networks:
         output: ACCEPT
         forward: REJECT
 
+  cluster:
+    proto: static
+    device: br-lan
+    ipaddr: 192.168.4.1
+    gateway: 192.168.240.99
+    netmask: 255.255.255.0
+    vlan:
+      id: 40
+      ports:
+        - eth0:t
+        - eth1:t
+    type: bridge
+    # TODO: this is only added so home-assistant, IoT devices and homekit-hub can see each other
+    broadcast_mdns: true
+    dhcp:
+      start: 100
+      limit: 150
+      leasetime: 12h
+    firewall:
+      zone:
+        input: REJECT
+        output: ACCEPT
+        forward: REJECT
+      forwarding:
+        - wan
+
   iot_int:
     proto: static
     device: br-lan
@@ -162,32 +188,6 @@ networks:
         - eth0:t
         - eth1:t
     type: bridge
-    dhcp:
-      start: 100
-      limit: 150
-      leasetime: 12h
-    firewall:
-      zone:
-        input: REJECT
-        output: ACCEPT
-        forward: REJECT
-      forwarding:
-        - wan
-
-  cluster:
-    proto: static
-    device: br-lan
-    ipaddr: 192.168.4.1
-    gateway: 192.168.240.99
-    netmask: 255.255.255.0
-    vlan:
-      id: 40
-      ports:
-        - eth0:t
-        - eth1:t
-    type: bridge
-    # TODO: this is only added so home-assistant, IoT devices and homekit-hub can see each other
-    broadcast_mdns: true
     dhcp:
       start: 100
       limit: 150
