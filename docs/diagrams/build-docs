@@ -6,4 +6,5 @@ cd "${RUNDIR}"
 
 mkdir -p created
 
-docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/home/debian/src" terrastruct/d2:v0.6.7 network_overview.d2 created/network_overview.svg
+docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/home/debian/src" terrastruct/d2:v0.7.1 network_overview.d2 created/network_overview.svg
+docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/home/debian/src" terrastruct/d2:v0.7.1 port_layout.d2 created/port_layout.svg

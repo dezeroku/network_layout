@@ -8,6 +8,7 @@ Build system used is defined in [openwrt_build_wrapper repository](https://githu
 
 A picture is worth more than a thousand words:
 ![Network Overview](docs/diagrams/created/network_overview.svg?raw=true "Network Overview")
+![Port Layout](docs/diagrams/created/port_layout.svg?raw=true "Port Layout")
 
 What's covered:
 

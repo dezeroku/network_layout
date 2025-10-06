@@ -1,0 +1,87 @@
+vars: {
+  d2-config: {
+    layout-engine: elk
+    theme-id: 200
+  }
+}
+direction: down
+
+classes: {
+  *: {
+    label: ""
+    shape: rectangle
+    style: {
+      border-radius: 10
+    }
+  }
+}
+
+isp_ont: {
+  label: "ISP ONT"
+}
+
+mainrouter: {
+  label: "Main Router"
+}
+
+mainswitch: {
+  label: "Main Switch"
+}
+
+labswitch: {
+  label: "Lab Switch"
+}
+
+homelabswitch: {
+  label: "HomeLab Switch"
+}
+
+aprouter: {
+  label: "AP Router"
+}
+
+pc: {
+  label: "PC"
+}
+
+homeserver-five: {
+  label: "homeserver-five"
+}
+
+homeserver-six: {
+  label: "homeserver-six"
+}
+
+homeserver-seven: {
+  label: "homeserver-seven"
+}
+
+homeserver-eight: {
+  label: "homeserver-eight"
+}
+
+fradio-server: {
+  label: "fradio-server"
+}
+
+devserver: {
+  label: "devserver"
+}
+
+apfloor: {
+  label: "AP Floor"
+}
+
+isp_ont -> mainswitch: "to LAN2"
+mainrouter -> mainswitch: "ETH1 to LAN2"
+apfloor -> mainswitch: "LAN1 to LAN3"
+mainrouter -> labswitch: "ETH0 to LAN1"
+aprouter -> labswitch: "LAN1 to LAN2"
+devserver -> labswitch: "to LAN3"
+pc -> labswitch: "to LAN4"
+fradio-server -> labswitch: "to LAN6"
+homelabswitch -> labswitch: "LAN1 to LAN8"
+homeserver-five -> homelabswitch: "to LAN5"
+homeserver-six -> homelabswitch: "to LAN6"
+homeserver-seven -> homelabswitch: "to LAN7"
+homeserver-eight -> homelabswitch: "to LAN8"
