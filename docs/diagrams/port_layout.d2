@@ -28,6 +28,10 @@ mainswitch: {
   label: "Main Switch"
 }
 
+tvswitch: {
+  label: "TV Switch"
+}
+
 labswitch: {
   label: "Lab Switch"
 }
@@ -73,7 +77,8 @@ apfloor: {
 }
 
 isp_ont -> mainswitch: "to LAN2"
-mainrouter -> mainswitch: "ETH1 to LAN2"
+mainrouter -> tvswitch: "ETH1 to LAN1"
+tvswitch -> mainswitch: "LAN3 to LAN2"
 apfloor -> mainswitch: "LAN1 to LAN3"
 mainrouter -> labswitch: "ETH0 to LAN1"
 aprouter -> labswitch: "LAN1 to LAN2"

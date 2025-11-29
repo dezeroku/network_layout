@@ -1,0 +1,121 @@
+# Values that can be considered "secrets", provided in this file are exemplary
+# secret-variables.yaml file with appropriate overrides should be created
+#
+# Take a look at common/template-variables.yaml
+# to see some docs and examples
+
+hostname: tvswitch
+
+#security:
+#  root_password: ...
+#
+#  ssh:
+#    keys:
+#      - ...
+#
+#letsencrypt:
+#  enabled: false
+#  domain: ...
+#  acme:
+#    email: ...
+#    route53:
+#      access_key_id: ...
+#      access_key_secret: ...
+
+networks:
+  lan:
+    proto: none
+    device: switch
+    vlan:
+      id: 99
+      ports:
+        # mainrouter
+        - lan1:t
+        # tv
+        - lan2
+        # mainswitch
+        - lan3:t
+        - lan4
+        - lan5
+        - lan6
+        - lan7
+        - lan8
+
+  guest:
+    proto: none
+    device: switch
+    vlan:
+      id: 20
+      ports:
+        # mainrouter
+        - lan1:t
+        # mainswitch
+        - lan3:t
+
+  iot:
+    proto: none
+    device: switch
+    vlan:
+      id: 30
+      ports:
+        # mainrouter
+        - lan1:t
+        # mainswitch
+        - lan3:t
+
+  iot_int:
+    proto: none
+    device: switch
+    vlan:
+      id: 31
+      ports:
+        # mainrouter
+        - lan1:t
+        # mainswitch
+        - lan3:t
+
+  cluster:
+    proto: none
+    device: switch
+    vlan:
+      id: 40
+      ports:
+        # mainrouter
+        - lan1:t
+
+  admin:
+    proto: dhcp
+    device: switch
+    vlan:
+      id: 80
+      ports:
+        # mainrouter
+        - lan1:t
+        # mainswitch
+        - lan3:t
+
+  wan:
+    proto: none
+    device: switch
+    vlan:
+      id: 90
+      ports:
+        # mainrouter
+        - lan1:t
+        # mainswitch
+        - lan3:t
+
+dhcp:
+  default_dns_server: 192.168.80.1
+
+custom_commands: |-
+  # Delete the default VLAN configuration, we have our own
+  uci del network.lan_vlan
+  uci del network.lan.ip6assign
+
+  # Apply changes
+  /etc/init.d/network restart
+
+  # Get rid of firewall that's not needed on just a switch
+  /etc/init.d/firewall disable
+  /etc/init.d/firewall stop || true

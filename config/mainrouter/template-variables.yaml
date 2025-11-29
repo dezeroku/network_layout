@@ -353,6 +353,11 @@ dhcp:
       ip: "192.168.80.5"
       dns: true
 
+    tvswitch:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.80.6"
+      dns: true
+
     fradio-server:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: &fradio_server "192.168.3.20"

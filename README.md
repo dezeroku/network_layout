@@ -87,6 +87,24 @@ Netgear GS108T-300PES switching traffic with VLANs, located in the central infra
 
 Look into [its config for more details](config/mainswitch/template-variables.yaml).
 
+### TV switch
+
+| VLAN         | LAN1 (mainrouter) | LAN2 | LAN3 (apfloor) | LAN4 | LAN5 | LAN6 | LAN7 | LAN8 |
+| ------------ | ----------------- | ---- | -------------- | ---- | ---- | ---- | ---- | ---- |
+| 20 (guest)   | t                 |      | t              |      |      |      |      |      |
+| 30 (iot)     | t                 |      | t              |      |      |      |      |      |
+| 31 (iot_int) | t                 |      | t              |      |      |      |      |      |
+| 40 (cluster) | t                 |      |                |      |      |      |      |      |
+| 80 (admin)   | t                 |      | t              |      |      |      |      |      |
+| 90 (wan)     | t                 |      |                |      |      |      |      |      |
+| 99 (lan)     | t                 | u    | t              | u    | u    | u    | u    | u    |
+
+Netgear GS108T-300PES switching traffic with VLANs, located in the path to central infra cross point.
+
+This device should be dropped completely and replaced with proper cabling.
+
+Look into [its config for more details](config/tvswitch/template-variables.yaml).
+
 ### Lab switch
 
 | VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 (fradio-server) | LAN7 | LAN8 |
