@@ -368,6 +368,11 @@ dhcp:
       ip: &vacuum_ground "192.168.3.41"
       dns: true
 
+    vacuum-floor:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &vacuum_floor "192.168.3.42"
+      dns: true
+
   domains: {}
   # example.com:
   #   ip: '192.168.1.23'
@@ -635,6 +640,7 @@ firewall:
       dest: iot
       dest_ip:
         - *vacuum_ground
+        - *vacuum_floor
 
     allow_vacuums_to_homeserver_mqtt:
       target: ACCEPT
@@ -642,6 +648,7 @@ firewall:
       dest: cluster
       src_ip:
         - *vacuum_ground
+        - *vacuum_floor
       dest_ip: *homeserver_nodes
       dest_port:
         - 31883
