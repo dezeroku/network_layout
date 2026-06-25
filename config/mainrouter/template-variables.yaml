@@ -644,14 +644,29 @@ firewall:
 
     allow_vacuums_to_homeserver_mqtt:
       target: ACCEPT
+      proto:
+        - tcp
       src: iot
       dest: cluster
       src_ip:
         - *vacuum_ground
         - *vacuum_floor
-      dest_ip: *homeserver_nodes
+      dest_ip: *homeserver_lbs
       dest_port:
         - 31883
+
+    allow_vacuums_to_homeserver_ntp:
+      target: ACCEPT
+      proto:
+        - udp
+      src: iot
+      dest: cluster
+      src_ip:
+        - *vacuum_ground
+        - *vacuum_floor
+      dest_ip: *homeserver_lbs
+      dest_port:
+        - 123
 
     allow_lan_to_homeserver:
       target: ACCEPT
