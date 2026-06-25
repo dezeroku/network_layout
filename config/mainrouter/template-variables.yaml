@@ -373,6 +373,16 @@ dhcp:
       ip: &vacuum_floor "192.168.3.42"
       dns: true
 
+    ac-ground:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &ac_ground "192.168.3.51"
+      dns: true
+
+    ac-floor:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &ac_floor "192.168.3.52"
+      dns: true
+
   domains: {}
   # example.com:
   #   ip: '192.168.1.23'
@@ -642,7 +652,7 @@ firewall:
         - *vacuum_ground
         - *vacuum_floor
 
-    allow_vacuums_to_homeserver_mqtt:
+    allow_iot_subset_to_homeserver_mqtt:
       target: ACCEPT
       proto:
         - tcp
@@ -651,9 +661,12 @@ firewall:
       src_ip:
         - *vacuum_ground
         - *vacuum_floor
+        - *ac_ground
+        - *ac_floor
       dest_ip: *homeserver_lbs
       dest_port:
-        - 31883
+        - 1883
+        - 8883
 
     allow_vacuums_to_homeserver_ntp:
       target: ACCEPT
