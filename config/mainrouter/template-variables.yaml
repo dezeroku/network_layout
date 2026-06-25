@@ -767,6 +767,18 @@ firewall:
       dest_ip:
         - *fradio_server
 
+    allow_vpn_main_to_vacuums:
+      target: ACCEPT
+      src: vpn_main
+      dest: iot
+      dest_ip:
+        - *vacuum_ground
+        - *vacuum_floor
+      dest_port:
+        - 22
+        - 80
+        - 443
+
     allow_vpn_guest_to_homeserver_lbs:
       target: ACCEPT
       src: vpn_guest
