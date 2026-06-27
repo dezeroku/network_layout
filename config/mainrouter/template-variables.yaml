@@ -669,16 +669,12 @@ firewall:
         - 1883
         - 8883
 
-    allow_iot_devices_to_homeserver_ntp:
+    allow_iot_to_homeserver_ntp:
       target: ACCEPT
       proto:
         - udp
       src: iot
       dest: cluster
-      src_ip:
-        - *vacuum_ground
-        - *vacuum_floor
-        - *homelab_plug
       dest_ip: *homeserver_lbs
       dest_port:
         - 123
