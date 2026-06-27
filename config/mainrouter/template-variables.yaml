@@ -729,6 +729,13 @@ firewall:
       proto:
         - tcp
 
+    allow_guest_to_fradio_server:
+      target: ACCEPT
+      src: guest
+      dest: iot
+      dest_ip:
+        - *fradio_server
+
     allow_vpn_main_to_homeserver:
       target: ACCEPT
       src: vpn_main
