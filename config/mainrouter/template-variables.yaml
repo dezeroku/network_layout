@@ -650,6 +650,8 @@ firewall:
         - *fradio_server
         - *vacuum_ground
         - *vacuum_floor
+        - *ac_ground
+        - *ac_floor
         - *homelab_plug
 
     allow_iot_subset_to_homeserver_mqtt:
