@@ -536,36 +536,6 @@ firewall:
         - 67
         - 68
 
-    allow_lan_mdns_broadcast:
-      # TODO: should this be limited to the HomeKit hub only?
-      # do we care about other devices broadcasting mDNS?
-      target: ACCEPT
-      proto:
-        - udp
-      src: lan
-      src_port:
-        - 5353
-      dest_port:
-        - 5353
-      dest_ip:
-        - 224.0.0.251
-        #- ff02::fb
-
-    allow_cluster_mdns_broadcast:
-      target: ACCEPT
-      proto:
-        - udp
-      src: cluster
-      # For the home-assistant to work properly
-      src_ip: *homeserver_nodes
-      src_port:
-        - 5353
-      dest_port:
-        - 5353
-      dest_ip:
-        - 224.0.0.251
-        #- ff02::fb
-
     allow_iot_to_wan:
       target: ACCEPT
       src: iot
@@ -688,7 +658,7 @@ firewall:
       dest_port:
         - 123
 
-    # For esphome UI status checks
+    # For esphome API, especially UI status checks
     allow_cluster_to_iot_esphome_devices:
       target: ACCEPT
       proto:
@@ -915,3 +885,9 @@ statistics:
 node_exporter:
   # For the homeserver nodes
   listen_interface: cluster
+
+avahi_daemon:
+  reflector:
+    enabled: true
+    # For the esphome config hashes
+    reflect_filters: "_esphomelib._tcp.local"
