@@ -688,6 +688,20 @@ firewall:
       dest_port:
         - 123
 
+    # For esphome UI status checks
+    allow_cluster_to_iot_esphome_devices:
+      target: ACCEPT
+      proto:
+        - tcp
+      src: cluster
+      dest: iot
+      dest_ip:
+        - *ac_ground
+        - *ac_floor
+        - *water_meter
+      dest_port:
+        - 6053
+
     allow_lan_to_homeserver:
       target: ACCEPT
       src: lan
