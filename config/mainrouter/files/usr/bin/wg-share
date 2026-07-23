@@ -1,0 +1,103 @@
+#!/bin/sh
+# wg-share - build the message to send a person so they can set up their
+# own WireGuard config at https://vpn.dezeroku.com, using this router's
+# live UCI config as the source of truth.
+#
+# Run directly on the router:
+#   wg-share <vpn> <client>   e.g. wg-share vpn_main sgs
+#   wg-share list             list "<vpn> <client>" pairs found in UCI
+
+set -eu
+
+usage() {
+	echo "usage: $0 <vpn> <client>" >&2
+	echo "       $0 list" >&2
+	exit 1
+}
+
+list_clients() {
+	uci show network | grep '=wireguard_' | while IFS='=' read -r left right; do
+		section=${left#network.}
+		vpn=${right#wireguard_}
+		# shellcheck disable=SC2295
+		client=${section#wg_${vpn}_}
+		printf '%s %s\n' "$vpn" "$client"
+	done
+}
+
+[ $# -ge 1 ] || usage
+[ "$1" = "list" ] && {
+	list_clients
+	exit 0
+}
+[ $# -eq 2 ] || usage
+
+command -v wg >/dev/null 2>&1 || {
+	echo "error: wg (wireguard-tools) not found" >&2
+	exit 1
+}
+
+vpn=$1
+client=$2
+section="wg_${vpn}_${client}"
+
+get() {
+	uci -q get "network.$1"
+}
+
+require() {
+	val=$(get "$1") || {
+		echo "error: network.$1 is not set" >&2
+		exit 1
+	}
+	[ -n "$val" ] || {
+		echo "error: network.$1 is empty" >&2
+		exit 1
+	}
+	printf '%s' "$val"
+}
+
+router_privkey=$(require "${vpn}.private_key")
+port=$(require "${vpn}.listen_port")
+psk=$(require "${section}.preshared_key")
+address=$(get "${section}.allowed_ips" | awk '{print $1}') || true
+[ -n "$address" ] || {
+	echo "error: network.${section}.allowed_ips is empty (does the client exist?)" >&2
+	exit 1
+}
+
+client_privkey=$(get "${section}.private_key") || client_privkey=""
+
+router_pubkey=$(printf '%s' "$router_privkey" | wg pubkey)
+
+# WireGuard keys are base64, so only +, / and = need escaping to survive as
+# a URL fragment param value.
+b64uri() {
+	printf '%s' "$1" | sed -e 's/+/%2B/g' -e 's/\//%2F/g' -e 's/=/%3D/g'
+}
+
+link="https://vpn.dezeroku.com/#addr=${address}&rpk=$(b64uri "$router_pubkey")&psk=$(b64uri "$psk")&port=${port}"
+
+if [ -n "$client_privkey" ]; then
+	link="${link}&pk=$(b64uri "$client_privkey")"
+	privkey_note=""
+else
+	privkey_note="
+   (no private key stored on router for you — the link fills in
+   everything else, you'll just need to paste in your own generated
+   private key)"
+fi
+
+cat <<EOF
+Hey! Time to get you set up on the VPN.
+
+1. Install WireGuard: https://www.wireguard.com/install/
+2. Open this link, it's already filled in for you:
+
+   ${link}${privkey_note}
+
+3. Generate the config, then scan the QR code (or import the downloaded
+   file) into the WireGuard app.
+4. Turn the profile on, then open https://home.dezeroku.com to check it's
+   working.
+EOF
