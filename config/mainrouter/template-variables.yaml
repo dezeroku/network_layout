@@ -397,6 +397,14 @@ dhcp:
   # example.com:
   #   ip: '192.168.1.23'
 
+  addresses:
+    # TODO: With metallb in place, this is effectively a no-op,
+    # listed here just so I have an anchor to reuse later on for firewall rules
+    # We might get rid of keeping it here
+    homeserver-lbs: &homeserver_lbs
+      - 192.168.4.65
+      - 192.168.4.66
+
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
   # With custom dynamic updates based on nodes availability
   addresses_ha:
@@ -406,11 +414,6 @@ dhcp:
       - 192.168.4.17
       - 192.168.4.18
     homeserver-cps: &homeserver_cps
-      - 192.168.4.15
-      - 192.168.4.16
-      - 192.168.4.17
-    # CPs are also used as LBs
-    homeserver-lbs: &homeserver_lbs
       - 192.168.4.15
       - 192.168.4.16
       - 192.168.4.17
@@ -678,6 +681,12 @@ firewall:
       dest: cluster
       dest_ip: *homeserver_nodes
 
+    allow_lan_to_homeserver_lbs:
+      target: ACCEPT
+      src: lan
+      dest: cluster
+      dest_ip: *homeserver_lbs
+
     allow_lan_to_pikvm:
       target: ACCEPT
       src: lan
@@ -740,6 +749,19 @@ firewall:
         - 443
         # For K8S api
         - 6443
+
+    allow_vpn_main_to_homeserver_lbs:
+      target: ACCEPT
+      src: vpn_main
+      dest: cluster
+      proto:
+        - tcp
+        - udp
+      dest_ip: *homeserver_lbs
+      dest_port:
+        - 80
+        - 443
+        - 25565
 
     allow_vpn_main_to_homeserver_backup:
       target: ACCEPT
