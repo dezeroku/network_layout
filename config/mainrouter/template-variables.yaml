@@ -792,6 +792,17 @@ firewall:
       dest_port:
         - 22
 
+    allow_vpn_main_to_devserver_mosh:
+      target: ACCEPT
+      src: vpn_main
+      dest: lan
+      proto:
+        - udp
+      dest_ip:
+        - 192.168.1.14
+      dest_port:
+        - 60000-61000
+
     allow_vpn_main_to_fradio_server:
       # TODO: are we able to limit access to specific ports?
       target: ACCEPT
