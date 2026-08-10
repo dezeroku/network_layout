@@ -8,8 +8,9 @@ set sqm.eth1.tcMTU='2047'
 set sqm.eth1.tcTSIZE='128'
 set sqm.eth1.tcMPU='84'
 set sqm.eth1.linklayer_adaptation_mechanism='default'
-set sqm.eth1.download='300000'
-set sqm.eth1.upload='30000'
+set sqm.eth1.download='555000'
+set sqm.eth1.upload='555000'
+set sqm.eth1.interface='br-lan.90'
 set sqm.eth1.enabled='1'
 
 commit sqm
