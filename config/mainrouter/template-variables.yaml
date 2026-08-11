@@ -323,14 +323,21 @@ dhcp:
       ip: &pikvm "192.168.4.31"
       dns: true
 
-    homekit-hub:
+    # TODO: Is seems that the MACs for Apple TV and HomePods are randomized anyway,
+    # so this assignment is more of a intention documentation for now
+    homekit-tv-ground:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: &homekit_hub "192.168.1.10"
+      ip: &homekit_tv_ground "192.168.1.10"
       dns: true
 
-    homekit-homepod-one:
+    homekit-homepod-tv-ground-left:
       # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: &homekit_homepod_one "192.168.1.11"
+      ip: &homekit_homepod_tv_ground_left "192.168.1.11"
+      dns: true
+
+    homekit-homepod-tv-ground-right:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &homekit_homepod_tv_ground_right "192.168.1.12"
       dns: true
 
     mainswitch:
@@ -397,14 +404,7 @@ dhcp:
   # example.com:
   #   ip: '192.168.1.23'
 
-  addresses:
-    # TODO: With metallb in place, this is effectively a no-op,
-    # listed here just so I have an anchor to reuse later on for firewall rules
-    # We might get rid of keeping it here
-    homeserver-lbs: &homeserver_lbs
-      - 192.168.4.65
-      - 192.168.4.66
-
+  addresses: {}
   # https://openwrt.org/docs/guide-user/base-system/dhcp_configuration#a_and_aaaa_rr
   # With custom dynamic updates based on nodes availability
   addresses_ha:
@@ -427,6 +427,7 @@ dhcp:
       - 192.168.4.22
       - 192.168.4.23
     # CPs are also used as LBs
+    # TODO: migrate this cluster to API Gateway and metallb too
     homeserver-backup-lbs: &homeserver_backup_lbs
       - 192.168.4.21
       - 192.168.4.22
@@ -439,6 +440,19 @@ adblock:
     - reg_pl2
     - smarttv_tracking
     - spam404
+
+.helper_groups:
+  homekit-hubs: &homekit_hubs
+    - *homekit_tv_ground
+    - *homekit_homepod_tv_ground_left
+    - *homekit_homepod_tv_ground_right
+
+  # TODO: With metallb in place, this is effectively a no-op,
+  # listed here just so I have an anchor to reuse later on for firewall rules
+  # Currently envoy-gateway + ingress-nginx LB IPs
+  homeserver-lbs: &homeserver_lbs
+    - 192.168.4.65
+    - 192.168.4.66
 
 firewall:
   rules:
@@ -553,9 +567,7 @@ firewall:
     allow_homekit_hubs_to_iot:
       target: ACCEPT
       src: lan
-      src_ip:
-        - *homekit_hub
-        - *homekit_homepod_one
+      src_ip: *homekit_hubs
       dest: iot
       proto:
         - tcp
@@ -565,9 +577,7 @@ firewall:
     allow_homekit_hubs_to_iot_int:
       target: ACCEPT
       src: lan
-      src_ip:
-        - *homekit_hub
-        - *homekit_homepod_one
+      src_ip: *homekit_hubs
       dest: iot_int
       proto:
         - tcp
@@ -578,9 +588,7 @@ firewall:
       target: ACCEPT
       src: iot
       dest: lan
-      dest_ip:
-        - *homekit_hub
-        - *homekit_homepod_one
+      dest_ip: *homekit_hubs
       proto:
         - tcp
         - udp
@@ -590,9 +598,7 @@ firewall:
       target: ACCEPT
       src: iot_int
       dest: lan
-      dest_ip:
-        - *homekit_hub
-        - *homekit_homepod_one
+      dest_ip: *homekit_hubs
       proto:
         - tcp
         - udp
@@ -603,9 +609,7 @@ firewall:
       src: cluster
       src_ip: *homeserver_nodes
       dest: lan
-      dest_ip:
-        - *homekit_hub
-        - *homekit_homepod_one
+      dest_ip: *homekit_hubs
       proto:
         - tcp
         - udp
