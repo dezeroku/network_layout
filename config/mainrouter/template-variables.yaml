@@ -370,6 +370,11 @@ dhcp:
       ip: &fradio_server "192.168.3.20"
       dns: true
 
+    slzb-router:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &slzb_router "192.168.3.21"
+      dns: true
+
     vacuum-ground:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: &vacuum_ground "192.168.3.41"
@@ -560,8 +565,6 @@ firewall:
       src_ip:
         # few smart devices that need it
         # as they can't be controlled via LAN only
-        - 192.168.3.21
-        - 192.168.3.22
         - 192.168.3.25
 
     allow_homekit_hubs_to_iot:
@@ -636,6 +639,7 @@ firewall:
         - *ac_floor
         - *water_meter
         - *homelab_plug
+        - *slzb_router
 
     allow_iot_subset_to_homeserver_mqtt:
       target: ACCEPT
@@ -650,6 +654,7 @@ firewall:
         - *ac_floor
         - *water_meter
         - *homelab_plug
+        - *slzb_router
       dest_ip: *homeserver_lbs
       dest_port:
         - 1883
@@ -678,6 +683,19 @@ firewall:
         - *water_meter
       dest_port:
         - 6053
+
+    allow_cluster_to_slzb_router:
+      target: ACCEPT
+      proto:
+        - tcp
+      src: cluster
+      dest: iot
+      dest_ip:
+        - *slzb_router
+      dest_port:
+        # Serial over IP
+        - 6638
+        - 7638
 
     allow_lan_to_homeserver:
       target: ACCEPT

@@ -107,14 +107,14 @@ Look into [its config for more details](config/tvswitch/template-variables.yaml)
 
 ### Lab switch
 
-| VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 | LAN6 (fradio-server) | LAN7 | LAN8 |
-| ------------ | ----------------- | --------------- | ---- | ---- | ---- | -------------------- | ---- | ---- |
-| 20 (guest)   | t                 | t               |      |      |      |                      |      |      |
-| 30 (iot)     | t                 | t               |      |      |      | u                    |      |      |
-| 31 (iot_int) | t                 | t               |      |      |      |                      |      |      |
-| 40 (cluster) | t                 | t               |      |      |      |                      |      | u    |
-| 80 (admin)   | t                 | t               |      |      |      |                      |      |      |
-| 99 (lan)     | t                 | t               | u    | u    | u    |                      | u    |      |
+| VLAN         | LAN1 (mainrouter) | LAN2 (aprouter) | LAN3 | LAN4 | LAN5 (slzb-router) | LAN6 (fradio-server) | LAN7 | LAN8 |
+| ------------ | ----------------- | --------------- | ---- | ---- | ------------------ | -------------------- | ---- | ---- |
+| 20 (guest)   | t                 | t               |      |      |                    |                      |      |      |
+| 30 (iot)     | t                 | t               |      |      | u                  | u                    |      |      |
+| 31 (iot_int) | t                 | t               |      |      |                    |                      |      |      |
+| 40 (cluster) | t                 | t               |      |      |                    |                      |      | u    |
+| 80 (admin)   | t                 | t               |      |      |                    |                      |      |      |
+| 99 (lan)     | t                 | t               | u    | u    |                    |                      | u    |      |
 
 Zyxel GS1900-8 switching traffic with VLANs, located in the lab rack.
 
