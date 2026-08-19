@@ -302,9 +302,19 @@ dhcp:
       ip: "192.168.4.15"
       dns: true
 
+    homeserver-five-storage:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.45"
+      dns: true
+
     homeserver-six:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.16"
+      dns: true
+
+    homeserver-six-storage:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.46"
       dns: true
 
     homeserver-seven:
@@ -312,9 +322,19 @@ dhcp:
       ip: "192.168.4.17"
       dns: true
 
+    homeserver-seven-storage:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.47"
+      dns: true
+
     homeserver-eight:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.18"
+      dns: true
+
+    homeserver-eight-storage:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: "192.168.4.48"
       dns: true
 
     # Misc
