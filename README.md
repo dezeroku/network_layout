@@ -44,6 +44,13 @@ Allows the internet connectivity via ISP.
 | VPN Family | 192.168.71.1/24 | yes             | yes                     |
 | Admin      | 192.168.80.1/24 | yes             | yes                     |
 
+#### Cut out subnets
+
+There are some parts of the networks that are cut out for k8s usage, specifically:
+
+- `192.168.4.64/28` in `Cluster` is cut out for `metallb` usage
+- `192.168.14.16/28` in a not-yet-assigned network is cut out for `longhorn-storage-net`
+
 ## Hardware Setup
 
 ### Main router
