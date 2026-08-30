@@ -48,6 +48,7 @@ Allows the internet connectivity via ISP.
 
 There are some parts of the networks that are cut out for k8s usage, specifically:
 
+- `192.168.1.88/29` in `LAN` is cut out for `multus` usage
 - `192.168.4.64/28` in `Cluster` is cut out for `metallb` usage
 - `192.168.14.16/28` in a not-yet-assigned network is cut out for `longhorn-storage-net`
 
@@ -119,9 +120,9 @@ Look into [its config for more details](config/tvswitch/template-variables.yaml)
 | 20 (guest)   | t                 | t               |      |      |                    |                      |      |      |
 | 30 (iot)     | t                 | t               |      |      | u                  | u                    |      |      |
 | 31 (iot_int) | t                 | t               |      |      |                    |                      |      |      |
-| 40 (cluster) | t                 | t               |      |      |                    |                      |      | u    |
+| 40 (cluster) | t                 | t               |      |      |                    |                      |      | u\*  |
 | 80 (admin)   | t                 | t               |      |      |                    |                      |      |      |
-| 99 (lan)     | t                 | t               | u    | u    |                    |                      | u    |      |
+| 99 (lan)     | t                 | t               | u    | u    |                    |                      | u    | t    |
 
 Zyxel GS1900-8 switching traffic with VLANs, located in the lab rack.
 
