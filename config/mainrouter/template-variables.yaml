@@ -425,6 +425,8 @@ dhcp:
       ip: &homelab_plug "192.168.3.61"
       dns: true
 
+    # TODO: move dezeroku-desktop, devserver and printserver here
+
   domains: {}
   # example.com:
   #   ip: '192.168.1.23'
@@ -704,7 +706,7 @@ firewall:
       dest_port:
         - 6053
 
-    allow_cluster_to_slzb_router:
+    allow_cluster_to_slzb_router_tcp:
       target: ACCEPT
       proto:
         - tcp
@@ -716,6 +718,18 @@ firewall:
         # Serial over IP
         - 6638
         - 7638
+
+    allow_cluster_to_slzb_router_udp:
+      target: ACCEPT
+      proto:
+        - udp
+      src: cluster
+      dest: iot
+      dest_ip:
+        - *slzb_router
+      dest_port:
+        # BLE
+        - 5050
 
     allow_lan_to_homeserver:
       target: ACCEPT
