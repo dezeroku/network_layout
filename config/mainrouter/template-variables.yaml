@@ -663,20 +663,12 @@ firewall:
         - *homelab_plug
         - *slzb_router
 
-    allow_iot_subset_to_homeserver_mqtt:
+    allow_iot_to_homeserver_mqtt:
       target: ACCEPT
       proto:
         - tcp
       src: iot
       dest: cluster
-      src_ip:
-        - *vacuum_ground
-        - *vacuum_floor
-        - *ac_ground
-        - *ac_floor
-        - *water_meter
-        - *homelab_plug
-        - *slzb_router
       dest_ip: *homeserver_lbs
       dest_port:
         - 1883
