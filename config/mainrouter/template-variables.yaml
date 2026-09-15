@@ -649,19 +649,10 @@ firewall:
       src: lan
       dest: admin
 
-    allow_lan_to_iot_devices:
+    allow_lan_to_iot:
       target: ACCEPT
       src: lan
       dest: iot
-      dest_ip:
-        - *fradio_server
-        - *vacuum_ground
-        - *vacuum_floor
-        - *ac_ground
-        - *ac_floor
-        - *water_meter
-        - *homelab_plug
-        - *slzb_router
 
     allow_iot_to_homeserver_mqtt:
       target: ACCEPT
