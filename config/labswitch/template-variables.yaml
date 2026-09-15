@@ -63,6 +63,8 @@ networks:
         - lan5
         # fradio-server
         - lan6
+        # homeserver switch, for HA
+        - lan8:t
 
   iot_int:
     proto: none
