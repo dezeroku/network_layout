@@ -33,8 +33,10 @@ networks:
         - lan1:t
         # aprouter
         - lan2:t
-        - lan3
+        # pc
         - lan4
+        # devserver
+        - lan6
         # homeserver switch, for Matter
         - lan8:t
 
@@ -59,10 +61,10 @@ networks:
         - lan1:t
         # aprouter
         - lan2:t
+        # fradio-server
+        - lan3
         # slzb-router
         - lan5
-        # fradio-server
-        - lan6
         # homeserver switch, for HA
         - lan8:t
 
