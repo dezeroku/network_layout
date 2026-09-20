@@ -50,6 +50,7 @@ There are some parts of the networks that are cut out for k8s usage, specificall
 
 - `192.168.1.88/29` in `LAN` is cut out for `multus` usage
 - `192.168.3.88/29` in `IoT` is cut out for `multus` usage
+- `192.168.3.60-87` in `IoT` is cut out for `Shelly` usage
 - `192.168.4.64/28` in `Cluster` is cut out for `metallb` usage
 - `192.168.14.16/28` in a not-yet-assigned network is cut out for `longhorn-storage-net`
 

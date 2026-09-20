@@ -420,10 +420,8 @@ dhcp:
       ip: &water_meter "192.168.3.53"
       dns: true
 
-    homelab-plug:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: &homelab_plug "192.168.3.61"
-      dns: true
+    # 192.168.3.60-192.168.3.87 cut out for Shelly
+    # 192.168.3.88/29` cut out for `multus` usage
 
     # TODO: move dezeroku-desktop, devserver and printserver here
 
