@@ -281,10 +281,10 @@ dhcp:
   hosts:
     # MAC addresses have to be overriden in secret-variables.yaml
     # Backup cluster
-    homeserver-backup-one:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.21"
-      dns: true
+    # homeserver-backup-one:
+    #   # mac: 'XX:XX:XX:XX:XX:XX'
+    #   ip: "192.168.4.21"
+    #   dns: true
 
     homeserver-backup-two:
       # mac: 'XX:XX:XX:XX:XX:XX'
@@ -302,19 +302,9 @@ dhcp:
       ip: "192.168.4.15"
       dns: true
 
-    homeserver-five-storage:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.45"
-      dns: true
-
     homeserver-six:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.16"
-      dns: true
-
-    homeserver-six-storage:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.46"
       dns: true
 
     homeserver-seven:
@@ -322,25 +312,20 @@ dhcp:
       ip: "192.168.4.17"
       dns: true
 
-    homeserver-seven-storage:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.47"
-      dns: true
-
     homeserver-eight:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: "192.168.4.18"
-      dns: true
-
-    homeserver-eight-storage:
-      # mac: 'XX:XX:XX:XX:XX:XX'
-      ip: "192.168.4.48"
       dns: true
 
     # Misc
     pikvm:
       # mac: 'XX:XX:XX:XX:XX:XX'
       ip: &pikvm "192.168.4.31"
+      dns: true
+
+    rpi-tv:
+      # mac: 'XX:XX:XX:XX:XX:XX'
+      ip: &rpi_tv "192.168.4.32"
       dns: true
 
     # TODO: Is seems that the MACs for Apple TV and HomePods are randomized anyway,
@@ -730,6 +715,13 @@ firewall:
       dest: cluster
       dest_ip:
         - *pikvm
+
+    allow_lan_to_rpi_tv:
+      target: ACCEPT
+      src: lan
+      dest: cluster
+      dest_ip:
+        - *rpi_tv
 
     allow_lan_to_homeserver_backup:
       target: ACCEPT
